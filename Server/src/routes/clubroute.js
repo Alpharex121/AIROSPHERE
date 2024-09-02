@@ -92,7 +92,7 @@ router.get("/events", auth, async (req, res) => {
 
 router.post("/:username", auth, async (req, res) => {
   try {
-    if (req.user.role == "head"){
+    if (req.user.role === "admin" || req.user.role == "head"){
     const club = await Club.findById(req.club._id);
     club.members.push(req.params.username);
     await club.save();
@@ -107,7 +107,7 @@ router.post("/:username", auth, async (req, res) => {
 // club deleteMember
 router.delete("/:username", auth, async (req, res) => {
   try {
-    if (req.user.role == "head"){
+    if (req.user.role === "admin" || req.user.role == "head"){
     const club = await Club.findById(req.club._id);
     club.members = club.members.filter(
       (member) => member !== req.params.username
