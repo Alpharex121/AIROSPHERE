@@ -23,5 +23,5 @@ const findteamSchema = new mongoose.Schema({
   },
 });
 
-const addAcademic = new mongoose.model("academic", findteamSchema);
-module.exports = addAcademic;
+const addTeam = new mongoose.model("findteam", findteamSchema);
+module.exports = addTeam;

@@ -2,38 +2,36 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 
 const clubSchema = new mongoose.Schema({
-  name : {
+  name: {
     type: String,
     required: true,
   },
-  head : {
+  head: {
     type: String,
     required: true,
   },
- 
-  discription : {
+
+  description: {
     type: String,
   },
-  tokens: [
+  members: [
     {
-      token: {
+      member: {
         type: String,
-        required: true,
       },
     },
   ],
- 
 });
 
-userSchema.methods.addMember = async function () {
-    try {
-      this.tokens = this.tokens.concat({ token });
-      await this.save();
-      return token;
-    } catch (error) {
-      console.log("Error occured while generating token");
-      console.log(error);
-    }
+userSchema.methods.addMember = async function (username) {
+  try {
+    this.members = this.tokens.concat({ username });
+    await this.save();
+    return username;
+  } catch (error) {
+    console.log("Error occured while adding member in club");
+    console.log(error);
+  }
 };
 
 const addClub = new mongoose.model("club", clubSchema);
