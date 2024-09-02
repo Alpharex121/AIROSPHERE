@@ -32,6 +32,9 @@ router.post("/", auth, async (req, res) => {
       const confirmpassword = req.body.confirmpassword;
       const username = req.body.username;
 
+      if (req.body.role === "admin" && req.user.role !== "admin")
+        res.status(401).send("Permission denied");
+
       if (password === confirmpassword) {
         const newUser = new userRegister({
           username: req.body.username,
@@ -81,6 +84,8 @@ router.put("/:username/:id", auth, async (req, res) => {
     req.user.username === req.params.username
   ) {
     try {
+      if (req.body.role === "admin" && req.user.role !== "admin")
+        res.status(401).send("Permission denied");
       const userid = req.params.id;
       if (!userRegister.findOne({ userid })) {
         res.send("user not found for updation.");
