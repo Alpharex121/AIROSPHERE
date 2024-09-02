@@ -21,6 +21,16 @@ const clubSchema = new mongoose.Schema({
       },
     },
   ],
+  notification: [
+    {
+      title: {
+        type: String,
+      },
+      description: {
+        type: String,
+      },
+    },
+  ],
 });
 
 userSchema.methods.addMember = async function (username) {
