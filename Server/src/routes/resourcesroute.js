@@ -2,16 +2,40 @@ const express = require("express");
 const router = express.Router();
 const auth = require("../middleware/auth");
 
-//GET ALL JOBS
-router.get("/", async (req, res) => {});
+//GET Resource
+router.get("/",  auth, async (req, res) => {
+    try{
+        const resource = await Resource.findById(req.resource._id);
+        res.send(resource);
+    }
+    catch(error){
+        res.status(500).send(error.message);
+    }
+});
 
-//NEW JOB CREATION
-router.post("/", auth, async (req, res) => {});
+//ADD Resource
+router.post("/", auth, async (req, res) => {
+    try{
+        const resource = new Resource(req.body);
+        await resource.save();
+        res.send(resource);
+    }
+    catch(error){
+        res.status(500).send(error.message);
+    }
+});
 
-//UPDATE JOB INFORMATION
-router.put("/:id", auth, async (req, res) => {});
 
-//DELETE JOB
-router.delete("/:id", auth, async (req, res) => {});
+
+//DELETE Resource
+router.delete("/", auth, async (req, res) => {
+    try{
+        const resource = await Resource.findByIdAndDelete(req.resource._id);
+        res.send(resource);
+    }
+    catch(error){
+        res.status(500).send(error.message);
+    }
+});
 
 module.exports = router;
