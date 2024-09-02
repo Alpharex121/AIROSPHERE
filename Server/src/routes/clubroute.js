@@ -56,20 +56,10 @@ router.delete("/:clubid", auth, async (req, res) => {
 
 // NOTIFICATION SECTION START FROM HERE
 
-router.get("/", auth, async (req, res) => {
-  try {
-    const club = await addClub.find();
-    res.send(club);
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error);
-  }
-});
-
 //club notification
 router.get("/notification", auth, async (req, res) => {
   try {
-    const club = await Club.find;
+    const club = await addClub.find();
     res.send(club.notifications);
   } catch (error) {
     console.log(error);
@@ -80,7 +70,7 @@ router.get("/notification", auth, async (req, res) => {
 //club events
 router.get("/events", auth, async (req, res) => {
   try {
-    const club = await Club.find;
+    const club = await addClub.find();
     res.send(club.events);
   } catch (error) {
     console.log(error);
@@ -92,14 +82,17 @@ router.get("/events", auth, async (req, res) => {
 
 router.post("/:username", auth, async (req, res) => {
   try {
-    if (req.user.role === "admin" || req.user.role == "head"){
-    const club = await Club.findById(req.club._id);
-    club.members.push(req.params.username);
-    await club.save();
-    res.send(club);
-  };
+    if (req.user.role === "admin" || req.user.role == "head") {
+      const userData = await addClub.findOne({ username: req.params.username });
+      const newMember = await userData.addMember(userData.name);
+      await addClub.save();
+      res.status(200).send(newMember);
+    } else {
+      res.status(401).send("Permission denied.");
+    }
   } catch (error) {
     console.log(error);
+    console.log("Error occured while adding members");
     res.status(400).send(error);
   }
 });
@@ -107,17 +100,22 @@ router.post("/:username", auth, async (req, res) => {
 // club deleteMember
 router.delete("/:username", auth, async (req, res) => {
   try {
-    if (req.user.role === "admin" || req.user.role == "head"){
-    const club = await Club.findById(req.club._id);
-    club.members = club.members.filter(
-      (member) => member !== req.params.username
-    );
-    await club.save();
-    res.send(club);
-  };
+    if (req.user.role === "admin" || req.user.role == "head") {
+      const memberlist = await addClub.find({ username: req.params.username });
+      if (!memberlist) res.status(500).send("Member not found");
+      memberlist.members = memberlist.members.filter((currElement) => {
+        return currElement.member !== currElement.member;
+      });
+
+      await addClub.save();
+      console.log("Club member deleted successfully");
+      res.send(memberlist);
+    } else {
+      res.send({ data: "permission denied" });
+    }
   } catch (error) {
     console.log(error);
-    res.status(400).send(error);
+    res.status(400).send("Error while deleteing member from club");
   }
 });
 

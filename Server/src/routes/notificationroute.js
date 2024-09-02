@@ -4,7 +4,10 @@ const auth = require("../middleware/auth");
 const addNotification = require("../models/notificationSchema");
 
 //GET NOTIFICATION
-router.get("/", async (req, res) => {});
+router.get("/", async (req, res) => {
+  const result = await addNotification.find();
+  res.status(200).send(result);
+});
 
 //NEW NOTIFICATION CREATION
 router.post("/", auth, async (req, res) => {

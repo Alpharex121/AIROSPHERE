@@ -36,7 +36,7 @@ router.post("/postteam", auth, async (req, res) => {
   }
 });
 
-//UPDATE JOB INFORMATION
+//UPDATE STUDENT CONNECT INFORMATION
 router.put("/:postername/:postid", auth, async (req, res) => {
   if (req.user.role == "admin" || req.user.username == postername) {
     try {
