@@ -11,7 +11,7 @@ const academicSchema = new mongoose.Schema({
     required: true,
   },
   subject: {
-    type: number,
+    type: String,
     required: true,
   },
   link: {

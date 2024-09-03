@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const userRegister = require("../models/userSchema");
 const auth = require("../middleware/auth");
-const { route } = require("./academicroute");
+const bcrypt = require("bcrypt");
 
 //GET ALL STUDENTS
 router.get("/", auth, async (req, res) => {
@@ -19,6 +19,10 @@ router.get("/", auth, async (req, res) => {
   }
 });
 
+router.get("/getcurruser", auth, async (req, res) => {
+  res.send(req.user);
+});
+
 //NEW USER STUDENTS
 router.post("/", auth, async (req, res) => {
   if (
@@ -32,8 +36,10 @@ router.post("/", auth, async (req, res) => {
       const confirmpassword = req.body.confirmpassword;
       const username = req.body.username;
 
-      if (req.body.role === "admin" && req.user.role !== "admin")
+      if (req.body.role === "admin") {
         res.status(401).send("Permission denied");
+        return;
+      }
 
       if (password === confirmpassword) {
         const newUser = new userRegister({
@@ -57,8 +63,8 @@ router.post("/", auth, async (req, res) => {
 
         const registered = await newUser.save();
 
-        res.status(200).send("user created successfully");
-        console.log("user registered successful");
+        console.log("user registered successful" + registered);
+        res.status(200).send("user created successfully" + registered);
       } else {
         res.send("Password does not match");
       }
@@ -76,16 +82,41 @@ router.put("/:username/:id", auth, async (req, res) => {
   if (password != confirmpassword) {
     res.status(400).send({ data: "password not matched" });
   }
-  if (
+
+  if (req.user.role === "user" && req.user.username === req.params.username) {
+    const userid = req.params.id;
+    if (!userRegister.findOne({ userid })) {
+      res.send("user not found for updation.");
+      return;
+    }
+    const result = await userRegister.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          username: req.body.username,
+          role: req.body.role,
+          name: req.body.name,
+          mail: req.body.mail,
+          semester: req.body.semester,
+          enrollmentno: req.body.enrollmentno,
+        },
+      }
+    );
+    console.log("update successful");
+    res.status(200).send(result);
+    return;
+  } else if (
     req.user.role == "admin" ||
     req.user.role === "disciplinemod" ||
     req.user.role === "professor" ||
-    req.user.role === "modhead" ||
-    req.user.username === req.params.username
+    req.user.role === "modhead"
   ) {
     try {
-      if (req.body.role === "admin" && req.user.role !== "admin")
+      if (req.body.role === "admin") {
         res.status(401).send("Permission denied");
+        return;
+      }
+
       const userid = req.params.id;
       if (!userRegister.findOne({ userid })) {
         res.send("user not found for updation.");
@@ -148,25 +179,40 @@ router.put("/updatepassword/:username/:id", auth, async (req, res) => {
     res.status(400).send({ data: "password not matched" });
   }
   try {
-    if (req.user.username === req.params.username) {
+    if (
+      req.user.username === req.params.username ||
+      req.user.role === "admin" ||
+      req.user.role === "professor" ||
+      req.user.role === "disciplinemod"
+    ) {
       const userid = req.params.id;
       if (!userRegister.findOne({ userid })) {
         res.send("user not found for updation.");
         return;
       }
-      const currUser = userRegister.findOne({ userid });
+
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
+      const hashedConfirmPassword = await bcrypt.hash(
+        req.body.confirmpassword,
+        10
+      );
 
       const result = await userRegister.findOneAndUpdate(
         { _id: req.params.id },
         {
           $set: {
-            password: req.body.password,
-            confirmpassword: req.body.confirmpassword,
+            password: hashedPassword,
+            confirmpassword: hashedConfirmPassword,
           },
+        },
+        {
+          new: true,
         }
       );
       console.log("password update successful");
       res.status(200).send(result);
+    } else {
+      res.status(401).send("Permission denied");
     }
   } catch (error) {
     res.send("error while updating the password");

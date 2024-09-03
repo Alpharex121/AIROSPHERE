@@ -24,7 +24,7 @@ router.post("/", auth, async (req, res) => {
         type: req.body.type,
       });
       await newResource.save();
-      res.send(resource);
+      res.send(newResource);
     } else {
       res.status(401).send("Permission Denied");
     }

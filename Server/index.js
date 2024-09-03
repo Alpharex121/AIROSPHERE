@@ -6,8 +6,8 @@ const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const port = process.env.PORT || 3000;
-// const auth = require("./middleware/auth.js");
-// require("./db/Connection.js");
+const auth = require("./src/middleware/auth.js");
+require("./src/db/connections.js");
 
 const allowedOrigins = [
   "https://ggits-coding-club.vercel.app",
@@ -41,24 +41,22 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 
 // Importing routes
-const userRouter = require("./routes/userroute.js");
-const studentconnectroute = require("./routes/studentconnectroute.js");
-const resourcesroute = require("./routes/resourcesroute.js");
-const notificationroute = require("./routes/notificationroute.js");
-const clubroute = require("./routes/clubroute.js");
-const authenticateroute = require("./routes/authenticateroute.js");
-const adminroute = require("./routes/adminroute.js");
-const academinroute = require("./routes/academinroute.js");
+const userRouter = require("./src/routes/userroute.js");
+const studentconnectroute = require("./src/routes/studentconnectroute.js");
+const resourcesroute = require("./src/routes/resourcesroute.js");
+const notificationroute = require("./src/routes/notificationroute.js");
+const clubroute = require("./src/routes/clubroute.js");
+const authenticateroute = require("./src/routes/authenticateroute.js");
+const academicroute = require("./src/routes/academicroute.js");
 
 // Configuring routes
 app.use("/user", userRouter);
 app.use("/studentconnect", studentconnectroute);
 app.use("/resource", resourcesroute);
 app.use("/notification", notificationroute);
-app.use("/clubroute", clubroute);
+app.use("/club", clubroute);
 app.use("/authenticate", authenticateroute);
-app.use("/admin", adminroute);
-app.use("/academic", academinroute);
+app.use("/academic", academicroute);
 
 app.listen(port, (req, res) => {
   console.log(`Server is running at port ${port}`);

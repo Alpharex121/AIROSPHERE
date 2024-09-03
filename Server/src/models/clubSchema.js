@@ -33,11 +33,24 @@ const clubSchema = new mongoose.Schema({
   ],
 });
 
-userSchema.methods.addMember = async function (username) {
+clubSchema.methods.addMember = async function (username) {
   try {
-    this.members = this.tokens.concat({ username });
+    this.members = this.members.concat({ member: username });
     await this.save();
     return username;
+  } catch (error) {
+    console.log("Error occured while adding member in club");
+    console.log(error);
+  }
+};
+clubSchema.methods.addNotification = async function (title, description) {
+  try {
+    this.notification = this.notification.concat({
+      title: title,
+      description: description,
+    });
+    await this.save();
+    return this.notification;
   } catch (error) {
     console.log("Error occured while adding member in club");
     console.log(error);

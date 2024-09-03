@@ -19,5 +19,5 @@ const resourceSchema = new mongoose.Schema({
   },
 });
 
-const   addResource = new mongoose.model("resource", resourceSchema);
+const addResource = new mongoose.model("resource", resourceSchema);
 module.exports = addResource;

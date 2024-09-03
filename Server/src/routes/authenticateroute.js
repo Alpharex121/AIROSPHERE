@@ -1,5 +1,5 @@
 const express = require("express");
-const addRole = require("../models/roles");
+const addUser = require("../models/userSchema");
 const bcrypt = require("bcrypt");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
@@ -15,7 +15,7 @@ router.post("/", async (req, res) => {
     const username = req.body.email;
     const password = req.body.password;
 
-    const userCred = await addRole.findOne({ username: req.body.username });
+    const userCred = await addUser.findOne({ username: req.body.username });
     const passMatch = await bcrypt.compare(password, userCred.password);
 
     if (passMatch) {

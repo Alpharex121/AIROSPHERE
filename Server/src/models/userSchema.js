@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     semester: {
-      type: number,
+      type: String,
       required: true,
     },
     mail: {
@@ -67,7 +67,7 @@ userSchema.methods.generateAuthToken = async function () {
 };
 
 //PASSWORD HASHING
-roleSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
   if (this.password && this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 10);

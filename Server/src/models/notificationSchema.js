@@ -19,5 +19,5 @@ const notificationSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const addNotification = new mongoose.model("academic", notificationSchema);
+const addNotification = new mongoose.model("notification", notificationSchema);
 module.exports = addNotification;

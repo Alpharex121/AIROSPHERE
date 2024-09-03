@@ -11,13 +11,13 @@ router.get("/", async (req, res) => {
 
 //NEW ACADEMIC CREATION
 router.post("/", auth, async (req, res) => {
-  try {
-    if (
-      req.user.role === "admin" ||
-      req.user.role === "modhead" ||
-      req.user.role === "academicmod" ||
-      req.user.role === "professor"
-    ) {
+  if (
+    req.user.role === "admin" ||
+    req.user.role === "modhead" ||
+    req.user.role === "academicmod" ||
+    req.user.role === "professor"
+  ) {
+    try {
       const newAcademic = new addAcademic({
         title: req.body.title,
         description: req.body.description,
@@ -28,28 +28,28 @@ router.post("/", auth, async (req, res) => {
       });
       const result = await newAcademic.save();
       res.send(result);
-    } else {
-      res.status(401).send("Permission Denied");
+    } catch (error) {
+      console.log("Error while adding academic.");
+      res.status(500).send(error.message);
     }
-  } catch (error) {
-    console.log("Error while adding academic.");
-    res.status(500).send(error.message);
+  } else {
+    res.status(401).send("Permission Denied");
   }
 });
 
 //DELETE ACADEMIC
 router.delete("/:academicid", auth, async (req, res) => {
-  try {
-    if (
-      req.user.role === "admin" ||
-      req.user.role === "modhead" ||
-      req.user.role === "academicmod" ||
-      req.user.role === "proffersor"
-    ) {
+  if (
+    req.user.role === "admin" ||
+    req.user.role === "modhead" ||
+    req.user.role === "academicmod" ||
+    req.user.role === "proffersor"
+  ) {
+    try {
       const academicid = req.params.academicid;
       const isExist = await addAcademic.findOne({ _id: academicid });
       if (!isExist) {
-        res.send("Academic data not found");
+        res.status(500).send("Academic data not found");
         return;
       }
       const result = await addAcademic.findOneAndDelete({
@@ -57,9 +57,11 @@ router.delete("/:academicid", auth, async (req, res) => {
       });
       console.log("Acedemic Delete successfully!");
       res.status(200).send(result);
+    } catch (error) {
+      res.status(500).send("Error while deleting academic" + error.message);
     }
-  } catch (error) {
-    res.status(500).send("Error while deleting academic" + error.message);
+  } else {
+    res.status(401).send("Permission denied");
   }
 });
 

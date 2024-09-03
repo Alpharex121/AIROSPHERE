@@ -11,7 +11,7 @@ const findteamSchema = new mongoose.Schema({
     required: true,
   },
   opening: {
-    type: number,
+    type: String,
     required: true,
   },
   skills: {

@@ -23,22 +23,22 @@ router.post("/postteam", auth, async (req, res) => {
       description: req.body.description,
       opening: req.body.opening,
       skills: req.body.skills,
-      postername: req.user.postername,
+      postername: req.user.username,
     });
 
     const registered = await newTeamReq.save();
 
-    res.status(200).send("Job posted successfully");
+    res.status(200).send("find team posted successfully");
     console.log("team request uploaded successfully");
   } catch (error) {
-    res.send("Error while uploading jobs");
+    res.send("Error while uploading find team request");
     console.log(error);
   }
 });
 
 //UPDATE STUDENT CONNECT INFORMATION
 router.put("/:postername/:postid", auth, async (req, res) => {
-  if (req.user.role == "admin" || req.user.username == postername) {
+  if (req.user.role == "admin" || req.user.username == req.params.postername) {
     try {
       const postid = req.params.postid;
       if (!addTeam.findOne({ postid })) {
@@ -46,40 +46,38 @@ router.put("/:postername/:postid", auth, async (req, res) => {
         return;
       }
       const result = await addTeam.findOneAndUpdate(
-        { _id: req.params.id },
+        { _id: req.params.postid },
         {
           $set: {
             title: req.body.title,
             description: req.body.description,
             opening: req.body.opening,
             skills: req.body.skills,
-            postername: req.user.postername,
           },
         }
       );
       console.log("update successful");
       res.status(200).send(result);
     } catch (error) {
-      response.send("error while updating the data");
+      res.send("error while updating the data" + error.message);
     }
   } else {
   }
 });
 
 //DELETE JOB
-router.delete("/:username/:postid", auth, async (req, res) => {
+router.delete("/:postid", auth, async (req, res) => {
   {
     try {
-      const userid = req.params.id;
+      const postid = req.params.postid;
       const isExist = await addTeam.findOne({ _id: postid });
       if (!isExist) {
-        res.send("User not found");
+        res.send("find team post not found");
         return;
       }
       if (
         req.user.role == "admin" ||
         req.user.role === "disciplinemod" ||
-        req.user.role === "professor" ||
         req.user.role === "modhead" ||
         req.user.username === isExist.postername
       ) {
