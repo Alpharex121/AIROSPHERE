@@ -9,10 +9,7 @@ const port = process.env.PORT || 3000;
 const auth = require("./src/middleware/auth.js");
 require("./src/db/connections.js");
 
-const allowedOrigins = [
-  "https://ggits-coding-club.vercel.app",
-  "https://www.dpcoding.club",
-];
+const allowedOrigins = ["http://localhost:5173"];
 
 const corsOptionss = {
   origin: function (origin, callback) {
