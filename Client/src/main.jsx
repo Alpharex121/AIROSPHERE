@@ -16,8 +16,8 @@ import ReactDOM from "react-dom/client";
 import Authenticate from "./components/Authenticate.jsx";
 import Homepage from "./components/Homepage.jsx";
 import Dashboard from "./components/Dashboard.jsx";
-import Pyq from "./components/Pyq.jsx";
-import Importantques from "./components/Importantques.jsx";
+import Pyq from "./components/Menus/Academic/Pyq.jsx";
+import Importantques from "./components/Menus/Academic/Importantques.jsx";
 import Findteam from "./components/Findteam.jsx";
 import Askdoubt from "./components/Askdoubt.jsx";
 import Peerprogramming from "./components/Peerprogramming.jsx";
@@ -32,6 +32,7 @@ import Websiteupdate from "./components/Websiteupdate.jsx";
 import Mentorconnect from "./components/Mentorconnect.jsx";
 import UpdatePassword from "./components/Updatepassword.jsx";
 import ViewClub from "./components/ViewClub.jsx";
+import UnitBox from "./components/Menus/Academic/UnitBox.jsx";
 
 const appRouter = createBrowserRouter([
   {
@@ -113,6 +114,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/club/:clubname",
         element: <ViewClub />,
+      },
+      {
+        path: "/:type/semester/:sem/:subcode",
+        element: <UnitBox />,
       },
     ],
   },

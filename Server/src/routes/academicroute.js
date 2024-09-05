@@ -4,8 +4,11 @@ const auth = require("../middleware/auth");
 const addAcademic = require("../models/academicSchema");
 
 //GET ALL ACADEMIC
-router.get("/", async (req, res) => {
-  const result = await addAcademic.find();
+router.get("/:type/:subcode", async (req, res) => {
+  const result = await addAcademic.find({
+    type: req.params.type,
+    subcode: req.params.subcode,
+  });
   res.status(200).send(result);
 });
 
@@ -23,6 +26,7 @@ router.post("/", auth, async (req, res) => {
         description: req.body.description,
         semester: req.body.semester,
         subject: req.body.subject,
+        subcode: req.body.subcode,
         link: req.body.link,
         type: req.body.type,
       });

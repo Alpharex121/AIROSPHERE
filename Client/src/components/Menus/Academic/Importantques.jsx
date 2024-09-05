@@ -65,7 +65,7 @@ const NotesComponent = () => {
       {/* Notes Section */}
       <div className="mt-8 p-6 bg-gray-200 rounded-lg shadow-xl backdrop-blur-md">
         <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
-          Notes for {selectedSemester}
+          Important Questions for {selectedSemester}
         </h2>
         {parseInt(selectedSemester[9]) < 6 && (
           <div className="flex flex-col gap-4 mb-6">
@@ -90,7 +90,7 @@ const NotesComponent = () => {
 
                 <Link
                   to={
-                    "/notes/semester/" +
+                    "/important/semester/" +
                     selectedSemester[9] +
                     "/" +
                     subjectCode[selectedSemester][idx]

@@ -1,0 +1,57 @@
+export const semestersData = {
+  "Semester 1": [
+    "MATHEMATICS-I",
+    "Engineering Physics",
+    "Basic Mechanical Engineering",
+    "Basic Civil Engineering & Mechanics",
+    "Basic Computer Engineering",
+  ],
+  "Semester 2": [
+    "English for Communication",
+    "Mathematics II",
+    "Basic Electrical & Electronics Engineering",
+    "Engineering Graphics",
+    "Engineering Chemistry ",
+  ],
+  "Semester 3": [
+    "Mathematics III",
+    "Strength of Materials",
+    "Data Structures",
+    "Theory of Machines and Mechanisms",
+    "Electronic Devices and Circuit",
+  ],
+  "Semester 4": [
+    "Introduction to Probability and Statistics",
+    "Robotics Engineering",
+    " Microcontroller and its Applications",
+    "Introduction to Artificial Intelligence",
+    "Object Oriented Programming & Methodology ",
+  ],
+  "Semester 5": [
+    "Control System",
+    "Machine Learning",
+    "Database Management System",
+    "Internet of Things",
+  ],
+  "Semester 6": [
+    "Probability & Statistics",
+    "Cryptography",
+    "Mobile Computing",
+    "Data Mining",
+    "Cloud Computing",
+  ],
+  "Semester 7": [
+    "Distributed Systems",
+    "Big Data Analytics",
+    "Advanced Algorithms",
+    "Cybersecurity",
+    "IoT",
+  ],
+  "Semester 8": [
+    "Project Management",
+    "Blockchain Technology",
+    "Quantum Computing",
+    "Augmented Reality",
+    "Final Year Project",
+  ],
+};

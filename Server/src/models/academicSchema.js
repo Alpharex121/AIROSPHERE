@@ -25,6 +25,10 @@ const academicSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  subcode: {
+    type: String,
+    required: true,
+  },
 });
 
 const addAcademic = new mongoose.model("academic", academicSchema);
