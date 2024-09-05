@@ -1,6 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { api } from "../utils/constant";
+import { addUser } from "../store/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import getUser from "../utils/getUser";
 
 const Authenticate = () => {
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
+  const data = useSelector((store) => store.user);
+  console.log(data);
+  useEffect(() => {
+    if (data) {
+      if (data.username) Navigate("/dashboard");
+    }
+  });
+
+  const handleOnSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const username = e.target.username.value;
+      const password = e.target.password.value;
+      const data = await api.post("http://localhost:3000/authenticate", {
+        username,
+        password,
+      });
+      if (data.status === 200 && data.username !== null) {
+        const currUser = data.data;
+        const userData = {
+          username: currUser.username,
+          enrollmentno: currUser.enrollmentno,
+          name: currUser.name,
+          semester: currUser.semester,
+          mail: currUser.mail,
+          role: currUser.role,
+        };
+        dispatch(addUser(userData));
+        Navigate("/dashboard");
+      } else {
+        Navigate("/");
+      }
+    } catch (error) {
+      console.log(error.message);
+      Navigate("/");
+    }
+  };
+
   return (
     <section>
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-[82vh]  lg:py-0">
@@ -20,20 +65,24 @@ const Authenticate = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form
+              className="space-y-4 md:space-y-6"
+              action="#"
+              onSubmit={handleOnSubmit}
+            >
               <div>
                 <label
-                  htmlFor="email"
+                  htmlFor="username"
                   className="block mb-2 text-sm font-medium text-gray-900 "
                 >
-                  Your email
+                  Username
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
+                  type="text"
+                  name="username"
+                  id="username"
                   className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5  dark:border-gray-600   dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@company.com"
+                  placeholder="Enter your username"
                   required=""
                 />
               </div>
@@ -82,7 +131,7 @@ const Authenticate = () => {
               </div>
               <button
                 type="submit"
-                className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                className="w-full text-black bg-primary-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center bg-blue-600 hover:bg-primary-700 border border-black"
               >
                 Sign in
               </button>
@@ -90,7 +139,7 @@ const Authenticate = () => {
                 Don’t have an account yet?{" "}
                 <a
                   href="#"
-                  className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                  className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                 >
                   Sign up
                 </a>

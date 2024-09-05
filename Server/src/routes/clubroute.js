@@ -13,6 +13,15 @@ router.get("/", auth, async (req, res) => {
     res.status(400).send(error);
   }
 });
+router.get("/clubdetail/:clubname", auth, async (req, res) => {
+  try {
+    const club = await addClub.find({ name: req.params.clubname });
+    res.send(club);
+  } catch (error) {
+    console.log(error);
+    res.status(400).send(error);
+  }
+});
 
 router.post("/", auth, async (req, res) => {
   try {
@@ -21,6 +30,7 @@ router.post("/", auth, async (req, res) => {
         name: req.body.name,
         description: req.body.description,
         head: req.body.head,
+        headname: req.body.headname,
       });
       const registered = await newClub.save();
       res.status(200).send("club Added successfully" + registered);
@@ -34,16 +44,16 @@ router.post("/", auth, async (req, res) => {
   }
 });
 
-router.delete("/:clubid", auth, async (req, res) => {
+router.delete("/:clubname", auth, async (req, res) => {
   if (req.user.role == "admin") {
     try {
-      const clubid = req.params.clubid;
-      const isExist = await addClub.findOne({ _id: clubid });
+      const clubname = req.params.clubname;
+      const isExist = await addClub.findOne({ name: clubname });
       if (!isExist) {
         res.send("club not found");
         return;
       }
-      const result = await addClub.findOneAndDelete({ _id: clubid });
+      const result = await addClub.findOneAndDelete({ name: clubname });
       res.status(200).send(result);
       console.log("club Delete successfully!");
     } catch (error) {
@@ -57,19 +67,19 @@ router.delete("/:clubid", auth, async (req, res) => {
 // NOTIFICATION SECTION START FROM HERE
 
 //club notification
-router.get("/:clubid/notification", auth, async (req, res) => {
+router.get("/notification/:clubname", auth, async (req, res) => {
   try {
-    const club = await addClub.findOne({ _id: req.params.clubid });
+    const club = await addClub.findOne({ name: req.params.clubname });
     const currclub = await club.notification;
-    res.send(currclub);
+    res.send({ club: club, clubnoti: currclub });
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
   }
 });
 
-router.post("/:clubid/notification", auth, async (req, res) => {
-  const club = await addClub.findOne({ _id: req.params.clubid });
+router.post("/:clubname/notification", auth, async (req, res) => {
+  const club = await addClub.findOne({ name: req.params.clubname });
   console.log(club.head);
   if (
     req.user.role === "admin" ||
@@ -91,10 +101,10 @@ router.post("/:clubid/notification", auth, async (req, res) => {
   }
 });
 router.delete(
-  "/notificationdelete/:clubid/:notificationid",
+  "/notificationdelete/:clubname/:notificationid",
   auth,
   async (req, res) => {
-    const club = await addClub.findOne({ _id: req.params.clubid });
+    const club = await addClub.findOne({ name: req.params.clubname });
     if (
       req.user.role === "admin" ||
       (req.user.role == "head" && req.user.username === club.head)
@@ -121,21 +131,21 @@ router.delete(
 //club addMember
 
 //GET CLUB MEMEBER
-router.get("/members/:clubid", auth, async (req, res) => {
+router.get("/members/:clubname", auth, async (req, res) => {
   try {
-    const club = await addClub.findOne({ _id: req.params.clubid });
-    const currclub = await club.notification;
-    res.send(currclub);
+    const club = await addClub.findOne({ name: req.params.clubname });
+    const currclub = await club.members;
+    res.send({ club: club, clubmember: currclub });
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
   }
 });
-router.post("/addmember/:clubid/:username", auth, async (req, res) => {
+router.post("/addmember/:clubname", auth, async (req, res) => {
   try {
-    const userData = await addClub.findOne({ _id: req.params.clubid });
+    const userData = await addClub.findOne({ name: req.body.clubname });
     const isExist = await userRegister.findOne({
-      username: req.params.username,
+      username: req.body.username,
     });
     if (isExist) {
       if (
@@ -143,7 +153,12 @@ router.post("/addmember/:clubid/:username", auth, async (req, res) => {
         (req.user.role == "head" && req.user.username === userData.head)
       ) {
         try {
-          const newMember = await userData.addMember(req.params.username);
+          const newMember = await userData.addMember(
+            req.body.username,
+            req.body.name,
+            req.body.clubpost,
+            req.body.clubrole
+          );
           await userData.save();
           res.status(200).send(newMember);
         } catch (error) {
@@ -164,8 +179,8 @@ router.post("/addmember/:clubid/:username", auth, async (req, res) => {
 });
 
 // club deleteMember
-router.delete("/deletemember/:clubid/:username", auth, async (req, res) => {
-  const memberlist = await addClub.findOne({ _id: req.params.clubid });
+router.delete("/deletemember/:clubname/:username", auth, async (req, res) => {
+  const memberlist = await addClub.findOne({ name: req.params.clubname });
   if (!memberlist) res.status(500).send("Member not found");
   try {
     if (
@@ -173,7 +188,7 @@ router.delete("/deletemember/:clubid/:username", auth, async (req, res) => {
       (req.user.role == "head" && req.user.username === memberlist.head)
     ) {
       memberlist.members = memberlist.members.filter((currElement) => {
-        return currElement.member !== req.params.username;
+        return currElement.username !== req.params.username;
       });
 
       await memberlist.save();

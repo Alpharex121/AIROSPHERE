@@ -77,7 +77,7 @@ router.post("/", auth, async (req, res) => {
 });
 
 //UPDATE STUDENT DATA
-router.put("/:username/:id", auth, async (req, res) => {
+router.put("update/:username/:id", auth, async (req, res) => {
   (password = req.body.password), (confirmpassword = req.body.confirmpassword);
   if (password != confirmpassword) {
     res.status(400).send({ data: "password not matched" });
@@ -139,7 +139,7 @@ router.put("/:username/:id", auth, async (req, res) => {
       res.status(200).send(result);
     } catch (error) {
       res.send("error while updating the data");
-      // console.log(error);
+      console.log(error);
     }
   } else {
     res.status(401).send({ data: "permission denied" });
@@ -173,20 +173,21 @@ router.delete("/:id", auth, async (req, res) => {
 });
 
 //UPDATE PASSWORD
-router.put("/updatepassword/:username/:id", auth, async (req, res) => {
-  (password = req.body.password), (confirmpassword = req.body.confirmpassword);
-  if (password != confirmpassword) {
-    res.status(400).send({ data: "password not matched" });
-  }
+router.put("/updatepassword/:username", auth, async (req, res) => {
+  const password = req.body.password;
+  const confirmpassword = req.body.confirmpassword;
   try {
+    if (password != confirmpassword) {
+      res.status(400).send({ data: "password not matched" });
+    }
+
     if (
       req.user.username === req.params.username ||
       req.user.role === "admin" ||
       req.user.role === "professor" ||
       req.user.role === "disciplinemod"
     ) {
-      const userid = req.params.id;
-      if (!userRegister.findOne({ userid })) {
+      if (!userRegister.findOne({ username: req.params.username })) {
         res.send("user not found for updation.");
         return;
       }
@@ -198,7 +199,7 @@ router.put("/updatepassword/:username/:id", auth, async (req, res) => {
       );
 
       const result = await userRegister.findOneAndUpdate(
-        { _id: req.params.id },
+        { username: req.params.username },
         {
           $set: {
             password: hashedPassword,
@@ -215,8 +216,8 @@ router.put("/updatepassword/:username/:id", auth, async (req, res) => {
       res.status(401).send("Permission denied");
     }
   } catch (error) {
-    res.send("error while updating the password");
-    console.log(error);
+    res.status(400).send("error while updating the password");
+    console.log(error.message);
   }
 });
 

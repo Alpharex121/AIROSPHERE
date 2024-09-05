@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import getUser from "../utils/getUser";
+import { useSelector } from "react-redux";
 
 const userSlice = createSlice({
   name: "user",

@@ -10,17 +10,31 @@ const clubSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  headname: {
+    type: String,
+    required: true,
+  },
 
   description: {
     type: String,
   },
   members: [
     {
-      member: {
+      name: {
+        type: String,
+      },
+      username: {
+        type: String,
+      },
+      clubpost: {
+        type: String,
+      },
+      clubrole: {
         type: String,
       },
     },
   ],
+
   notification: [
     {
       title: {
@@ -29,15 +43,28 @@ const clubSchema = new mongoose.Schema({
       description: {
         type: String,
       },
+      uploadtime: {
+        type: String,
+      },
     },
   ],
 });
 
-clubSchema.methods.addMember = async function (username) {
+clubSchema.methods.addMember = async function (
+  username,
+  name,
+  clubpost,
+  clubrole
+) {
   try {
-    this.members = this.members.concat({ member: username });
+    this.members = this.members.concat({
+      username: username,
+      name: name,
+      clubpost: clubpost,
+      clubrole: clubrole,
+    });
     await this.save();
-    return username;
+    return this.members;
   } catch (error) {
     console.log("Error occured while adding member in club");
     console.log(error);
@@ -45,9 +72,18 @@ clubSchema.methods.addMember = async function (username) {
 };
 clubSchema.methods.addNotification = async function (title, description) {
   try {
+    const date = new Date();
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    let currentDate = `${day}-${month}-${year}`;
+
     this.notification = this.notification.concat({
       title: title,
       description: description,
+      uploadtime: currentDate,
     });
     await this.save();
     return this.notification;
