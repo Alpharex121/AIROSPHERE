@@ -48,6 +48,28 @@ const clubSchema = new mongoose.Schema({
       },
     },
   ],
+  events: [
+    {
+      title: {
+        type: String,
+      },
+      description: {
+        type: String,
+      },
+      startfrom: {
+        type: String,
+      },
+      venue: {
+        type: String,
+      },
+      eventincharge: {
+        type: String,
+      },
+      uploadtime: {
+        type: String,
+      },
+    },
+  ],
 });
 
 clubSchema.methods.addMember = async function (
@@ -89,6 +111,37 @@ clubSchema.methods.addNotification = async function (title, description) {
     return this.notification;
   } catch (error) {
     console.log("Error occured while adding member in club");
+    console.log(error);
+  }
+};
+clubSchema.methods.addEvents = async function (
+  title,
+  description,
+  startfrom,
+  venue,
+  eventincharge
+) {
+  try {
+    const date = new Date();
+
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    let currentDate = `${day}-${month}-${year}`;
+
+    this.events = this.events.concat({
+      title: title,
+      description: description,
+      uploadtime: currentDate,
+      startfrom: startfrom,
+      venue: venue,
+      eventincharge: eventincharge,
+    });
+    await this.save();
+    return this.notification;
+  } catch (error) {
+    console.log("Error occured while adding event in club");
     console.log(error);
   }
 };

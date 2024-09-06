@@ -78,7 +78,7 @@ router.get("/notification/:clubname", auth, async (req, res) => {
   }
 });
 
-router.post("/:clubname/notification", auth, async (req, res) => {
+router.post("/addnotification/:clubname/", auth, async (req, res) => {
   const club = await addClub.findOne({ name: req.params.clubname });
   console.log(club.head);
   if (
@@ -200,6 +200,61 @@ router.delete("/deletemember/:clubname/:username", auth, async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(400).send("Error while deleteing member from club");
+  }
+});
+
+//EVENT SECTION
+
+router.post("/addevents/:clubname", auth, async (req, res) => {
+  const club = await addClub.findOne({ name: req.params.clubname });
+  if (
+    req.user.role === "admin" ||
+    (req.user.role == "head" && req.user.username === club.head)
+  ) {
+    try {
+      const title = req.body.title;
+      const description = req.body.description;
+      const startfrom = req.body.startfrom;
+      const venue = req.body.venue;
+      const eventincharge = req.body.eventincharge;
+      const newEvent = await club.addEvents(
+        title,
+        description,
+        startfrom,
+        venue,
+        eventincharge
+      );
+      await club.save();
+      res.status(200).send(newEvent);
+    } catch (error) {
+      console.log(error);
+      console.log("Error occured while adding events");
+      res.status(400).send(error);
+    }
+  } else {
+    res.status(401).send("Permission denied.");
+  }
+});
+router.delete("/eventdelete/:clubname/:eventid", auth, async (req, res) => {
+  const club = await addClub.findOne({ name: req.params.clubname });
+  if (
+    req.user.role === "admin" ||
+    (req.user.role == "head" && req.user.username === club.head)
+  ) {
+    try {
+      club.events = club.events.filter((event) => {
+        return event._id.toString() !== req.params.eventid;
+      });
+      await club.save();
+      console.log("event deleted successfully");
+      res.status(200).send(club.events);
+    } catch (error) {
+      console.log(error);
+      console.log("Error occured while deleting event");
+      res.status(400).send(error);
+    }
+  } else {
+    res.status(401).send("Permission denied.");
   }
 });
 
