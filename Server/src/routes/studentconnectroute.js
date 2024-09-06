@@ -105,7 +105,7 @@ router.get("/getpeer", auth, async (req, res) => {
   res.status(200).send(result);
 });
 
-//GET ALL YOUR CURRENT TEAM
+//GET ALL YOUR CURRENT PEER Request
 router.get("/getpeerreq/:username", auth, async (req, res) => {
   const result = await addPeer.find({ postername: req.user.username });
   res.status(200).send(result);
@@ -162,7 +162,7 @@ router.put("/updatepeerreq/:postername/:postid", auth, async (req, res) => {
   }
 });
 
-//DELETE TEAM Request
+//DELETE PEER Request
 router.delete("/deletepeerpost/:postid", auth, async (req, res) => {
   {
     try {
