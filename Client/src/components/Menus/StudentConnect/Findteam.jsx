@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import { FaUserCircle, FaUsers, FaCode } from "react-icons/fa"; // Importing icons
 import getTeamData from "../../../utils/getTeamsData";
@@ -43,6 +44,10 @@ const FindTeammate = () => {
     <div className="bg-gray-50">
       {/* Banner */}
       <Banner />
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
       {/* Teammate Requests */}
       {getTeams && (
         <div className="py-10">

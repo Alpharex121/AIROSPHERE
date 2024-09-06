@@ -117,7 +117,7 @@ const Header = () => {
             {profileDropdown && (
               <ul className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md z-50">
                 <li>
-                  <Link to="/dashboard">
+                  <Link to="/profile">
                     <button
                       className="block w-full text-left px-4 py-2 hover:bg-red-100 transition"
                       onClick={toggleProfileDropdown}
