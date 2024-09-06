@@ -20,18 +20,17 @@ import Pyq from "./components/Menus/Academic/Pyq.jsx";
 import Importantques from "./components/Menus/Academic/Importantques.jsx";
 import Findteam from "./components/Menus/StudentConnect/Findteam.jsx";
 import Peerprogramming from "./components/Menus/StudentConnect/FindPeer.jsx";
-import Askdoubt from "./components/Askdoubt.jsx";
-import Clubs from "./components/Clubs.jsx";
+import Askdoubt from "./components/Menus/StudentConnect/Askdoubt.jsx";
+import Clubs from "./components/Menus/Clubs/Clubs.jsx";
 import Webdev from "./components/Webdev.jsx";
 import Appdev from "./components/Appdev.jsx";
 import Ai from "./components/Ai.jsx";
 import Dsa from "./components/Dsa.jsx";
-import Branchupdates from "./components/Branchupdates.jsx";
+import Branchupdates from "./components/Menus/Updates/Branchupdates.jsx";
 import Notes from "./components/Menus/Academic/Notes.jsx";
-import Websiteupdate from "./components/Websiteupdate.jsx";
-import Mentorconnect from "./components/Mentorconnect.jsx";
+import Websiteupdate from "./components/Menus/Updates/Websiteupdate.jsx";
 import UpdatePassword from "./components/Updatepassword.jsx";
-import ViewClub from "./components/ViewClub.jsx";
+import ViewClub from "./components/Menus/Clubs/ViewClub.jsx";
 import UnitBox from "./components/Menus/Academic/UnitBox.jsx";
 
 const appRouter = createBrowserRouter([
@@ -102,10 +101,6 @@ const appRouter = createBrowserRouter([
       {
         path: "/updates/website",
         element: <Websiteupdate />,
-      },
-      {
-        path: "/mentorconnect",
-        element: <Mentorconnect />,
       },
       {
         path: "/updatepassword",

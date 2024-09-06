@@ -77,49 +77,30 @@ router.post("/", auth, async (req, res) => {
 });
 
 //UPDATE STUDENT DATA
-router.put("update/:username/:id", auth, async (req, res) => {
-  (password = req.body.password), (confirmpassword = req.body.confirmpassword);
-  if (password != confirmpassword) {
-    res.status(400).send({ data: "password not matched" });
-  }
-
-  if (req.user.role === "user" && req.user.username === req.params.username) {
-    const userid = req.params.id;
-    if (!userRegister.findOne({ userid })) {
-      res.send("user not found for updation.");
-      return;
+router.put("/update/:username/:id", auth, async (req, res) => {
+  try {
+    (password = req.body.password),
+      (confirmpassword = req.body.confirmpassword);
+    if (password != confirmpassword) {
+      res.status(400).send({ data: "password not matched" });
     }
-    const result = await userRegister.findOneAndUpdate(
-      { _id: req.params.id },
-      {
-        $set: {
-          username: req.body.username,
-          role: req.body.role,
-          name: req.body.name,
-          mail: req.body.mail,
-          semester: req.body.semester,
-          enrollmentno: req.body.enrollmentno,
-        },
-      }
-    );
-    console.log("update successful");
-    res.status(200).send(result);
-    return;
-  } else if (
-    req.user.role == "admin" ||
-    req.user.role === "disciplinemod" ||
-    req.user.role === "professor" ||
-    req.user.role === "modhead"
-  ) {
-    try {
-      if (req.body.role === "admin") {
-        res.status(401).send("Permission denied");
+
+    if (
+      req.user.role === "admin" ||
+      req.user.role === "discriplinemod" ||
+      req.user.role === "headmod" ||
+      req.user.role === "professor" ||
+      req.user.username === req.params.username
+    ) {
+      const userid = req.params.id;
+      const isExist = await userRegister.findOne({ _id: userid });
+      if (!isExist) {
+        res.send("user not found for updation.");
         return;
       }
-
-      const userid = req.params.id;
-      if (!userRegister.findOne({ userid })) {
-        res.send("user not found for updation.");
+      console.log(isExist);
+      if (isExist.role === "admin") {
+        res.status(401).send("Permission denied");
         return;
       }
       const result = await userRegister.findOneAndUpdate(
@@ -137,12 +118,13 @@ router.put("update/:username/:id", auth, async (req, res) => {
       );
       console.log("update successful");
       res.status(200).send(result);
-    } catch (error) {
-      res.send("error while updating the data");
-      console.log(error);
+      return;
+    } else {
+      res.status(401).send({ data: "permission denied" });
     }
-  } else {
-    res.status(401).send({ data: "permission denied" });
+  } catch (error) {
+    res.send("error while updating the data");
+    console.log(error);
   }
 });
 
@@ -159,6 +141,10 @@ router.delete("/:id", auth, async (req, res) => {
       const isExist = await userRegister.findOne({ _id: userid });
       if (!isExist) {
         res.send("User not found");
+        return;
+      }
+      if (isExist.role === "admin") {
+        res.status(401).send("Permission denied");
         return;
       }
       const result = await userRegister.findOneAndDelete({ _id: userid });
@@ -187,8 +173,15 @@ router.put("/updatepassword/:username", auth, async (req, res) => {
       req.user.role === "professor" ||
       req.user.role === "disciplinemod"
     ) {
-      if (!userRegister.findOne({ username: req.params.username })) {
-        res.send("user not found for updation.");
+      const isExist = await userRegister.findOne({
+        username: req.params.username,
+      });
+      if (!isExist) {
+        res.send("User not found");
+        return;
+      }
+      if (isExist.role === "admin") {
+        res.status(401).send("Permission denied");
         return;
       }
 

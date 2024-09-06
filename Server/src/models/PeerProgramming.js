@@ -17,6 +17,10 @@ const peerSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  link: {
+    type: String,
+    required: true,
+  },
 });
 
 const addPeer = new mongoose.model("findpeer", peerSchema);

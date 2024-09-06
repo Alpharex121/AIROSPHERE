@@ -13,7 +13,7 @@ const Banner = () => {
           src="https://media.istockphoto.com/id/1433126431/photo/silhouette-of-climbers-who-climbed-to-the-top-of-the-mountain-thanks-to-mutual-assistance-and.jpg?s=2048x2048&w=is&k=20&c=v2xUW_J3PaWEWFbldOqnzYEdcUPRfQ1RuySETvI001I="
           alt="Find a teammate"
         />
-        <div className="absolute inset-0 bg-indigo-600 opacity-50"></div>
+        <div className="absolute inset-0 bg-indigo-900 opacity-50"></div>
       </div>
       <div className="relative max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8 text-center">
         <h1 className="text-4xl font-extrabold text-white">

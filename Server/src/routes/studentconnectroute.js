@@ -118,6 +118,7 @@ router.post("/postpeer", auth, async (req, res) => {
       title: req.body.title,
       description: req.body.description,
       skills: req.body.skills,
+      link: req.body.link,
       postername: req.user.username,
     });
 
@@ -147,6 +148,7 @@ router.put("/updatepeerreq/:postername/:postid", auth, async (req, res) => {
             title: req.body.title,
             description: req.body.description,
             opening: req.body.opening,
+            link: req.body.link,
             skills: req.body.skills,
           },
         }

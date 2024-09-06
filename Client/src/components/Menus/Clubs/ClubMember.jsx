@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import profile from "../assets/profile.png";
+import profile from "../../../assets/profile.png";
 
 const ClubMemberList = ({ currClubMember }) => {
   return (
     currClubMember && (
-      <div className="mt-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mt-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
           Club Members
         </h2>

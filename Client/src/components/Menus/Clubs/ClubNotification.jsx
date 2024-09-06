@@ -4,14 +4,14 @@ import { useParams } from "react-router-dom";
 
 const NotificationList = ({ currClubNotifications }) => {
   return (
-    <div className="mt-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="mt-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
       <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
         Notifications
       </h2>
       <div className="space-y-4">
         {currClubNotifications.map((notification) => (
           <div
-            key={notification.id}
+            key={notification._id}
             className="bg-gray-100 border-l-4 border-gray-800 p-4 rounded-lg shadow-lg"
           >
             <div className="flex justify-between items-start">

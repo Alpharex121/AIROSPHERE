@@ -5,22 +5,23 @@ import { useNavigate } from "react-router-dom";
 import { addClub } from "../store/clubSlice";
 import { addImportant, addNotes, addPyq } from "../store/academicSlice";
 import { addPeer, addTeam } from "../store/studentConnectSlice";
+import { addBranchData, addWebsiteData } from "../store/updateSlice";
 
-const getPeerData = async () => {
-  const getReq = useSelector((store) => store?.studentconnect?.peersdata);
+const getWebsiteUpdates = async () => {
+  const updates = useSelector((store) => store?.updates?.websiteData);
   const dispath = useDispatch();
   const Navigate = useNavigate();
   useEffect(() => {
-    !getReq && getPeer();
+    !updates && getUpdate();
   }, []);
 
-  const getPeer = async () => {
+  const getUpdate = async () => {
     try {
-      let data = await api.get("http://localhost:3000/studentconnect/getpeer");
+      let data = await api.get("http://localhost:3000/notification/website");
 
       if (data?.status === 200 && data?.data[0]?.title) {
         const currData = data?.data;
-        dispath(addPeer(currData));
+        dispath(addWebsiteData(currData));
         // console.log(currData);
       } else {
         Navigate("/");
@@ -33,4 +34,4 @@ const getPeerData = async () => {
   };
 };
 
-export default getPeerData;
+export default getWebsiteUpdates;

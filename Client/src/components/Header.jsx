@@ -63,7 +63,7 @@ const Header = () => {
         {/* Logo */}
         <div className="text-2xl font-bold text-gray-800">
           <Link to="/">
-            <h6>CODESPHERE</h6>
+            <h6>AIROSPHERE</h6>
           </Link>
         </div>
 

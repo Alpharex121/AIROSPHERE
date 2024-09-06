@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { api } from "../utils/constant";
+import { api } from "../../../utils/constant";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import getClubData from "../utils/getClub";
-import clubimage from "../assets/club.png";
+import getClubData from "../../../utils/getClub";
+import clubimage from "../../../assets/club.png";
 
 const ClubPage = () => {
   const Navigate = useNavigate();

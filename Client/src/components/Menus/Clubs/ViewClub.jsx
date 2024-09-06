@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import getClubData from "../utils/getClub";
+import getClubData from "../../../utils/getClub";
 import ClubMemberList from "./ClubMember";
 import NotificationList from "./ClubNotification";
-import roboclub from "../assets/roboclub.jpg";
-import getClubDetails from "../utils/getClubDetails";
+import roboclub from "../../../assets/roboclub.jpg";
+import getClubDetails from "../../../utils/getClubDetails";
 import ClubEvent from "./ClubEvent";
 
 const ClubDetailPage = () => {

@@ -4,8 +4,8 @@ const auth = require("../middleware/auth");
 const addNotification = require("../models/notificationSchema");
 
 //GET NOTIFICATION
-router.get("/", async (req, res) => {
-  const result = await addNotification.find();
+router.get("/:type", async (req, res) => {
+  const result = await addNotification.find({ type: req.params.type });
   res.status(200).send(result);
 });
 
@@ -18,10 +18,18 @@ router.post("/", auth, async (req, res) => {
       req.user.role === "professor" ||
       req.user.role === "professormod"
     ) {
+      const date = new Date();
+
+      let day = date.getDate();
+      let month = date.getMonth() + 1;
+      let year = date.getFullYear();
+
+      let currentDate = `${day}-${month}-${year}`;
       const newNotification = new addNotification({
         title: req.body.title,
         description: req.body.description,
         type: req.body.type,
+        uploaddate: currentDate,
       });
 
       const registered = await newNotification.save();
