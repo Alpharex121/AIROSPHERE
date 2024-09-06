@@ -6,6 +6,7 @@ import ClubMemberList from "./ClubMember";
 import NotificationList from "./ClubNotification";
 import roboclub from "../assets/roboclub.jpg";
 import getClubDetails from "../utils/getClubDetails";
+import ClubEvent from "./ClubEvent";
 
 const ClubDetailPage = () => {
   const { clubname } = useParams();
@@ -41,7 +42,7 @@ const ClubDetailPage = () => {
       <NotificationList currClubNotifications={currclubDetail?.notification} />
     );
   } else if (selectedMenu === "Events") {
-    currMenu = <ClubMemberList />;
+    currMenu = <ClubEvent clubEvent={currclubDetail?.events} />;
   }
 
   return (

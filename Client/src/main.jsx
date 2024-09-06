@@ -18,7 +18,7 @@ import Homepage from "./components/Homepage.jsx";
 import Dashboard from "./components/Dashboard.jsx";
 import Pyq from "./components/Menus/Academic/Pyq.jsx";
 import Importantques from "./components/Menus/Academic/Importantques.jsx";
-import Findteam from "./components/Findteam.jsx";
+import Findteam from "./components/Menus/StudentConnect/Findteam.jsx";
 import Askdoubt from "./components/Askdoubt.jsx";
 import Peerprogramming from "./components/Peerprogramming.jsx";
 import Clubs from "./components/Clubs.jsx";
