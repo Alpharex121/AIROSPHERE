@@ -5,7 +5,7 @@ const auth = require("../middleware/auth");
 const bcrypt = require("bcrypt");
 
 //GET ALL STUDENTS
-router.get("/", auth, async (req, res) => {
+router.get("/getallstudents", auth, async (req, res) => {
   if (
     req.user.role == "admin" ||
     req.user.role === "disciplinemod" ||

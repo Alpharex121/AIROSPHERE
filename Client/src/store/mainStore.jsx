@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./userSlice";
 import clubReducer from "./clubSlice";
-
+import studentSliceReducer from "./studentDataSlice";
 import academicReducer from "./academicSlice";
 import studentConnectReducer from "./studentConnectSlice";
 import updateReducer from "./updateSlice";
@@ -10,11 +10,9 @@ const appStore = configureStore({
     user: userReducer,
     club: clubReducer,
     academic: academicReducer,
-<<<<<<< Updated upstream
     updates: updateReducer,
-=======
->>>>>>> Stashed changes
     studentconnect: studentConnectReducer,
+    student: studentSliceReducer,
   },
 });
 

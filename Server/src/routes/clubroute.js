@@ -83,7 +83,7 @@ router.post("/addnotification/:clubname/", auth, async (req, res) => {
   console.log(club.head);
   if (
     req.user.role === "admin" ||
-    (req.user.role == "head" && req.user.username === club.head)
+    (req.user.role == "clubhead" && req.user.username === club.head)
   ) {
     try {
       const title = req.body.title;
@@ -107,7 +107,7 @@ router.delete(
     const club = await addClub.findOne({ name: req.params.clubname });
     if (
       req.user.role === "admin" ||
-      (req.user.role == "head" && req.user.username === club.head)
+      (req.user.role == "clubhead" && req.user.username === club.head)
     ) {
       try {
         club.notification = club.notification.filter((noti) => {
@@ -150,7 +150,7 @@ router.post("/addmember/:clubname", auth, async (req, res) => {
     if (isExist) {
       if (
         req.user.role === "admin" ||
-        (req.user.role == "head" && req.user.username === userData.head)
+        (req.user.role == "clubhead" && req.user.username === userData.head)
       ) {
         try {
           const newMember = await userData.addMember(
@@ -185,7 +185,7 @@ router.delete("/deletemember/:clubname/:username", auth, async (req, res) => {
   try {
     if (
       req.user.role === "admin" ||
-      (req.user.role == "head" && req.user.username === memberlist.head)
+      (req.user.role == "clubhead" && req.user.username === memberlist.head)
     ) {
       memberlist.members = memberlist.members.filter((currElement) => {
         return currElement.username !== req.params.username;
@@ -209,7 +209,7 @@ router.post("/addevents/:clubname", auth, async (req, res) => {
   const club = await addClub.findOne({ name: req.params.clubname });
   if (
     req.user.role === "admin" ||
-    (req.user.role == "head" && req.user.username === club.head)
+    (req.user.role == "clubhead" && req.user.username === club.head)
   ) {
     try {
       const title = req.body.title;
@@ -239,7 +239,7 @@ router.delete("/eventdelete/:clubname/:eventid", auth, async (req, res) => {
   const club = await addClub.findOne({ name: req.params.clubname });
   if (
     req.user.role === "admin" ||
-    (req.user.role == "head" && req.user.username === club.head)
+    (req.user.role == "clubhead" && req.user.username === club.head)
   ) {
     try {
       club.events = club.events.filter((event) => {

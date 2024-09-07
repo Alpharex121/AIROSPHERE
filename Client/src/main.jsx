@@ -33,6 +33,9 @@ import UpdatePassword from "./components/Updatepassword.jsx";
 import ViewClub from "./components/Menus/Clubs/ViewClub.jsx";
 import UnitBox from "./components/Menus/Academic/UnitBox.jsx";
 import Profile from "./components/Profile.jsx";
+import Students from "./components/Menus/Manage/Students.jsx";
+import AddStudent from "./components/Menus/Manage/AddStudent.jsx";
+import ViewRequest from "./components/Menus/Manage/ViewRequest.jsx";
 
 const appRouter = createBrowserRouter([
   {
@@ -123,6 +126,18 @@ const appRouter = createBrowserRouter([
       {
         path: "/:type/semester/:sem/:subcode",
         element: <UnitBox />,
+      },
+      {
+        path: "/manage/students",
+        element: <Students />,
+      },
+      {
+        path: "/manage/addstudent",
+        element: <AddStudent />,
+      },
+      {
+        path: "/manage/viewrequest",
+        element: <ViewRequest />,
       },
     ],
   },

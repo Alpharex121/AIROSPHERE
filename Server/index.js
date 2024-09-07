@@ -45,6 +45,7 @@ const notificationroute = require("./src/routes/notificationroute.js");
 const clubroute = require("./src/routes/clubroute.js");
 const authenticateroute = require("./src/routes/authenticateroute.js");
 const academicroute = require("./src/routes/academicroute.js");
+const requestRoute = require("./src/routes/requestRoute.js");
 
 // Configuring routes
 app.use("/user", userRouter);
@@ -54,6 +55,7 @@ app.use("/notification", notificationroute);
 app.use("/club", clubroute);
 app.use("/authenticate", authenticateroute);
 app.use("/academic", academicroute);
+app.use("/requests", requestRoute);
 
 app.listen(port, (req, res) => {
   console.log(`Server is running at port ${port}`);

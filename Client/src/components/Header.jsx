@@ -10,7 +10,7 @@ const Header = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const user = getUser();
-  const data = useSelector((store) => store.user);
+  const data = useSelector((store) => store?.user);
   const [dropdownOpen, setDropdownOpen] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -71,7 +71,13 @@ const Header = () => {
           <>
             {/* Desktop Menu */}
             <ul className="hidden lg:flex space-x-6">
-              {renderNavItems(handleMouseEnter, handleMouseLeave, dropdownOpen)}
+              {renderNavItems(
+                handleMouseEnter,
+                handleMouseLeave,
+                dropdownOpen,
+                false,
+                data
+              )}
             </ul>
 
             {/* Hamburger Menu Icon */}
@@ -88,7 +94,8 @@ const Header = () => {
                   handleMouseEnter,
                   handleMouseLeave,
                   dropdownOpen,
-                  true
+                  true,
+                  data
                 )}
               </ul>
             )}
@@ -161,7 +168,8 @@ const renderNavItems = (
   handleMouseEnter,
   handleMouseLeave,
   dropdownOpen,
-  isMobile = false
+  isMobile = false,
+  data
 ) => {
   return (
     <>
@@ -259,6 +267,30 @@ const renderNavItems = (
           </h1>
         </li>
       </Link>
+
+      {/* Manage sudent section */}
+
+      {data?.role === "admin" && (
+        <li
+          className="relative z-50"
+          onMouseEnter={() => handleMouseEnter("manage")}
+          onMouseLeave={handleMouseLeave}
+        >
+          <h1 href="#" className="hover:text-blue-500 transition">
+            Manage
+          </h1>
+          {dropdownOpen === "manage" && !isMobile && (
+            <Dropdown
+              items={["Manage Student", "Add Student", "Request"]}
+              url={[
+                "/manage/students",
+                "/manage/addstudent",
+                "/manage/viewrequest",
+              ]}
+            />
+          )}
+        </li>
+      )}
     </>
   );
 };
