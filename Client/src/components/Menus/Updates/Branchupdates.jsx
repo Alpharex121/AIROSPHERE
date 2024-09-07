@@ -2,10 +2,23 @@ import React from "react";
 import { FaCalendarAlt } from "react-icons/fa"; // Importing calendar icon
 import getBranchUpdates from "../../../utils/getBranchUpdates";
 import { useDispatch, useSelector } from "react-redux";
+import { api } from "../../../utils/constant";
 
 const BranchUpdate = () => {
+  const user = useSelector((store) => store?.user);
+  const isAdmin = user?.role === "admin"; // Check if user is an adminW
   const branchUpdates = useSelector((store) => store?.updates?.branchData);
+
   getBranchUpdates();
+
+  const handleDelete = async (updateId) => {
+    // Dispatch an action to delete the branch update
+    const data = await api.delete(
+      "http://localhost:3000/notification/" + updateId
+    );
+    console.log(data);
+  };
+
   return (
     branchUpdates && (
       <div className="bg-gray-50 ">
@@ -35,7 +48,7 @@ const BranchUpdate = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {branchUpdates.map((update) => (
               <div
-                key={update.id}
+                key={update._id}
                 className="relative bg-white text-gray-800 shadow-lg rounded-lg overflow-hidden hover:shadow-xl transform hover:-translate-y-2 transition-all duration-300"
               >
                 {/* Card Content */}
@@ -53,6 +66,16 @@ const BranchUpdate = () => {
                     <FaCalendarAlt />
                     <span>{update.uploaddate}</span>
                   </div>
+
+                  {/* Display delete button if user is an admin */}
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleDelete(update._id)}
+                      className="mt-4 inline-block bg-red-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-700 transition-all duration-300"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
 
                 {/* Decorative Element */}

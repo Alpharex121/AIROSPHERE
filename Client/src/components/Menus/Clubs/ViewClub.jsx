@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import getClubData from "../../../utils/getClub";
 import ClubMemberList from "./ClubMember";
 import NotificationList from "./ClubNotification";
@@ -16,6 +16,8 @@ const ClubDetailPage = () => {
 
   getClubDetails({ clubname });
   const currclubDetail = useSelector((store) => store?.club?.clubdetail);
+  const userdata = useSelector((store) => store?.user);
+  console.log(userdata);
   console.log(currclubDetail);
   const [selectedMenu, setSelectedMenu] = useState("Members");
   const [underlineStyle, setUnderlineStyle] = useState({});
@@ -34,15 +36,56 @@ const ClubDetailPage = () => {
       });
     }
   }, [selectedMenu]);
+
   let currMenu;
   if (selectedMenu === "Members") {
-    currMenu = <ClubMemberList currClubMember={currclubDetail?.members} />;
+    currMenu = (
+      <div>
+        {/* Add Member Button Aligned */}
+        <div className="flex  justify-end items-center pt-2 w-2/3 mx-auto">
+          {userdata?.role === "admin" && (
+            <Link to={"/addmember/" + currclubDetail?.name}>
+              <button className="bg-indigo-500 text-white py-2 px-6 rounded-full transition-transform hover:scale-105 hover:bg-indigo-600 shadow-lg">
+                Add Member
+              </button>
+            </Link>
+          )}
+        </div>
+        <ClubMemberList currClubMember={currclubDetail?.members} />
+      </div>
+    );
   } else if (selectedMenu === "Notifications") {
     currMenu = (
-      <NotificationList currClubNotifications={currclubDetail?.notification} />
+      <div>
+        <div className="flex  justify-end items-center pt-2 w-2/3 mx-auto">
+          {userdata?.role === "admin" && (
+            <Link to={"/addnotification/" + currclubDetail?.name}>
+              <button className="bg-green-500 text-white py-2 px-6 rounded-full transition-transform hover:scale-105 hover:bg-green-600 shadow-lg">
+                Add Notification
+              </button>
+            </Link>
+          )}
+        </div>
+        <NotificationList
+          currClubNotifications={currclubDetail?.notification}
+        />
+      </div>
     );
   } else if (selectedMenu === "Events") {
-    currMenu = <ClubEvent clubEvent={currclubDetail?.events} />;
+    currMenu = (
+      <div>
+        <div className="flex  justify-end items-center pt-2 w-2/3 mx-auto">
+          {userdata?.role === "admin" && (
+            <Link to={"/addevent/" + currclubDetail?.name}>
+              <button className="bg-purple-500 text-white py-2 px-6 rounded-full transition-transform hover:scale-105 hover:bg-purple-600 shadow-lg">
+                Add Event
+              </button>
+            </Link>
+          )}
+        </div>
+        <ClubEvent clubEvent={currclubDetail?.events} />
+      </div>
+    );
   }
 
   return (
@@ -53,7 +96,7 @@ const ClubDetailPage = () => {
           <div className="bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 shadow-lg py-8 px-6">
             <div className="flex justify-center items-center max-w-6xl mx-auto">
               {/* Club Logo */}
-              <div className="flex-shrink-0 mr-8">
+              <div className="flex-shrink-0 mr-8 ">
                 <img
                   src={roboclub}
                   alt="Club Logo"
@@ -61,18 +104,29 @@ const ClubDetailPage = () => {
                 />
               </div>
               {/* Club Details */}
-              <div className="flex flex-col justify-center text-white">
-                <h1 className="text-4xl font-bold mb-4">
-                  {currclubDetail.name}
-                </h1>
-                <p className="mb-2">{currclubDetail.description}</p>
-                <p className="mb-1">
-                  Club Head:{" "}
-                  <span className="font-medium">{currclubDetail.headname}</span>
-                </p>
-                <p>
-                  Number of Members: <span className="font-medium">10</span>
-                </p>
+              <div className="flex flex-col">
+                <div className="flex flex-col justify-center text-white ">
+                  <h1 className="text-4xl font-bold mb-4">
+                    {currclubDetail.name}
+                  </h1>
+                  <p className="mb-2">{currclubDetail.description}</p>
+                  <p className="mb-1">
+                    Club Head:{" "}
+                    <span className="font-medium">
+                      {currclubDetail.headname}
+                    </span>
+                  </p>
+                  <p>
+                    Number of Members: <span className="font-medium">10</span>
+                  </p>
+                  {/* Apply Button */}
+                </div>
+                <a
+                  href="#apply"
+                  className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-700 hover:to-teal-600 text-white font-bold py-2 w-[11vw] px-8 mt-4 rounded-full transition-transform hover:scale-105 shadow-lg"
+                >
+                  Apply to Join
+                </a>
               </div>
             </div>
           </div>

@@ -57,7 +57,8 @@ router.delete("/:clubname", auth, async (req, res) => {
       res.status(200).send(result);
       console.log("club Delete successfully!");
     } catch (error) {
-      console.log(error);
+      console.log("Error coccured while deleting club" + error);
+      res.status(500).send("Error occured while deleting club");
     }
   } else {
     res.status(401).send({ data: "permission denied" });
@@ -143,7 +144,7 @@ router.get("/members/:clubname", auth, async (req, res) => {
 });
 router.post("/addmember/:clubname", auth, async (req, res) => {
   try {
-    const userData = await addClub.findOne({ name: req.body.clubname });
+    const userData = await addClub.findOne({ name: req.params.clubname });
     const isExist = await userRegister.findOne({
       username: req.body.username,
     });
@@ -163,7 +164,7 @@ router.post("/addmember/:clubname", auth, async (req, res) => {
           res.status(200).send(newMember);
         } catch (error) {
           console.log(error);
-          console.log("Error occured while adding members");
+          console.log("Error occured while adding members" + error);
           res.status(400).send(error);
         }
       } else {

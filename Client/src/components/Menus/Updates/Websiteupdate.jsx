@@ -2,11 +2,21 @@ import React from "react";
 import { FaCalendarAlt } from "react-icons/fa"; // Importing calendar icon
 import { useDispatch, useSelector } from "react-redux";
 import getWebsiteUpdates from "../../../utils/getWebsiteUpdate";
+import { api } from "../../../utils/constant";
 
 const WebsiteUpdate = () => {
+  const user = useSelector((store) => store?.user);
+  const isAdmin = user?.role === "admin"; // Check if user is an admin
   const websiteUpdates = useSelector((store) => store?.updates?.websiteData);
   console.log(websiteUpdates);
   getWebsiteUpdates();
+
+  const handleDelete = async (updateId) => {
+    const data = await api.delete(
+      "http://localhost:3000/notification/" + updateId
+    );
+    console.log(data);
+  };
   return (
     websiteUpdates && (
       <div className="bg-gray-50 ">
@@ -54,6 +64,15 @@ const WebsiteUpdate = () => {
                     <FaCalendarAlt />
                     <span>{update.uploaddate}</span>
                   </div>
+                  {/* Display delete button if user is an admin */}
+                  {isAdmin && (
+                    <button
+                      onClick={() => handleDelete(update._id)}
+                      className="mt-4 inline-block bg-red-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-700 transition-all duration-300"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </div>
 
                 {/* Decorative Element */}

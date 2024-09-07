@@ -7,6 +7,8 @@ import Footer from "./components/Footer";
 import { Outlet } from "react-router-dom";
 import { Provider } from "react-redux";
 import appStore from "./store/mainStore";
+import SignUp from "./components/SignUp";
+import SignUpSuccess from "./components/SignUpSuccess";
 
 const App = () => {
   return (

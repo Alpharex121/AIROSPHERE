@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import getRequests from "../../../utils/getRequest";
 import idcard from "../../../assets/idcard.png";
+import { api } from "../../../utils/constant";
 
 const RequestPage = () => {
   const Navigate = useNavigate();
@@ -13,9 +14,10 @@ const RequestPage = () => {
   console.log(initialRequests);
 
   // Function to delete a student request by ID
-  const handleDelete = (id) => {
-    const updatedRequests = requests.filter((request) => request.id !== id);
-    setRequests(updatedRequests);
+  const handleDelete = async (id) => {
+    const data = await api.delete("http://localhost:3000/requests/" + id);
+    console.log("Request deleted successfully");
+    console.log(data);
   };
 
   return (
@@ -60,8 +62,9 @@ const RequestPage = () => {
                 </div>
 
                 {/* Delete Button */}
+
                 <button
-                  onClick={() => handleDelete(request.id)}
+                  onClick={() => handleDelete(request._id)}
                   className="bg-red-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-red-600 focus:outline-none focus:ring-4 focus:ring-red-300 transition duration-300 shadow-md"
                 >
                   Delete

@@ -1,20 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { api } from "../../utils/constant";
 import { useSelector } from "react-redux";
 
 const EditUserForm = () => {
   const { username, userid } = useParams();
-  if (username === "Alpha" || username === "Zoro") Navigate("/");
 
-  const [currStudent, setCurrStudent] = useState();
-  let studentData = useSelector((store) => store?.student?.studentData);
-  if (studentData) {
-    studentData = studentData.filter((student) => {
-      if (student.username === username) setCurrStudent(student);
-    });
+  // Redirect if username is "Alpha" or "Zoro"
+  if (username === "Alpha" || username === "Zoro") {
+    return <Navigate to="/" />;
   }
 
+  const [currStudent, setCurrStudent] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -24,36 +21,28 @@ const EditUserForm = () => {
     enrollmentno: "",
   });
 
-  const roles = [
-    {
-      role: "User",
-      value: "user",
-    },
-    {
-      role: "Clubhead",
-      value: "clubhead",
-    },
-    {
-      role: "Student Manage Mod",
-      value: "studentmanagemod",
-    },
-    {
-      role: "Academic Mod",
-      value: "academicmod",
-    },
-    {
-      role: "Branch Mod",
-      value: "branchmod",
-    },
-    {
-      role: "Resource Mod",
-      value: "resourcemod",
-    },
-    {
-      role: "Miscellaneous mod",
-      value: "miscellaneousmod",
-    },
-  ];
+  let studentData = useSelector((store) => store?.student?.studentData);
+
+  // useEffect to set the current student data
+  useEffect(() => {
+    if (studentData) {
+      const student = studentData.find((student) => {
+        return student.username === username;
+      });
+
+      if (student) {
+        setCurrStudent(student);
+        setFormData({
+          name: student.name || "",
+          username: student.username || "",
+          semester: student.semester || "",
+          mail: student.mail || "",
+          role: student.role || "",
+          enrollmentno: student.enrollmentno || "",
+        });
+      }
+    }
+  }, [studentData, username]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -62,30 +51,30 @@ const EditUserForm = () => {
       [name]: value,
     });
   };
+
   const semesters = Array.from({ length: 8 }, (_, index) =>
     (index + 1).toString()
   );
 
+  const roles = [
+    { role: "User", value: "user" },
+    { role: "Clubhead", value: "clubhead" },
+    { role: "Student Manage Mod", value: "studentmanagemod" },
+    { role: "Academic Mod", value: "academicmod" },
+    { role: "Branch Mod", value: "branchmod" },
+    { role: "Resource Mod", value: "resourcemod" },
+    { role: "Miscellaneous mod", value: "miscellaneousmod" },
+  ];
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    const formusername = formData.username;
-    const name = formData.name;
-    const enrollmentno = formData.enrollmentno;
-    const semester = formData.semester;
-    const mail = formData.mail;
-    const role = formData.role;
+    const { username, name, enrollmentno, semester, mail, role } = formData;
+
     const editReponse = await api.put(
-      "http://localhost:3000/user/update/" + username + "/" + userid,
-      {
-        formusername,
-        name,
-        enrollmentno,
-        semester,
-        mail,
-        role,
-      }
+      `http://localhost:3000/user/update/${username}/${userid}`,
+      { username, name, enrollmentno, semester, mail, role }
     );
+
     console.log(formData);
   };
 
@@ -137,7 +126,7 @@ const EditUserForm = () => {
           <div className="mb-4">
             <label
               className="block text-gray-700 font-medium mb-2"
-              htmlFor="email"
+              htmlFor="mail"
             >
               Email
             </label>

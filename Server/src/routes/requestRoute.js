@@ -52,6 +52,7 @@ router.post("/", async (req, res) => {
     res.status(200).send("request created successfully" + request);
   } catch (error) {
     console.log(error);
+    res.status(500).send("Error occured while adding request " + error);
   }
 });
 

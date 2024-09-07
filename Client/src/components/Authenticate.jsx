@@ -48,7 +48,7 @@ const Authenticate = () => {
 
   return (
     <section>
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-[82vh]  lg:py-0">
+      <div className="flex flex-col items-center justify-center px-6 py-12 mx-auto ">
         <a
           href="#"
           className="flex items-center mb-6 text-2xl font-semibold text-gray-900 "
@@ -58,7 +58,7 @@ const Authenticate = () => {
             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
             alt="logo"
           />
-          CODESPHERE
+          AIROSPHERE
         </a>
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0  ">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
@@ -109,6 +109,7 @@ const Authenticate = () => {
                       id="remember"
                       aria-describedby="remember"
                       type="checkbox"
+                      defaultChecked
                       className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
                       required=""
                     />
@@ -137,12 +138,13 @@ const Authenticate = () => {
               </button>
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                 Don’t have an account yet?{" "}
-                <a
+                <button
+                  onClick={() => Navigate("/authenticate/signup")}
                   href="#"
                   className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                 >
                   Sign up
-                </a>
+                </button>
               </p>
             </form>
           </div>
