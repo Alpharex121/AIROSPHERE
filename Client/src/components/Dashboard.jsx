@@ -123,7 +123,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      {/* <Roboarm/> */}
+      <Roboarm/>
       <div className=" h-[80vh] overflow-hidden  ">
         <div className="main bg-white min-h-screen">
           <div

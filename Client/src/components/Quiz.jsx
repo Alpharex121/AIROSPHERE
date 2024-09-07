@@ -88,7 +88,7 @@ const Quiz = () => {
   }
 
   return (
-    <section className="pt-12 bg-white h-[80vh]  text-center">
+    <section className="pt-12 bg-white h-[90vh]  text-center">
       <h2 className="text-4xl font-bold mb-8 text-gray-800">Mini Quiz</h2>
       <div className="max-w-md mx-auto p-4 bg-white rounded-lg shadow-md">
         <motion.div
