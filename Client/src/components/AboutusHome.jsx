@@ -18,7 +18,7 @@ const AboutUs = () => {
           className="text-5xl font-bold text-white mb-8"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
         >
           Discover Our BTech Branch
         </motion.h1>
@@ -28,7 +28,7 @@ const AboutUs = () => {
           className="text-xl text-gray-300 mb-12 mx-auto max-w-2xl"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.3 }}
+          transition={{ duration: 1, ease: "easeInOut", delay: 0.3 }}
         >
           Our BTech branch in Artificial Intelligence and Robotics stands at the forefront of technology. We are dedicated to pioneering research and practical applications, shaping the future of AI and robotics with cutting-edge solutions.
         </motion.p>
@@ -41,12 +41,16 @@ const AboutUs = () => {
               className="relative text-center p-6 bg-gray-800 rounded-lg shadow-lg"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 + index * 0.2 }}
+              whileHover={{ scale: 1.05, backgroundColor: '#374151' }}
+              transition={{
+                duration: 0.6,  // Increased duration for smoother effect
+                ease: "easeInOut", // Smooth transition
+                delay: 0.3 + index * 0.2
+              }}
             >
               <motion.h2
                 className="text-2xl font-semibold text-white mb-2"
-                whileHover={{ scale: 1.1, color: '#F5DEB3' }}
-                transition={{ type: 'spring', stiffness: 300 }}
+                transition={{ type: 'spring', stiffness: 150, damping: 10 }} // Smooth spring-like effect
               >
                 {highlight}
               </motion.h2>
@@ -54,7 +58,7 @@ const AboutUs = () => {
                 className="text-gray-400"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
+                transition={{ duration: 0.5, delay: 0.5, ease: "easeInOut" }}
               >
                 {index === 0 && 'Emphasis on groundbreaking research and practical solutions in AI and robotics.'}
                 {index === 1 && 'Real-world projects and internships to apply theoretical knowledge in practical scenarios.'}

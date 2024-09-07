@@ -123,7 +123,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      {/* <Roboarm /> */}
+      <Roboarm />
       <div className=" h-[80vh] overflow-hidden  ">
         <div className="main bg-white min-h-screen">
           <div
@@ -180,26 +180,34 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <section className="text-center py-12 bg-gray-100">
-        <h2 className="text-4xl font-bold mb-8 text-gray-800">What We Offer</h2>
-        <div className="flex flex-wrap justify-center gap-6">
-          {springs.map((springProps, index) => (
-            <animated.div
-              key={index}
-              style={springProps}
-              className="bg-white shadow-md rounded-lg p-6 w-64 transform transition-transform hover:scale-105"
-            >
-              <div className="text-4xl mb-4">{offers[index].icon}</div>
-              <h3 className="text-xl font-semibold text-blue-500 mb-2">
-                {offers[index].title}
-              </h3>
-              <p className="text-gray-600 text-sm">
-                {offers[index].description}
-              </p>
-            </animated.div>
-          ))}
-        </div>
-      </section>
+      <section className="text-center overflow-hidden py-12 bg-gray-100">
+  <h2 className="text-4xl font-bold mb-8 text-gray-800">What We Offer</h2>
+  <div className="flex flex-wrap justify-center  gap-6">
+    {offers.map((offer, index) => (
+      <motion.div
+        key={index}
+        className="bg-white shadow-md rounded-lg p-6 w-64"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.05,  boxShadow: '0px 10px 20px rgba(0, 191, 255, 0.5), 0px 10px 40px rgba(0, 255, 255, 0.4), 0px 10px 60px rgba(0, 206, 209, 0.3)',
+        }}
+        transition={{
+          duration: 0.6, // Duration of the hover effect
+          ease: "easeInOut",
+          delay: 0.2 * index, // Staggered delay for each card
+        }}
+      >
+        <div className="text-4xl mb-4">{offer.icon}</div>
+        <h3 className="text-xl font-semibold text-blue-500 mb-2">
+          {offer.title}
+        </h3>
+        <p className="text-gray-600 text-sm">
+          {offer.description}
+        </p>
+      </motion.div>
+    ))}
+  </div>
+</section>
       <Quiz />
     </div>
   );
