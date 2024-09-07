@@ -179,7 +179,7 @@ const renderNavItems = (
         onMouseEnter={() => handleMouseEnter("academic")}
         onMouseLeave={handleMouseLeave}
       >
-        <h1 href="#" className="hover:text-blue-500 transition">
+        <h1 href="#" className="hover:text-indigo-500 transition">
           Academic
         </h1>
         {dropdownOpen === "academic" && !isMobile && (
@@ -196,7 +196,7 @@ const renderNavItems = (
         onMouseEnter={() => handleMouseEnter("studentConnect")}
         onMouseLeave={handleMouseLeave}
       >
-        <h1 href="#" className="hover:text-blue-500 transition">
+        <h1 href="#" className="hover:text-indigo-500 transition">
           Student Connect
         </h1>
         {dropdownOpen === "studentConnect" && !isMobile && (
@@ -214,7 +214,7 @@ const renderNavItems = (
       {/* Clubs */}
       <Link to="/club">
         <li>
-          <h1 href="#" className="hover:text-blue-500 transition">
+          <h1 href="#" className="hover:text-indigo-500 transition">
             Clubs
           </h1>
         </li>
@@ -226,7 +226,7 @@ const renderNavItems = (
         onMouseEnter={() => handleMouseEnter("resources")}
         onMouseLeave={handleMouseLeave}
       >
-        <h1 href="#" className="hover:text-blue-500 transition">
+        <h1 href="#" className="hover:text-indigo-500 transition">
           Resources
         </h1>
         {dropdownOpen === "resources" && !isMobile && (
@@ -248,7 +248,7 @@ const renderNavItems = (
         onMouseEnter={() => handleMouseEnter("updates")}
         onMouseLeave={handleMouseLeave}
       >
-        <h1 href="#" className="hover:text-blue-500 transition">
+        <h1 href="#" className="hover:text-indigo-500 transition">
           Updates
         </h1>
         {dropdownOpen === "updates" && !isMobile && (

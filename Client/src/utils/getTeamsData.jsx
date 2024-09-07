@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { api } from "./constant";
@@ -34,3 +38,8 @@ const getTeamData = async () => {
 };
 
 export default getTeamData;
+<<<<<<< Updated upstream
+=======
+
+
+>>>>>>> Stashed changes
