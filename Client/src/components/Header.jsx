@@ -127,6 +127,16 @@ const Header = () => {
                   </Link>
                 </li>
                 <li>
+                  <Link to="/dashboard">
+                    <button
+                      className="block w-full text-left px-4 py-2 hover:bg-red-100 transition"
+                      onClick={toggleProfileDropdown}
+                    >
+                      Dashboard
+                    </button>
+                  </Link>
+                </li>
+                <li>
                   <button
                     onClick={() => {
                       toggleProfileDropdown();

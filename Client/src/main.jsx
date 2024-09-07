@@ -32,7 +32,7 @@ import Websiteupdate from "./components/Menus/Updates/Websiteupdate.jsx";
 import UpdatePassword from "./components/Updatepassword.jsx";
 import ViewClub from "./components/Menus/Clubs/ViewClub.jsx";
 import UnitBox from "./components/Menus/Academic/UnitBox.jsx";
-import Profile from "./components/Profile.jsx"
+import Profile from "./components/Profile.jsx";
 
 const appRouter = createBrowserRouter([
   {
@@ -107,9 +107,14 @@ const appRouter = createBrowserRouter([
         path: "/updates/website",
         element: <Websiteupdate />,
       },
+
       {
         path: "/updatepassword",
         element: <UpdatePassword />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
       },
       {
         path: "/club/:clubname",

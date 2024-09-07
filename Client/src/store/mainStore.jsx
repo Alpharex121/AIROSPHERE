@@ -10,11 +10,7 @@ const appStore = configureStore({
     user: userReducer,
     club: clubReducer,
     academic: academicReducer,
-<<<<<<< Updated upstream
     updates: updateReducer,
-=======
-   
->>>>>>> Stashed changes
     studentconnect: studentConnectReducer,
   },
 });
