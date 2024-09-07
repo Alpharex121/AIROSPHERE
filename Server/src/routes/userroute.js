@@ -24,7 +24,7 @@ router.get("/getcurruser", auth, async (req, res) => {
 });
 
 //NEW USER STUDENTS
-router.post("/", auth, async (req, res) => {
+router.post("/adduser", auth, async (req, res) => {
   if (
     req.user.role == "admin" ||
     req.user.role === "disciplinemod" ||
@@ -57,7 +57,7 @@ router.post("/", auth, async (req, res) => {
           username: username,
         });
         if (isRegisterd) {
-          res.send("user already exist");
+          res.status(500).send("user already exist");
           return;
         }
 
@@ -66,9 +66,10 @@ router.post("/", auth, async (req, res) => {
         console.log("user registered successful" + registered);
         res.status(200).send("user created successfully" + registered);
       } else {
-        res.send("Password does not match");
+        res.status(500).send("Password does not match");
       }
     } catch (error) {
+      res.status(500).send("Erro occured while adding student" + error);
       console.log(error);
     }
   } else {
@@ -180,7 +181,7 @@ router.put("/updatepassword/:username", auth, async (req, res) => {
         res.send("User not found");
         return;
       }
-      if (isExist.role === "admin") {
+      if (isExist.role === "admin" && req.user.role !== "admin") {
         res.status(401).send("Permission denied");
         return;
       }

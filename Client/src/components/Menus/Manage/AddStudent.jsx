@@ -1,33 +1,54 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { api } from "../../../utils/constant";
 
 const AddStudent = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
   if (data?.role !== "admin") {
     Navigate("/");
-    return;
   }
   const [formData, setFormData] = useState({
     name: "",
     username: "",
     semester: "",
-    email: "",
+    mail: "",
     role: "",
-    enrollmentNo: "",
+    enrollmentno: "",
     password: "",
-    confirmPassword: "",
+    confirmpassword: "",
   });
 
   const roles = [
-    "User",
-    "Clubhead",
-    "Student Manage Mod",
-    "Academic Mod",
-    "Professor Mod",
-    "Branch Mod",
-    "Resource Mod",
+    {
+      role: "User",
+      value: "user",
+    },
+    {
+      role: "Clubhead",
+      value: "clubhead",
+    },
+    {
+      role: "Student Manage Mod",
+      value: "studentmanagemod",
+    },
+    {
+      role: "Academic Mod",
+      value: "academicmod",
+    },
+    {
+      role: "Branch Mod",
+      value: "branchmod",
+    },
+    {
+      role: "Resource Mod",
+      value: "resourcemod",
+    },
+    {
+      role: "Miscellaneous mod",
+      value: "miscellaneousmod",
+    },
   ];
 
   // Array to represent the semester dropdown options from 1 to 8
@@ -39,14 +60,34 @@ const AddStudent = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmPassword) {
+    if (formData.password !== formData.confirmpassword) {
       alert("Passwords do not match!");
       return;
     }
     // Handle form submission logic (e.g., sending data to the server)
-    console.log(formData);
+    const username = formData.username;
+    const name = formData.name;
+    const enrollmentno = formData.enrollmentno;
+    const semester = formData.semester;
+    const mail = formData.mail;
+    const role = formData.role;
+    const password = formData.password;
+    const confirmpassword = formData.confirmpassword;
+
+    // const username = formData.username,
+    const posted = await api.post("http://localhost:3000/user/adduser", {
+      username,
+      name,
+      enrollmentno,
+      semester,
+      mail,
+      role,
+      password,
+      confirmpassword,
+    });
+    console.log(posted);
   };
 
   return (
@@ -113,8 +154,8 @@ const AddStudent = () => {
             </label>
             <input
               type="email"
-              name="email"
-              value={formData.email}
+              name="mail"
+              value={formData.mail}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -135,8 +176,8 @@ const AddStudent = () => {
             >
               <option value="">Select Role</option>
               {roles.map((role, index) => (
-                <option key={index} value={role}>
-                  {role}
+                <option key={index} value={role.value}>
+                  {role.role}
                 </option>
               ))}
             </select>
@@ -149,8 +190,8 @@ const AddStudent = () => {
             </label>
             <input
               type="text"
-              name="enrollmentNo"
-              value={formData.enrollmentNo}
+              name="enrollmentno"
+              value={formData.enrollmentno}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -179,8 +220,8 @@ const AddStudent = () => {
             </label>
             <input
               type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
+              name="confirmpassword"
+              value={formData.confirmpassword}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required

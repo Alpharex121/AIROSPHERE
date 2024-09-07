@@ -36,6 +36,7 @@ import Profile from "./components/Profile.jsx";
 import Students from "./components/Menus/Manage/Students.jsx";
 import AddStudent from "./components/Menus/Manage/AddStudent.jsx";
 import ViewRequest from "./components/Menus/Manage/ViewRequest.jsx";
+import EditUserForm from "./components/Forms/EditUserForm.jsx";
 
 const appRouter = createBrowserRouter([
   {
@@ -112,7 +113,7 @@ const appRouter = createBrowserRouter([
       },
 
       {
-        path: "/updatepassword",
+        path: "/updatepassword/:username",
         element: <UpdatePassword />,
       },
       {
@@ -138,6 +139,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/manage/viewrequest",
         element: <ViewRequest />,
+      },
+      {
+        path: "/edituser/:username/:userid",
+        element: <EditUserForm />,
       },
     ],
   },

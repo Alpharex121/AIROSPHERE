@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../utils/constant";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const UpdatePassword = () => {
   const Navigate = useNavigate();
+  const { username } = useParams();
+  if (username === "Alpha" || username === "Zoro") Navigate("/");
   const data = useSelector((store) => store.user);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");

@@ -44,10 +44,7 @@ const FindTeammate = () => {
     <div className="bg-gray-50">
       {/* Banner */}
       <Banner />
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
       {/* Teammate Requests */}
       {getTeams && (
         <div className="py-10">

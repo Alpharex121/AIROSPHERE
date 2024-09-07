@@ -221,7 +221,7 @@ const renderNavItems = (
       </Link>
 
       {/* Resources */}
-      <li
+      {/* <li
         className="relative z-50"
         onMouseEnter={() => handleMouseEnter("resources")}
         onMouseLeave={handleMouseLeave}
@@ -240,7 +240,7 @@ const renderNavItems = (
             ]}
           />
         )}
-      </li>
+      </li> */}
 
       {/* Updates */}
       <li
