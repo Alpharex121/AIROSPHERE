@@ -41,6 +41,7 @@ router.post("/", auth, async (req, res) => {
     }
   } catch (error) {
     console.log("Error while generating notification." + error);
+    res.status(500).send("Error while adding notification");
   }
 });
 
@@ -56,7 +57,7 @@ router.delete("/:notificationid", auth, async (req, res) => {
       const notificationid = req.params.notificationid;
       const isExist = await addNotification.findOne({ _id: notificationid });
       if (!isExist) {
-        res.send("Notification not found");
+        res.status(409).send("Notification not found");
         return;
       }
       const result = await addNotification.findOneAndDelete({
@@ -66,6 +67,7 @@ router.delete("/:notificationid", auth, async (req, res) => {
       console.log("Notification Delete successfully!");
     } catch (error) {
       console.log(error);
+      res.status(500).send("Error while deleting notification");
     }
   } else {
     res.status(401).send({ data: "permission denied" });

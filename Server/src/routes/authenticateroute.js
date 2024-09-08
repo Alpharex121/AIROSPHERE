@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 
 router.get("/", auth, (req, res) => {
-  res.send(req.user);
+  res.status(200).send(req.user);
   return;
 });
 

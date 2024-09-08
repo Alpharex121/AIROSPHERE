@@ -10,7 +10,7 @@ router.get("/", auth, async (req, res) => {
     res.send(club);
   } catch (error) {
     console.log(error);
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 });
 router.get("/clubdetail/:clubname", auth, async (req, res) => {
@@ -19,7 +19,7 @@ router.get("/clubdetail/:clubname", auth, async (req, res) => {
     res.send(club);
   } catch (error) {
     console.log(error);
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 });
 
@@ -33,14 +33,14 @@ router.post("/", auth, async (req, res) => {
         headname: req.body.headname,
       });
       const registered = await newClub.save();
-      res.status(200).send("club Added successfully" + registered);
       console.log("club Added successfully");
+      res.status(200).send("club Added successfully" + registered);
     } else {
       res.status(401).send("Access denied");
     }
   } catch (error) {
     console.log("Error occured while creating club" + error);
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 });
 
@@ -50,7 +50,7 @@ router.delete("/:clubname", auth, async (req, res) => {
       const clubname = req.params.clubname;
       const isExist = await addClub.findOne({ name: clubname });
       if (!isExist) {
-        res.send("club not found");
+        res.status(409).send("club not found");
         return;
       }
       const result = await addClub.findOneAndDelete({ name: clubname });
@@ -72,10 +72,10 @@ router.get("/notification/:clubname", auth, async (req, res) => {
   try {
     const club = await addClub.findOne({ name: req.params.clubname });
     const currclub = await club.notification;
-    res.send({ club: club, clubnoti: currclub });
+    res.status(200).send({ club: club, clubnoti: currclub });
   } catch (error) {
     console.log(error);
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 });
 
@@ -95,7 +95,7 @@ router.post("/addnotification/:clubname/", auth, async (req, res) => {
     } catch (error) {
       console.log(error);
       console.log("Error occured while adding notification");
-      res.status(400).send(error);
+      res.status(500).send(error);
     }
   } else {
     res.status(401).send("Permission denied.");
@@ -121,7 +121,7 @@ router.delete(
       } catch (error) {
         console.log(error);
         console.log("Error occured while deleting notification");
-        res.status(400).send(error);
+        res.status(500).send(error);
       }
     } else {
       res.status(401).send("Permission denied.");
@@ -136,10 +136,10 @@ router.get("/members/:clubname", auth, async (req, res) => {
   try {
     const club = await addClub.findOne({ name: req.params.clubname });
     const currclub = await club.members;
-    res.send({ club: club, clubmember: currclub });
+    res.status(200).send({ club: club, clubmember: currclub });
   } catch (error) {
     console.log(error);
-    res.status(400).send(error);
+    res.status(500).send(error);
   }
 });
 router.post("/addmember/:clubname", auth, async (req, res) => {
@@ -165,13 +165,13 @@ router.post("/addmember/:clubname", auth, async (req, res) => {
         } catch (error) {
           console.log(error);
           console.log("Error occured while adding members" + error);
-          res.status(400).send(error);
+          res.status(500).send(error);
         }
       } else {
         res.status(401).send("Permission denied.");
       }
     } else {
-      res.status(500).send("User does not exist");
+      res.status(409).send("User does not exist");
     }
   } catch (error) {
     console.log("user or club does not exist" + error);
@@ -182,7 +182,7 @@ router.post("/addmember/:clubname", auth, async (req, res) => {
 // club deleteMember
 router.delete("/deletemember/:clubname/:username", auth, async (req, res) => {
   const memberlist = await addClub.findOne({ name: req.params.clubname });
-  if (!memberlist) res.status(500).send("Member not found");
+  if (!memberlist) res.status(409).send("Member not found");
   try {
     if (
       req.user.role === "admin" ||
@@ -194,13 +194,13 @@ router.delete("/deletemember/:clubname/:username", auth, async (req, res) => {
 
       await memberlist.save();
       console.log("Club member deleted successfully");
-      res.send(memberlist);
+      res.status(200).send(memberlist);
     } else {
-      res.send({ data: "permission denied" });
+      res.status(401).send({ data: "permission denied" });
     }
   } catch (error) {
     console.log(error);
-    res.status(400).send("Error while deleteing member from club");
+    res.status(500).send("Error while deleteing member from club");
   }
 });
 
@@ -230,7 +230,7 @@ router.post("/addevents/:clubname", auth, async (req, res) => {
     } catch (error) {
       console.log(error);
       console.log("Error occured while adding events");
-      res.status(400).send(error);
+      res.status(500).send(error);
     }
   } else {
     res.status(401).send("Permission denied.");
@@ -252,7 +252,7 @@ router.delete("/eventdelete/:clubname/:eventid", auth, async (req, res) => {
     } catch (error) {
       console.log(error);
       console.log("Error occured while deleting event");
-      res.status(400).send(error);
+      res.status(500).send(error);
     }
   } else {
     res.status(401).send("Permission denied.");

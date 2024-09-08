@@ -24,7 +24,7 @@ router.post("/", auth, async (req, res) => {
         type: req.body.type,
       });
       await newResource.save();
-      res.send(newResource);
+      res.status(200).send(newResource);
     } else {
       res.status(401).send("Permission Denied");
     }
@@ -44,7 +44,7 @@ router.delete("/:resourceid", auth, async (req, res) => {
       const resourceid = req.params.resourceid;
       const isExist = await addResource.findOne({ _id: resourceid });
       if (!isExist) {
-        res.send("Resource not found");
+        res.status(409).send("Resource not found");
         return;
       }
       const result = await addResource.findOneAndDelete({
@@ -52,6 +52,8 @@ router.delete("/:resourceid", auth, async (req, res) => {
       });
       console.log("Resource Delete successfully!");
       res.status(200).send(result);
+    } else {
+      res.status(401).send("Permission Denied");
     }
   } catch (error) {
     res.status(500).send("Error while deleting resourse" + error.message);

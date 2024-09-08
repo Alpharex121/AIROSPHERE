@@ -42,7 +42,7 @@ router.post("/", async (req, res) => {
       username: req.body.username,
     });
     if (isRequested) {
-      res.send("user already requested");
+      res.status(409).send("user already requested");
       return;
     }
 
@@ -67,7 +67,7 @@ router.delete("/:requestid", auth, async (req, res) => {
       const requestid = req.params.requestid;
       const isExist = await addRequest.findOne({ _id: requestid });
       if (!isExist) {
-        res.send("request not found");
+        res.status(409).send("request not found");
         return;
       }
       const result = await addRequest.findOneAndDelete({
@@ -75,6 +75,8 @@ router.delete("/:requestid", auth, async (req, res) => {
       });
       console.log("request Delete successfully!");
       res.status(200).send(result);
+    } else {
+      res.status(401).send("Permission denied.");
     }
   } catch (error) {
     res.status(500).send("Error while deleting request" + error.message);

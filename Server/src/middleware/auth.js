@@ -18,7 +18,7 @@ const auth = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    res.send("user not verifieds");
+    res.status(500).send("Error occured while authenticating user");
   }
 };
 
