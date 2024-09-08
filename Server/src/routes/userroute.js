@@ -20,7 +20,7 @@ router.get("/getallstudents", auth, async (req, res) => {
 });
 
 router.get("/getcurruser", auth, async (req, res) => {
-  res.send(req.user);
+  res.status(200).send(req.user);
 });
 
 //NEW USER STUDENTS
@@ -57,7 +57,7 @@ router.post("/adduser", auth, async (req, res) => {
           username: username,
         });
         if (isRegisterd) {
-          res.status(500).send("user already exist");
+          res.status(409).send("user already exist");
           return;
         }
 
@@ -141,7 +141,7 @@ router.delete("/:id", auth, async (req, res) => {
       const userid = req.params.id;
       const isExist = await userRegister.findOne({ _id: userid });
       if (!isExist) {
-        res.send("User not found");
+        res.status(409).send("User not found");
         return;
       }
       if (isExist.role === "admin") {
@@ -153,6 +153,7 @@ router.delete("/:id", auth, async (req, res) => {
       console.log("User Delete successfully!");
     } catch (error) {
       console.log(error);
+      res.status(500).send("Error occured while deleting user " + error);
     }
   } else {
     res.status(401).send({ data: "permission denied" });
@@ -178,7 +179,7 @@ router.put("/updatepassword/:username", auth, async (req, res) => {
         username: req.params.username,
       });
       if (!isExist) {
-        res.send("User not found");
+        res.status(409).send("User not found");
         return;
       }
       if (isExist.role === "admin" && req.user.role !== "admin") {
@@ -210,7 +211,7 @@ router.put("/updatepassword/:username", auth, async (req, res) => {
       res.status(401).send("Permission denied");
     }
   } catch (error) {
-    res.status(400).send("error while updating the password");
+    res.status(500).send("error while updating the password");
     console.log(error.message);
   }
 });

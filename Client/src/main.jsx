@@ -37,6 +37,15 @@ import Students from "./components/Menus/Manage/Students.jsx";
 import AddStudent from "./components/Menus/Manage/AddStudent.jsx";
 import ViewRequest from "./components/Menus/Manage/ViewRequest.jsx";
 import EditUserForm from "./components/Forms/EditUserForm.jsx";
+import SignUp from "./components/SignUp.jsx";
+import SignUpSuccess from "./components/SignUpSuccess.jsx";
+import AddMemberForm from "./components/Forms/ClubAddMemberForm.jsx";
+import ClubAddMemberForm from "./components/Forms/ClubAddMemberForm.jsx";
+import ClubAddNotificationForm from "./components/Forms/ClubAddNotificaitonForm.jsx";
+import AddEventForm from "./components/Forms/ClubAddEventForm.jsx";
+import AddClubForm from "./components/Forms/AddClubForm.jsx";
+import AddUpdatesForm from "./components/Forms/AddUpdatesForm.jsx";
+import AddAcademicForm from "./components/Forms/AddAcademicForm.jsx";
 
 const appRouter = createBrowserRouter([
   {
@@ -143,6 +152,38 @@ const appRouter = createBrowserRouter([
       {
         path: "/edituser/:username/:userid",
         element: <EditUserForm />,
+      },
+      {
+        path: "/authenticate/signup",
+        element: <SignUp />,
+      },
+      {
+        path: "/authenticate/signupsuccess",
+        element: <SignUpSuccess />,
+      },
+      {
+        path: "/addmember/:clubname",
+        element: <ClubAddMemberForm />,
+      },
+      {
+        path: "/addnotification/:clubname",
+        element: <ClubAddNotificationForm />,
+      },
+      {
+        path: "/addevent/:clubname",
+        element: <AddEventForm />,
+      },
+      {
+        path: "/addclub",
+        element: <AddClubForm />,
+      },
+      {
+        path: "/addupdates",
+        element: <AddUpdatesForm />,
+      },
+      {
+        path: "/addacademic",
+        element: <AddAcademicForm />,
       },
     ],
   },

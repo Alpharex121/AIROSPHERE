@@ -31,10 +31,10 @@ router.post("/postteam", auth, async (req, res) => {
 
     const registered = await newTeamReq.save();
 
-    res.status(200).send("find team posted successfully");
     console.log("team request uploaded successfully");
+    res.status(200).send("find team posted successfully");
   } catch (error) {
-    res.send("Error while uploading find team request");
+    res.status(500).send("Error while uploading find team request");
     console.log(error);
   }
 });
@@ -45,7 +45,7 @@ router.put("/updateteampost/:postername/:postid", auth, async (req, res) => {
     try {
       const postid = req.params.postid;
       if (!addTeam.findOne({ postid })) {
-        res.send("team post not found for updation.");
+        res.status(409).send("team post not found for updation.");
         return;
       }
       const result = await addTeam.findOneAndUpdate(
@@ -78,7 +78,7 @@ router.delete("/deleteteampost/:postid", auth, async (req, res) => {
       const postid = req.params.postid;
       const isExist = await addTeam.findOne({ _id: postid });
       if (!isExist) {
-        res.send("find team post not found");
+        res.status(409).send("find team post not found");
         return;
       }
       if (
@@ -94,6 +94,7 @@ router.delete("/deleteteampost/:postid", auth, async (req, res) => {
         res.status(401).send({ data: "permission denied" });
       }
     } catch (error) {
+      res.status(500).send("Error occured while deleting find team post");
       console.log(error);
     }
   }
@@ -125,11 +126,11 @@ router.post("/postpeer", auth, async (req, res) => {
 
     const registered = await newPeerReq.save();
 
-    res.status(200).send("find peer posted successfully");
     console.log("peer request uploaded successfully");
+    res.status(200).send("find peer posted successfully");
   } catch (error) {
-    res.send("Error while uploading peer request");
-    console.log(error);
+    console.log("Error while uploading peer request" + error);
+    res.status(500).send("Error while uploading peer request");
   }
 });
 
@@ -137,7 +138,7 @@ router.post("/postpeer", auth, async (req, res) => {
 router.put("/updatepeerreq/:postername/:postid", auth, async (req, res) => {
   const isExist = await addPeer.findOne({ _id: req.params.postid });
   if (!isExist) {
-    res.status(500).send("find team post not found");
+    res.status(409).send("find team post not found");
     return;
   }
   if (req.user.role == "admin" || req.user.username == req.isExist.postername) {
@@ -172,7 +173,7 @@ router.delete("/deletepeerpost/:postid", auth, async (req, res) => {
       const postid = req.params.postid;
       const isExist = await addPeer.findOne({ _id: postid });
       if (!isExist) {
-        res.send("find team post not found");
+        res.status(409).send("find team post not found");
         return;
       }
       if (
@@ -189,6 +190,7 @@ router.delete("/deletepeerpost/:postid", auth, async (req, res) => {
       }
     } catch (error) {
       console.log(error);
+      res.status(500).send("Error occured while deleting find peer request");
     }
   }
 });

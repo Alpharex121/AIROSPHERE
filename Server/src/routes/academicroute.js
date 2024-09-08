@@ -31,7 +31,7 @@ router.post("/", auth, async (req, res) => {
         type: req.body.type,
       });
       const result = await newAcademic.save();
-      res.send(result);
+      res.status(200).send(result);
     } catch (error) {
       console.log("Error while adding academic.");
       res.status(500).send(error.message);
@@ -53,7 +53,7 @@ router.delete("/:academicid", auth, async (req, res) => {
       const academicid = req.params.academicid;
       const isExist = await addAcademic.findOne({ _id: academicid });
       if (!isExist) {
-        res.status(500).send("Academic data not found");
+        res.status(409).send("Academic data not found");
         return;
       }
       const result = await addAcademic.findOneAndDelete({
