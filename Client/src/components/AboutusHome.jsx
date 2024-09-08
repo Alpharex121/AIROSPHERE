@@ -3,19 +3,19 @@ import { motion } from 'framer-motion';
 
 const AboutUs = () => {
   return (
-    <div className="relative min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 py-16">
+    <div className="relative min-h-screen flex flex-col justify-center items-center bg-gradient-to-b from-indigo-900 via-indigo-700 to-indigo-900 py-16 overflow-hidden">
       {/* Background Animation */}
       <motion.div
-        className="absolute inset-0 bg-gradient-to-r from-gray-800 to-gray-900"
+        className="absolute inset-0 bg-gradient-to-r from-indigo-700 to-indigo-800 blur-2xl opacity-40"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 0.3 }}
+        animate={{ opacity: 0.4 }}
         transition={{ duration: 2 }}
       ></motion.div>
 
-      <div className="relative z-10 text-center px-4">
+      <div className="relative z-10 text-center px-6">
         {/* Section Title */}
         <motion.h1
-          className="text-5xl font-bold text-white mb-8"
+          className="text-5xl md:text-6xl font-extrabold text-white mb-10 tracking-wide"
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeInOut" }}
@@ -25,44 +25,45 @@ const AboutUs = () => {
 
         {/* Branch Overview */}
         <motion.p
-          className="text-xl text-gray-300 mb-12 mx-auto max-w-2xl"
+          className="text-lg md:text-xl text-gray-200 mb-16 mx-auto max-w-3xl leading-relaxed"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, ease: "easeInOut", delay: 0.3 }}
         >
-          Our BTech branch in Artificial Intelligence and Robotics stands at the forefront of technology. We are dedicated to pioneering research and practical applications, shaping the future of AI and robotics with cutting-edge solutions.
+          Our BTech branch in Artificial Intelligence and Robotics stands at the forefront of technological advancement. We are committed to innovative research and real-world applications, driving the future of AI and robotics.
         </motion.p>
 
         {/* Key Highlights */}
-        <div className="flex flex-col items-center gap-8 px-4">
-          {['Innovation Focus', 'Hands-on Projects', 'Strong Community'].map((highlight, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 md:px-16">
+          {[
+            { title: 'Innovation Focus', description: 'Pioneering research and practical AI & robotics solutions.' },
+            { title: 'Hands-on Projects', description: 'Engaging in real-world projects and internships.' },
+            { title: 'Strong Community', description: 'Collaborative network of peers, mentors, and industry experts.' }
+          ].map((highlight, index) => (
             <motion.div
               key={index}
-              className="relative text-center p-6 bg-gray-800 rounded-lg shadow-lg"
+              className="relative text-center p-8 bg-indigo-600 rounded-2xl shadow-lg transition-all duration-500 hover:shadow-2xl transform hover:scale-105"
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
-              whileHover={{ scale: 1.05, backgroundColor: '#374151' }}
               transition={{
-                duration: 0.6,  // Increased duration for smoother effect
-                ease: "easeInOut", // Smooth transition
+                duration: 0.6,
+                ease: "easeInOut",
                 delay: 0.3 + index * 0.2
               }}
             >
               <motion.h2
-                className="text-2xl font-semibold text-white mb-2"
-                transition={{ type: 'spring', stiffness: 150, damping: 10 }} // Smooth spring-like effect
+                className="text-2xl font-semibold text-white mb-4"
+                transition={{ type: 'spring', stiffness: 150, damping: 10 }}
               >
-                {highlight}
+                {highlight.title}
               </motion.h2>
               <motion.p
-                className="text-gray-400"
+                className="text-gray-300 leading-relaxed"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.5, ease: "easeInOut" }}
               >
-                {index === 0 && 'Emphasis on groundbreaking research and practical solutions in AI and robotics.'}
-                {index === 1 && 'Real-world projects and internships to apply theoretical knowledge in practical scenarios.'}
-                {index === 2 && 'A supportive network of peers, faculty, and industry professionals fostering growth and collaboration.'}
+                {highlight.description}
               </motion.p>
             </motion.div>
           ))}

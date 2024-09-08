@@ -4,6 +4,7 @@ import { useInView } from "react-intersection-observer";
 import Robot from "./3drobot";
 import AboutUs from "./AboutusHome";
 import Deck from "./Deck";
+import { Team } from "./Team";
 // import Stickypage from "./Stickypage";
 
 const Homepage = () => {
@@ -81,21 +82,25 @@ const Homepage = () => {
       </div>
     </div>
       <AboutUs />
-      <div className="bg-black flex flex-col md:flex-row w-full">
-      <div className="flex flex-col md:flex-row justify-center items-center py-12 bg-gray-900 rounded-lg shadow-lg  overflow-hidden">
-  <div className="h-[70vh] overflow-hidden w-full md:w-[60vw] lg:w-[50vw] bg-gradient-to-r from-gray-800 to-gray-900 rounded-lg shadow-lg">
-    <Deck />
-  </div>
+      <div className="bg-black  flex flex-col md:flex-row w-full">
+  <div className="flex flex-col md:flex-row justify-center items-center py-12 bg-indigo-900  shadow-lg overflow-hidden">
+    
+    {/* Deck Section with Gradient Background */}
+    <div className="h-[60vh] m-6 overflow-hidden w-full md:w-[60vw] lg:w-[50vw] bg-gradient-to-r from-indigo-800 to-indigo-900 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+      <Deck />
+    </div>
 
-  {/* Text Section */}
-  <div className="text-white m-4 flex items-center justify-center p-8 w-full md:w-[40vw] lg:w-[50vw] bg-gray-800 rounded-lg shadow-lg mt-8 md:mt-0 md:ml-8">
-    <p className="text-center text-lg md:text-xl leading-relaxed">
-      Peeking into the future of the Robotics branch is like reading from a deck of tarot cards—you’ll find a mix of intriguing possibilities and exciting transformations. Imagine a world where robots are as common as smartphones, helping us with everything from mundane tasks to groundbreaking discoveries. With advancements in AI and robotics, the future is all about innovation, precision, and making our lives a whole lot easier. Our branch is ready to lead this revolution, developing technologies that will change how we live and work. So, just like the tarot cards might reveal a bright future, the Robotics branch is set to unveil a future full of amazing advancements and opportunities.
-    </p>
+    {/* Text Section */}
+    <div className="text-white m-4 flex items-center justify-center p-8 w-full md:w-[60vw] lg:w-[50vw] bg-indigo-800 rounded-lg shadow-lg mt-8 md:mt-0 md:ml-8 transition-all duration-500 hover:bg-indigo-700">
+      <p className="text-center text-lg md:text-xl leading-relaxed">
+        Peeking into the future of the Robotics branch is like reading from a deck of tarot cards—you’ll find a mix of intriguing possibilities and exciting transformations. Imagine a world where robots are as common as smartphones, helping us with everything from mundane tasks to groundbreaking discoveries. With advancements in AI and robotics, the future is all about innovation, precision, and making our lives a whole lot easier. Our branch is ready to lead this revolution, developing technologies that will change how we live and work. So, just like the tarot cards might reveal a bright future, the Robotics branch is set to unveil a future full of amazing advancements and opportunities.
+      </p>
+    </div>
+
   </div>
 </div>
-      </div>
 
+            <Team/>
       {/* <Stickypage /> */}
     </div>
   );
