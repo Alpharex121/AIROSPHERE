@@ -3,13 +3,13 @@ const router = express.Router();
 const auth = require("../middleware/auth");
 const addTeam = require("../models/findteamSchema");
 const addPeer = require("../models/PeerProgramming");
-const adddoubt  = require("../models/doubt");
+const adddoubt = require("../models/doubt");
 
 //GET TEAM REQUEST
 router.get("/getteams", auth, async (req, res) => {
   const result = await addTeam.find();
   res.status(200).send(result);
-}); 
+});
 
 //GET ALL YOUR CURRENT TEAM
 router.get("/getteamreq/:username", auth, async (req, res) => {
@@ -194,6 +194,7 @@ router.delete("/deletepeerpost/:postid", auth, async (req, res) => {
     }
   }
 });
+
 //Ask Doubt  SECTION
 //GET doubt REQUEST
 router.get("/getdoubt", auth, async (req, res) => {
@@ -209,91 +210,76 @@ router.get("/getdobut/:username", auth, async (req, res) => {
 //Post doubt
 router.post("/postdoubt", auth, async (req, res) => {
   try {
+    const date = new Date();
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+
+    let currentDate = `${day}-${month}-${year}`;
     const newdoubt = new adddoubt({
       title: req.body.title,
       description: req.body.description,
       postername: req.user.username,
+      uploadtime: currentDate,
     });
 
     const registered = await newdoubt.save();
 
-    res.status(200).send("doubt posted successfully");
+    res.status(200).send("doubt posted successfully" + registered);
     console.log("doubt uploaded successfully");
   } catch (error) {
-    res.send("Error while uploading doubt");
+    res.status(500).send("Error while uploading doubt");
     console.log(error);
   }
 });
-// GET Comments
-router.post("/getcomment/:username", auth, async (req, res) => {
-  const result = await adddoubt.find({ postername: req.user.username });
+
+// GET Comments of a post
+router.get("/getcomment/:doubtid", auth, async (req, res) => {
+  const result = await adddoubt.find({ _id: req.params.doubtid });
   res.status(200).send(result);
 });
+
 // Post comments
-router.post("/postcomment", auth, async (req, res) => {
+router.post("/postcomment/:doubtid", auth, async (req, res) => {
   try {
-    const newcomment = new adddoubt({
-      comment: req.body.comment,
-      postername: req.user.username,
-    });
+    const doubt = await adddoubt.findOne({ _id: req.params.doubtid });
+    const postername = req.user.username;
+    const description = req.body.description;
+    const newcomment = doubt.addComment(postername, description);
+    const commented = await doubt.save();
+    res.status(200).send("comment posted successfully" + commented);
 
-    const registered = await newcomment.save();
-
-    res.status(200).send("comment posted successfully");
     console.log("comment uploaded successfully");
   } catch (error) {
-    res.send("Error while uploading comment");
-    console.log(error);
-  }
-});
-//Post vote 
-router.post("/postvote", auth, async (req, res) => {
-  try {
-    const newvote = new adddoubt({
-      vote: req.body.vote,
-      postername: req.user.username,
-    });
-
-    const registered = await newvote.save();
-
-    res.status(200).send("vote posted successfully");
-    console.log("vote uploaded successfully");
-  } catch (error) {
-    res.send("Error while uploading vote");
+    res.status(500).send("Error while uploading comment");
     console.log(error);
   }
 });
 
-// GET vote
-router.get("/getvote", auth, async (req, res) => {
-  const result = await adddoubt.find({ vote: req.body.vote });
-  res.status(200).send(result);
-});
-
-//UPDATE doubt
-router.put("/updatedoubt/", auth, async (req, res) => {
-  if (req.user.role == "admin" || req.user.username == req.body.postername) {
-    try {
-      const result = await adddoubt.findOneAndUpdate(
-        { _id: req.body._id },
-        {
-          $set: {
-            title: req.body.title,
-            description: req.body.description,
-          },
-        }
-      );
-      console.log("update successful");
-      res.status(200).send(result);
-    } catch (error) {
-      res.status(500).send("error while updating the data" + error.message);
-    }
-  } else {
-    console.log("Access denied");
-    res.status(401).send("Access Denied");
-  }
-});
-
+// //UPDATE doubt
+// router.put("/updatedoubt/:doubtid", auth, async (req, res) => {
+//   const doubt = await adddoubt.findOne({ _id: req.params.doubtid });
+//   if (req.user.role == "admin" || req.user.username == doubt.postername) {
+//     try {
+//       const result = await adddoubt.findOneAndUpdate(
+//         { _id: req.params.doubtid },
+//         {
+//           $set: {
+//             title: req.body.title,
+//             description: req.body.description,
+//           },
+//         }
+//       );
+//       console.log("update successful");
+//       res.status(200).send(result);
+//     } catch (error) {
+//       res.status(500).send("error while updating the data" + error.message);
+//     }
+//   } else {
+//     console.log("Access denied");
+//     res.status(401).send("Access Denied");
+//   }
+// });
 
 //DELETE doubt
 router.delete("/deletedoubt/:postid", auth, async (req, res) => {
@@ -302,7 +288,7 @@ router.delete("/deletedoubt/:postid", auth, async (req, res) => {
       const postid = req.params.postid;
       const isExist = await adddoubt.findOne({ _id: postid });
       if (!isExist) {
-        res.send("find team post not found");
+        res.status(409).send("doubt not found");
         return;
       }
       if (
@@ -312,12 +298,13 @@ router.delete("/deletedoubt/:postid", auth, async (req, res) => {
         req.user.username === isExist.postername
       ) {
         const result = await adddoubt.findOneAndDelete({ _id: postid });
-        console.log("User Delete successfully!");
+        console.log("Doubt Delete successfully!");
         res.status(200).send(result);
       } else {
         res.status(401).send({ data: "permission denied" });
       }
     } catch (error) {
+      res.send(500).send("Doubt deleted successfully");
       console.log(error);
     }
   }

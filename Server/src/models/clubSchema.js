@@ -85,7 +85,6 @@ clubSchema.methods.addMember = async function (
       clubpost: clubpost,
       clubrole: clubrole,
     });
-    await this.save();
     return this.members;
   } catch (error) {
     console.log("Error occured while adding member in club");
@@ -107,7 +106,6 @@ clubSchema.methods.addNotification = async function (title, description) {
       description: description,
       uploadtime: currentDate,
     });
-    await this.save();
     return this.notification;
   } catch (error) {
     console.log("Error occured while adding member in club");
@@ -138,7 +136,7 @@ clubSchema.methods.addEvents = async function (
       venue: venue,
       eventincharge: eventincharge,
     });
-    await this.save();
+
     return this.notification;
   } catch (error) {
     console.log("Error occured while adding event in club");
