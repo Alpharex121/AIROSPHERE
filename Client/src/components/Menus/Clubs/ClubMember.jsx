@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import profile from "../../../assets/profile.png";
 import { api } from "../../../utils/constant";
 
+// Shimmer Effect Styles using Tailwind CSS
+const shimmerStyles = `
+  relative overflow-hidden bg-gray-100
+  before:content-[''] before:absolute before:top-0 before:left-[-100%] before:w-full before:h-full 
+  before:bg-gradient-to-r before:from-transparent before:via-gray-300 before:to-transparent
+  before:animate-shimmer
+`;
+
 const ClubMemberList = ({ currClubMember }) => {
   const { clubname } = useParams();
   const currentUser = useSelector((store) => store?.user);
+  const [loading, setLoading] = useState(true); // Loading state
   const isAdmin = currentUser?.role === "admin"; // Assuming there's a role field to identify admin
 
   const handleOnDelete = async (username) => {
@@ -15,12 +24,39 @@ const ClubMemberList = ({ currClubMember }) => {
     );
     console.log(data);
   };
+
+  // Simulate data fetch
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate a 2-second delay
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [clubname]);
+
   return (
-    currClubMember && (
-      <div className="mt-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-          Club Members
-        </h2>
+    <div className="mt-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+      <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+        Club Members
+      </h2>
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className={`p-6 rounded-lg shadow-md ${shimmerStyles}`}>
+              <div className="flex flex-col items-center">
+                <div className="w-24 h-24 bg-gray-300 rounded-full mb-4"></div>
+                <div className="space-y-4">
+                  <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-300 rounded w-5/6"></div>
+                  <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {currClubMember.map((member, index) => (
             <div
@@ -59,8 +95,8 @@ const ClubMemberList = ({ currClubMember }) => {
             </div>
           ))}
         </div>
-      </div>
-    )
+      )}
+    </div>
   );
 };
 

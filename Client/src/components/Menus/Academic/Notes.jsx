@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+
 const NotesComponent = () => {
   const [selectedSemester, setSelectedSemester] = useState("Semester 1");
   const [underlineStyle, setUnderlineStyle] = useState({ left: 0, width: 0 });

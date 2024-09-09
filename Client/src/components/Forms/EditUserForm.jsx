@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { api } from "../../utils/constant";
 import { useSelector } from "react-redux";
+import { useToast } from "../ToastContext"; // Adjust the path as needed
 
 const EditUserForm = () => {
   const { username, userid } = useParams();
+  const showToast = useToast();
 
   // Redirect if username is "Alpha" or "Zoro"
   if (username === "Alpha" || username === "Zoro") {
@@ -26,9 +28,7 @@ const EditUserForm = () => {
   // useEffect to set the current student data
   useEffect(() => {
     if (studentData) {
-      const student = studentData.find((student) => {
-        return student.username === username;
-      });
+      const student = studentData.find((student) => student.username === username);
 
       if (student) {
         setCurrStudent(student);
@@ -70,12 +70,21 @@ const EditUserForm = () => {
     e.preventDefault();
     const { username, name, enrollmentno, semester, mail, role } = formData;
 
-    const editReponse = await api.put(
-      `http://localhost:3000/user/update/${username}/${userid}`,
-      { username, name, enrollmentno, semester, mail, role }
-    );
+    try {
+      const response = await api.put(
+        `http://localhost:3000/user/update/${username}/${userid}`,
+        { username, name, enrollmentno, semester, mail, role }
+      );
 
-    console.log(formData);
+      if (response.status === 200) {
+        showToast("success", "User details updated successfully!");
+      } else {
+        showToast("error", "Failed to update user details. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      showToast("error", "Failed to update user details. Please try again.");
+    }
   };
 
   return (

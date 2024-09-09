@@ -9,15 +9,22 @@ import { Provider } from "react-redux";
 import appStore from "./store/mainStore";
 import SignUp from "./components/SignUp";
 import SignUpSuccess from "./components/SignUpSuccess";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastProvider } from "./components/ToastContext";
 
 const App = () => {
   return (
     <>
       <Provider store={appStore}>
+      <ToastProvider>
         <Header />
         <Outlet />
         <Footer />
         {/* <ToastContainer /> */}
+        <ToastContainer />
+        </ToastProvider>
+
       </Provider>
     </>
   );

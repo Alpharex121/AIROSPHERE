@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../utils/constant";
+import { useToast } from "..//ToastContext";  // Adjust the path as needed
 
 const ClubAddNotificationForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
+  const showToast = useToast();
+
   if (!data || data?.role !== "admin") Navigate("/");
+
   const { clubname } = useParams();
   const [formData, setFormData] = useState({
     title: "",
@@ -19,16 +23,25 @@ const ClubAddNotificationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const title = formData.title;
-    const description = formData.description;
-    const data = await api.post(
-      "http://localhost:3000/club/addnotification/" + clubname,
-      {
-        title,
-        description,
+    const { title, description } = formData;
+
+    try {
+      const response = await api.post(
+        `http://localhost:3000/club/addnotification/${clubname}`,
+        { title, description }
+      );
+
+      if (response.status === 200) {
+        showToast("success", "Notification added successfully!");
+        // Optionally, reset form or navigate to another page
+        setFormData({ title: "", description: "" });
+      } else {
+        showToast("error", "Failed to add notification. Please try again.");
       }
-    );
-    console.log(data);
+    } catch (error) {
+      console.error("Error adding notification:", error);
+      showToast("error", "Failed to add notification. Please try again.");
+    }
   };
 
   return (

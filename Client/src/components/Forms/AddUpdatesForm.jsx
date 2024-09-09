@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { api } from "../../utils/constant";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useToast } from "../ToastContext";
 
 const AddUpdatesForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
+  const showToast = useToast();
+  
   if (!data || data?.role !== "admin") Navigate("/");
+
   const [updateData, setUpdateData] = useState({
     title: "",
     description: "",
@@ -23,16 +27,26 @@ const AddUpdatesForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic (e.g., send data to backend)
-    const title = updateData.title;
-    const description = updateData.description;
-    const type = updateData.type;
-    const data = await api.post("http://localhost:3000/notification", {
-      title,
-      description,
-      type,
-    });
-    console.log(data);
+    const { title, description, type } = updateData;
+
+    try {
+      const response = await api.post("http://localhost:3000/notification", {
+        title,
+        description,
+        type,
+      });
+
+      if (response.status === 200) {
+        showToast("success", "Update added successfully!");
+        // Optionally, redirect or reset form here
+        Navigate("/updates");
+      } else {
+        showToast("error", "Failed to add update. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error adding update:", error);
+      showToast("error", "Failed to add update. Please try again.");
+    }
   };
 
   return (

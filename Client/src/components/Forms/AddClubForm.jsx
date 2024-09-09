@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { api } from "../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useToast } from "../ToastContext";
 
 const AddClubForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
+  const showToast = useToast();
+
   if (!data || data?.role !== "admin") Navigate("/");
+
   const [clubData, setClubData] = useState({
     name: "",
     description: "",
@@ -24,17 +28,26 @@ const AddClubForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const name = clubData.name;
-    const description = clubData.description;
-    const head = clubData.head;
-    const headname = clubData.headname;
-    const data = await api.post("http://localhost:3000/club", {
-      name,
-      description,
-      head,
-      headname,
-    });
-    console.log(data);
+    const { name, description, head, headname } = clubData;
+
+    try {
+      const response = await api.post("http://localhost:3000/club", {
+        name,
+        description,
+        head,
+        headname,
+      });
+      
+      if (response.status === 200) {
+        showToast("success", "Club added successfully!");
+        Navigate("/clubs");
+      } else {
+        showToast("error", "Failed to add club. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error adding club:", error);
+      showToast("error", "Failed to add club. Please try again.");
+    }
   };
 
   return (
@@ -42,9 +55,7 @@ const AddClubForm = () => {
       <h2 className="text-2xl font-bold mb-4 text-center">Add New Club</h2>
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Club Name
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Club Name</label>
           <input
             type="text"
             name="name"
@@ -56,9 +67,7 @@ const AddClubForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Description
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Description</label>
           <textarea
             name="description"
             value={clubData.description}
@@ -69,9 +78,7 @@ const AddClubForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700">
-            Head Username
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Head Username</label>
           <input
             type="text"
             name="head"
@@ -83,9 +90,7 @@ const AddClubForm = () => {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700">
-            Head Name
-          </label>
+          <label className="block text-sm font-medium text-gray-700">Head Name</label>
           <input
             type="text"
             name="headname"

@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { api } from "../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useToast } from "../ToastContext";
 
 const AddAcademicForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
+  const showToast = useToast();
+  
   if (!data || data?.role !== "admin") Navigate("/");
+
   const [academicData, setAcademicData] = useState({
     title: "",
     description: "",
@@ -27,25 +31,30 @@ const AddAcademicForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic (e.g., send data to backend)
-    const title = academicData.title;
-    const description = academicData.description;
-    const subject = academicData.subject;
-    const semester = academicData.semester; // Dropdown for semester
-    const subcode = academicData.subcode;
-    const type = academicData.type; // Notes, PYQ, or Important Question
-    const link = academicData.link;
+    const { title, description, subject, semester, subcode, type, link } = academicData;
 
-    const data = await api.post("http://localhost:3000/academic", {
-      title,
-      description,
-      subject,
-      semester,
-      subcode,
-      type,
-      link,
-    });
-    console.log(data);
+    try {
+      const response = await api.post("http://localhost:3000/academic", {
+        title,
+        description,
+        subject,
+        semester,
+        subcode,
+        type,
+        link,
+      });
+
+      if (response.status === 200) {
+        showToast("success", "Academic content added successfully!");
+        // Optionally, redirect or reset form here
+        Navigate("/academic");
+      } else {
+        showToast("error", "Failed to add academic content. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error adding academic content:", error);
+      showToast("error", "Failed to add academic content. Please try again.");
+    }
   };
 
   return (

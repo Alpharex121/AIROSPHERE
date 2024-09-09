@@ -4,29 +4,31 @@ import { addUser } from "../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import getUser from "../utils/getUser";
+import { toast } from 'react-toastify';
 
 const Authenticate = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const data = useSelector((store) => store.user);
-  console.log(data);
+
   useEffect(() => {
     if (data) {
       if (data.username) Navigate("/dashboard");
     }
-  });
+  }, [data, Navigate]);
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     try {
       const username = e.target.username.value;
       const password = e.target.password.value;
-      const data = await api.post("http://localhost:3000/authenticate", {
+      const response = await api.post("http://localhost:3000/authenticate", {
         username,
         password,
       });
-      if (data.status === 200 && data.username !== null) {
-        const currUser = data.data;
+
+      if (response.status === 200 && response.data.username) {
+        const currUser = response.data;
         const userData = {
           username: currUser.username,
           enrollmentno: currUser.enrollmentno,
@@ -36,12 +38,15 @@ const Authenticate = () => {
           role: currUser.role,
         };
         dispatch(addUser(userData));
+        toast.success("Login successful!");
         Navigate("/dashboard");
       } else {
+        toast.error("Invalid credentials!");
         Navigate("/");
       }
     } catch (error) {
       console.log(error.message);
+      toast.error("An error occurred. Please try again.");
       Navigate("/");
     }
   };

@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../utils/constant";
+import { useToast } from "../ToastContext";
 
 const ClubAddMemberForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
-  if (!data || data?.role !== "admin") Navigate("/");
+  const showToast = useToast();
   const { clubname } = useParams();
+
+  if (!data || data?.role !== "admin") Navigate("/");
+
   const [formData, setFormData] = useState({
     username: "",
     name: "",
@@ -21,21 +25,24 @@ const ClubAddMemberForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const username = formData.username;
-    const name = formData.name;
-    const clubpost = formData.clubpost;
-    const clubrole = formData.clubrole;
-    console.log(formData);
-    const data = await api.post(
-      "http://localhost:3000/club/addmember/" + clubname,
-      {
-        username,
-        name,
-        clubpost,
-        clubrole,
+    const { username, name, clubpost, clubrole } = formData;
+
+    try {
+      const response = await api.post(
+        `http://localhost:3000/club/addmember/${clubname}`,
+        { username, name, clubpost, clubrole }
+      );
+      
+      if (response.status === 200) {
+        showToast("success", "Member added successfully!");
+        Navigate(`/club/${clubname}`);
+      } else {
+        showToast("error", "Failed to add member. Please try again.");
       }
-    );
-    console.log(data);
+    } catch (error) {
+      console.error("Error adding member:", error);
+      showToast("error", "Failed to add member. Please try again.");
+    }
   };
 
   return (
@@ -46,9 +53,7 @@ const ClubAddMemberForm = () => {
       <form onSubmit={handleSubmit}>
         {/* Username */}
         <div className="mb-4">
-          <label className="block text-gray-600 font-medium mb-2">
-            Username
-          </label>
+          <label className="block text-gray-600 font-medium mb-2">Username</label>
           <input
             type="text"
             name="username"

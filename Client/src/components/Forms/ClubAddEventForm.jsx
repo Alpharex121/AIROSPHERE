@@ -2,11 +2,15 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../utils/constant";
+import { useToast } from "../ToastContext";
 
 const AddEventForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
+  const showToast = useToast();
+
   if (!data || data?.role !== "admin") Navigate("/");
+
   const { clubname } = useParams();
   const [formData, setFormData] = useState({
     title: "",
@@ -14,7 +18,6 @@ const AddEventForm = () => {
     startfrom: "",
     eventincharge: "",
     venue: "",
-    uploadtime: "",
   });
 
   const handleChange = (e) => {
@@ -24,16 +27,25 @@ const AddEventForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
-    const title = formData.title;
-    const description = formData.description;
-    const startfrom = formData.startfrom;
-    const eventincharge = formData.eventincharge;
-    const venue = formData.venue;
-    const data = await api.post(
-      "http://localhost:3000/club/addevents/" + clubname,
-      { title, description, startfrom, eventincharge, venue }
-    );
-    console.log(data);
+    const { title, description, startfrom, eventincharge, venue } = formData;
+
+    try {
+      const response = await api.post(
+        `http://localhost:3000/club/addevents/${clubname}`,
+        { title, description, startfrom, eventincharge, venue }
+      );
+
+      if (response.status === 200) {
+        showToast("success", "Event added successfully!");
+        // Optionally, reset form or navigate to another page
+        Navigate("/events");
+      } else {
+        showToast("error", "Failed to add event. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error adding event:", error);
+      showToast("error", "Failed to add event. Please try again.");
+    }
   };
 
   return (
