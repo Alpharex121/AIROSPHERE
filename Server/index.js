@@ -57,6 +57,10 @@ app.use("/authenticate", authenticateroute);
 app.use("/academic", academicroute);
 app.use("/requests", requestRoute);
 
+app.get("/", (req, res) => {
+  res.send("server is liveeee");
+});
+
 app.listen(port, (req, res) => {
   console.log(`Server is running at port ${port}`);
 });
