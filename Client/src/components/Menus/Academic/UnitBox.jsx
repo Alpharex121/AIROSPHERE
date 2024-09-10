@@ -43,7 +43,9 @@ const UnitBoxList = () => {
 
   const handleDelete = async (unitId) => {
     // Dispatch an action to delete the unit
-    const data = await api.delete("http://localhost:3000/academic/" + unitId);
+    const data = await api.delete(
+      "https://airosphere-ggits.vercel.app/academic/" + unitId
+    );
     console.log(data);
   };
 

@@ -17,7 +17,9 @@ const getBranchUpdates = async () => {
 
   const getUpdate = async () => {
     try {
-      let data = await api.get("http://localhost:3000/notification/branch");
+      let data = await api.get(
+        "https://airosphere-ggits.vercel.app/notification/branch"
+      );
 
       if (data?.status === 200 && data?.data[0]?.title) {
         const currData = data?.data;

@@ -19,7 +19,7 @@ const WebsiteUpdate = () => {
 
   const handleDelete = async (updateId) => {
     const data = await api.delete(
-      "http://localhost:3000/notification/" + updateId
+      "https://airosphere-ggits.vercel.app/notification/" + updateId
     );
     console.log(data);
   };

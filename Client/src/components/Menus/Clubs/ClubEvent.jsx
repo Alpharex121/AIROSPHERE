@@ -33,7 +33,10 @@ const EventList = ({ clubEvent }) => {
 
   const handleOnDelete = async (eventid) => {
     const data = await api.delete(
-      "http://localhost:3000/club/eventdelete/" + clubname + "/" + eventid
+      "https://airosphere-ggits.vercel.app/club/eventdelete/" +
+        clubname +
+        "/" +
+        eventid
     );
     console.log(data);
   };

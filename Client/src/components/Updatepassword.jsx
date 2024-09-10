@@ -24,7 +24,7 @@ const UpdatePassword = () => {
       setSuccess("");
     } else {
       const res = await api.put(
-        "http://localhost:3000/user/updatepassword/" + username,
+        "https://airosphere-ggits.vercel.app/user/updatepassword/" + username,
         {
           password,
           confirmpassword,

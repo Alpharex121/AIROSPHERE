@@ -41,15 +41,18 @@ const AddAcademicForm = () => {
       const type = academicData.type; // Notes, PYQ, or Important Question
       const link = academicData.link;
 
-      const data = await api.post("http://localhost:3000/academic", {
-        title,
-        description,
-        subject,
-        semester,
-        subcode,
-        type,
-        link,
-      });
+      const data = await api.post(
+        "https://airosphere-ggits.vercel.app/academic",
+        {
+          title,
+          description,
+          subject,
+          semester,
+          subcode,
+          type,
+          link,
+        }
+      );
       Navigate("/academic/" + type);
       console.log(data);
     } catch (error) {

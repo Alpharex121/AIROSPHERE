@@ -34,7 +34,7 @@ const AddEventForm = () => {
       const eventincharge = formData.eventincharge;
       const venue = formData.venue;
       const data = await api.post(
-        "http://localhost:3000/club/addevents/" + clubname,
+        "https://airosphere-ggits.vercel.app/club/addevents/" + clubname,
         { title, description, startfrom, eventincharge, venue }
       );
       if (data.status === 200) {

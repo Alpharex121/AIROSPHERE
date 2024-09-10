@@ -17,7 +17,9 @@ const getWebsiteUpdates = async () => {
 
   const getUpdate = async () => {
     try {
-      let data = await api.get("http://localhost:3000/notification/website");
+      let data = await api.get(
+        "https://airosphere-ggits.vercel.app/notification/website"
+      );
 
       if (data?.status === 200 && data?.data[0]?.title) {
         const currData = data?.data;

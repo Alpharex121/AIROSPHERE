@@ -14,7 +14,9 @@ const getUser = async () => {
 
   const getUserData = async () => {
     try {
-      const data = await api.get("http://localhost:3000/user/getcurruser");
+      const data = await api.get(
+        "https://airosphere-ggits.vercel.app/user/getcurruser"
+      );
       if (data.status === 200 && data.data.username) {
         const currUser = data.data;
         const userData = {

@@ -49,13 +49,16 @@ const SignUp = () => {
         formData.append("id_card", file); // Add ID card image to form data
       }
 
-      const data = await api.post("http://localhost:3000/requests", {
-        username,
-        name,
-        mail,
-        enrollmentno,
-        semester,
-      });
+      const data = await api.post(
+        "https://airosphere-ggits.vercel.app/requests",
+        {
+          username,
+          name,
+          mail,
+          enrollmentno,
+          semester,
+        }
+      );
       console.log(data);
       Navigate("/authenticate/signupsuccess");
     } catch (error) {

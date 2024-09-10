@@ -29,7 +29,7 @@ const ClubAddNotificationForm = () => {
       const title = formData.title;
       const description = formData.description;
       const data = await api.post(
-        "http://localhost:3000/club/addnotification/" + clubname,
+        "https://airosphere-ggits.vercel.app/club/addnotification/" + clubname,
         {
           title,
           description,

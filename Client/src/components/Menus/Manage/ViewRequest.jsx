@@ -23,7 +23,9 @@ const RequestPage = () => {
 
   // Function to delete a student request by ID
   const handleDelete = async (id) => {
-    const response = await api.delete("http://localhost:3000/requests/" + id);
+    const response = await api.delete(
+      "https://airosphere-ggits.vercel.app/requests/" + id
+    );
     console.log("Request deleted successfully");
     console.log(response);
     const initialReq = initialRequests.filter((request) => {

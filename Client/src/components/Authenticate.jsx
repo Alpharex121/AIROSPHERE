@@ -4,7 +4,7 @@ import { addUser } from "../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import getUser from "../utils/getUser";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 
 const Authenticate = () => {
   const dispatch = useDispatch();
@@ -22,10 +22,13 @@ const Authenticate = () => {
     try {
       const username = e.target.username.value;
       const password = e.target.password.value;
-      const response = await api.post("http://localhost:3000/authenticate", {
-        username,
-        password,
-      });
+      const response = await api.post(
+        "https://airosphere-ggits.vercel.app/authenticate",
+        {
+          username,
+          password,
+        }
+      );
 
       if (response.status === 200 && response.data.username) {
         const currUser = response.data;

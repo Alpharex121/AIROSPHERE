@@ -8,7 +8,7 @@ import { api } from "../../../utils/constant";
 
 const handleDeleteUser = async (studentid) => {
   const deleteResult = await api.delete(
-    "http://localhost:3000/user/" + studentid
+    "https://airosphere-ggits.vercel.app/user/" + studentid
   );
   console.log("User deleted successfully");
 };

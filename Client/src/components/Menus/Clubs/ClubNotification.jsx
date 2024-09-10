@@ -19,7 +19,10 @@ const NotificationList = ({ currClubNotifications, onDeleteNotification }) => {
 
   const handleOnDelete = async (notiid) => {
     const data = await api.delete(
-      "http://localhost:3000/club/notificationdelete/" + clubname + "/" + notiid
+      "https://airosphere-ggits.vercel.app/club/notificationdelete/" +
+        clubname +
+        "/" +
+        notiid
     );
     console.log(data);
     if (onDeleteNotification) {

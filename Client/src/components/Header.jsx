@@ -46,7 +46,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    await api.post("http://localhost:3000/authenticate/logout");
+    await api.post("https://airosphere-ggits.vercel.app/authenticate/logout");
     dispatch(removeUser());
     Navigate("/");
   };

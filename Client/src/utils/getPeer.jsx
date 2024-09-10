@@ -16,7 +16,9 @@ const getPeerData = async () => {
 
   const getPeer = async () => {
     try {
-      let data = await api.get("http://localhost:3000/studentconnect/getpeer");
+      let data = await api.get(
+        "https://airosphere-ggits.vercel.app/studentconnect/getpeer"
+      );
 
       if (data?.status === 200 && data?.data[0]?.title) {
         const currData = data?.data;
