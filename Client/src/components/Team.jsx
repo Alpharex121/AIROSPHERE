@@ -12,15 +12,17 @@ export function Team() {
       <div className="text-center m-8 ">
         <h2 className="text-3xl font-bold text-white">Meet the Creators</h2>
         <p className="text-lg text-wrap text-gray-400 mt-2">
-          We created this website for the AIR (Artificial Intelligence and Robotics) community, <br /> aiming to provide a hub for innovation and collaboration. <br />Discover the minds behind this project who are dedicated to advancing technology and fostering a vibrant tech community.
+          We created this website for the AIR (Artificial Intelligence and
+          Robotics) community, <br /> aiming to provide a hub for innovation and
+          collaboration. <br />
+          Discover the minds behind this project who are dedicated to advancing
+          technology and fostering a vibrant tech community.
         </p>
       </div>
       <div className="flex flex-col md:flex-row gap-10 justify-center items-center">
         {/* First Card */}
         <CardContainer className="inter-var">
-          <CardBody
-            className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border"
-          >
+          <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
             <CardItem translateZ="100" className="w-full h-[60vh] mt-4">
               <img
                 src={anmol}
@@ -51,12 +53,20 @@ export function Team() {
             </CardItem>
             <div className="flex justify-between items-center mt-6">
               <CardItem translateZ={20} className="text-2xl text-white">
-                <a href="https://github.com/Anmolawasthi117" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://github.com/Anmolawasthi117"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <FaGithub className="hover:text-emerald-500 transition-colors duration-300" />
                 </a>
               </CardItem>
               <CardItem translateZ={20} className="text-2xl text-white">
-                <a href="https://linkedin.com/in/anmol-awasthi11117" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://linkedin.com/in/anmol-awasthi11117"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <FaLinkedin className="hover:text-emerald-500 transition-colors duration-300" />
                 </a>
               </CardItem>
@@ -66,9 +76,7 @@ export function Team() {
 
         {/* Second Card */}
         <CardContainer className="inter-var">
-          <CardBody
-            className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border"
-          >
+          <CardBody className="bg-gray-50 relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border">
             <CardItem translateZ="100" className="w-full h-[60vh] mt-4">
               <img
                 src={alpha}
@@ -99,12 +107,20 @@ export function Team() {
             </CardItem>
             <div className="flex justify-between items-center mt-6">
               <CardItem translateZ={20} className="text-2xl text-white">
-                <a href="https://github.com/Alpharex121" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://github.com/Alpharex121"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <FaGithub className="hover:text-emerald-500 transition-colors duration-300" />
                 </a>
               </CardItem>
               <CardItem translateZ={20} className="text-2xl text-white">
-                <a href="https://www.linkedin.com/in/arpit-koshta/" target="_blank" rel="noopener noreferrer">
+                <a
+                  href="https://www.linkedin.com/in/arpit-koshta/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
                   <FaLinkedin className="hover:text-emerald-500 transition-colors duration-300" />
                 </a>
               </CardItem>

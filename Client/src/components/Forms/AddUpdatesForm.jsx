@@ -8,9 +8,10 @@ const AddUpdatesForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
   const showToast = useToast();
-  
-  if (!data || data?.role !== "admin") Navigate("/");
-
+  const allowedRoles = ["admin", "updatemod", "modhead", "professor"];
+  if (!allowedRoles.includes(data?.role)) {
+    Navigate("/"); // Navigate if the user is not authorized
+  }
   const [updateData, setUpdateData] = useState({
     title: "",
     description: "",
@@ -27,19 +28,20 @@ const AddUpdatesForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { title, description, type } = updateData;
-
     try {
-      const response = await api.post("http://localhost:3000/notification", {
+      const title = updateData.title;
+      const description = updateData.description;
+      const type = updateData.type;
+      const data = await api.post("http://localhost:3000/notification", {
         title,
         description,
         type,
       });
 
-      if (response.status === 200) {
+      if (data.status === 200) {
         showToast("success", "Update added successfully!");
         // Optionally, redirect or reset form here
-        Navigate("/updates");
+        Navigate("/updates/" + type);
       } else {
         showToast("error", "Failed to add update. Please try again.");
       }

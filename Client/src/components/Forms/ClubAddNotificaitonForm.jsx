@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../utils/constant";
-import { useToast } from "..//ToastContext";  // Adjust the path as needed
+import { useToast } from "..//ToastContext"; // Adjust the path as needed
 
 const ClubAddNotificationForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
   const showToast = useToast();
 
-  if (!data || data?.role !== "admin") Navigate("/");
-
+  const allowedRoles = ["admin", "clubhead"];
+  if (!allowedRoles.includes(data?.role)) {
+    Navigate("/"); // Navigate if the user is not authorized
+  }
   const { clubname } = useParams();
   const [formData, setFormData] = useState({
     title: "",
@@ -23,16 +25,19 @@ const ClubAddNotificationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { title, description } = formData;
-
     try {
-      const response = await api.post(
-        `http://localhost:3000/club/addnotification/${clubname}`,
-        { title, description }
+      const title = formData.title;
+      const description = formData.description;
+      const data = await api.post(
+        "http://localhost:3000/club/addnotification/" + clubname,
+        {
+          title,
+          description,
+        }
       );
-
-      if (response.status === 200) {
+      if (data.status === 200) {
         showToast("success", "Notification added successfully!");
+        Navigate("/club/" + clubname);
         // Optionally, reset form or navigate to another page
         setFormData({ title: "", description: "" });
       } else {

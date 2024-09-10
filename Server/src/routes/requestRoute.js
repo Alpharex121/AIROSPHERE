@@ -62,7 +62,8 @@ router.delete("/:requestid", auth, async (req, res) => {
     if (
       req.user.role === "admin" ||
       req.user.role === "modhead" ||
-      req.user.role === "resourcemod"
+      req.user.role === "professor" ||
+      req.user.role === "studentmanagemod"
     ) {
       const requestid = req.params.requestid;
       const isExist = await addRequest.findOne({ _id: requestid });

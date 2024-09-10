@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import getNotesData from "../../../utils/getNotes";
@@ -7,12 +7,16 @@ import { api } from "../../../utils/constant";
 const UnitBoxList = () => {
   const { subcode, type } = useParams();
   const Navigate = useNavigate();
-  const dispatch = useDispatch();
-
   const data = useSelector((store) => store?.user);
   if (!data) Navigate("/");
-
-  const isAdmin = data?.role === "admin"; // Assuming `role` is available in the `user` object
+  const dispatch = useDispatch();
+  const [allowed, setAllowed] = useState(false);
+  useEffect(() => {
+    const allowedRoles = ["admin", "professor", "academicmod"];
+    if (allowedRoles.includes(data?.role)) {
+      setAllowed(true);
+    }
+  });
 
   let units;
   if (type === "notes")
@@ -75,11 +79,13 @@ const UnitBoxList = () => {
                   <span className="font-semibold">Semester: </span>
                   {unit.semester}
                 </div>
-                <Link to={unit.link}>
+                <Link to={data?.role !== "demo" ? unit.link : null}>
                   <button
-                    className="inline-block bg-indigo-900 text-white px-4 py-2 rounded-full shadow-md
+                    className={`inline-block bg-indigo-900 text-white px-4 py-2 rounded-full shadow-md
                   hover:shadow-xl hover:from-gray-700 hover:to-gray-600
-                  transition-all duration-300 transform hover:scale-105"
+                  transition-all ${
+                    data?.role === "demo" && "cursor-not-allowed"
+                  } duration-300 transform hover:scale-105`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -88,7 +94,7 @@ const UnitBoxList = () => {
                 </Link>
 
                 {/* Display delete button if the user is an admin */}
-                {isAdmin && (
+                {allowed && (
                   <button
                     onClick={() => handleDelete(unit._id)}
                     className="inline-block bg-red-600 text-white px-4 py-2 rounded-full shadow-md ml-4

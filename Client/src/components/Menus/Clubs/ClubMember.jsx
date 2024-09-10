@@ -14,9 +14,10 @@ const shimmerStyles = `
 
 const ClubMemberList = ({ currClubMember }) => {
   const { clubname } = useParams();
-  const currentUser = useSelector((store) => store?.user);
   const [loading, setLoading] = useState(true); // Loading state
-  const isAdmin = currentUser?.role === "admin"; // Assuming there's a role field to identify admin
+  const [allowed, setAllowed] = useState(false);
+  const data = useSelector((store) => store?.user);
+  const currclubDetail = useSelector((store) => store?.club?.clubdetail);
 
   const handleOnDelete = async (username) => {
     const data = await api.delete(
@@ -29,7 +30,7 @@ const ClubMemberList = ({ currClubMember }) => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate a 2-second delay
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate a 2-second delay
       setLoading(false);
     };
 
@@ -44,7 +45,10 @@ const ClubMemberList = ({ currClubMember }) => {
       {loading ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className={`p-6 rounded-lg shadow-md ${shimmerStyles}`}>
+            <div
+              key={i}
+              className={`p-6 rounded-lg shadow-md ${shimmerStyles}`}
+            >
               <div className="flex flex-col items-center">
                 <div className="w-24 h-24 bg-gray-300 rounded-full mb-4"></div>
                 <div className="space-y-4">
@@ -82,7 +86,9 @@ const ClubMemberList = ({ currClubMember }) => {
               </div>
 
               {/* Delete Button - Only visible if user is an admin */}
-              {isAdmin && (
+              {(data?.role === "admin" ||
+                (data?.role === "clubhead" &&
+                  currclubDetail?.head === data?.username)) && (
                 <div className="mt-4 text-center">
                   <button
                     onClick={() => handleOnDelete(member.username)} // Assume each member has a unique ID

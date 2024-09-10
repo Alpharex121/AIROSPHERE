@@ -8,11 +8,11 @@ const bcrypt = require("bcrypt");
 router.get("/getallstudents", auth, async (req, res) => {
   if (
     req.user.role == "admin" ||
-    req.user.role === "disciplinemod" ||
+    req.user.role === "studentmanagemod" ||
     req.user.role === "professor" ||
     req.user.role === "modhead"
   ) {
-    const result = await userRegister.find();
+    const result = await userRegister.find().sort({ $natural: -1 });
     res.status(200).send(result);
   } else {
     res.status(401).send({ data: "permission denied" });
@@ -27,7 +27,7 @@ router.get("/getcurruser", auth, async (req, res) => {
 router.post("/adduser", auth, async (req, res) => {
   if (
     req.user.role == "admin" ||
-    req.user.role === "disciplinemod" ||
+    req.user.role === "studentmanagemod" ||
     req.user.role === "professor" ||
     req.user.role === "modhead"
   ) {
@@ -37,6 +37,11 @@ router.post("/adduser", auth, async (req, res) => {
       const username = req.body.username;
 
       if (req.body.role === "admin") {
+        res.status(401).send("Permission denied");
+        return;
+      }
+
+      if (req.body.role === "modhead" && req.user.role !== "admin") {
         res.status(401).send("Permission denied");
         return;
       }
@@ -62,9 +67,9 @@ router.post("/adduser", auth, async (req, res) => {
         }
 
         const registered = await newUser.save();
-
+        const result = await userRegister.find().sort({ $natural: -1 });
         console.log("user registered successful" + registered);
-        res.status(200).send("user created successfully" + registered);
+        res.status(200).send(result);
       } else {
         res.status(500).send("Password does not match");
       }
@@ -88,10 +93,8 @@ router.put("/update/:username/:id", auth, async (req, res) => {
 
     if (
       req.user.role === "admin" ||
-      req.user.role === "discriplinemod" ||
-      req.user.role === "headmod" ||
-      req.user.role === "professor" ||
-      req.user.username === req.params.username
+      req.user.role === "studentmanagemod" ||
+      req.user.role === "headmod"
     ) {
       const userid = req.params.id;
       const isExist = await userRegister.findOne({ _id: userid });
@@ -133,8 +136,7 @@ router.put("/update/:username/:id", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   if (
     req.user.role == "admin" ||
-    req.user.role === "disciplinemod" ||
-    req.user.role === "professor" ||
+    req.user.role === "studentmanagemod" ||
     req.user.role === "modhead"
   ) {
     try {
@@ -172,8 +174,8 @@ router.put("/updatepassword/:username", auth, async (req, res) => {
     if (
       req.user.username === req.params.username ||
       req.user.role === "admin" ||
-      req.user.role === "professor" ||
-      req.user.role === "disciplinemod"
+      req.user.role === "studentmanagemod" ||
+      req.user.role === "headmod"
     ) {
       const isExist = await userRegister.findOne({
         username: req.params.username,
@@ -182,7 +184,11 @@ router.put("/updatepassword/:username", auth, async (req, res) => {
         res.status(409).send("User not found");
         return;
       }
-      if (isExist.role === "admin" && req.user.role !== "admin") {
+      if (
+        isExist.role === "admin" &&
+        req.user.role !== "admin" &&
+        req.user.username !== isExist.username
+      ) {
         res.status(401).send("Permission denied");
         return;
       }

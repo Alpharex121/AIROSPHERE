@@ -1,184 +1,221 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addDoubt } from '../../../store/studentConnectSlice';
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { confirmAlert } from "react-confirm-alert";
+import { addDoubt } from "../../../store/studentConnectSlice";
+import getDoubtsData from "../../../utils/getDoubts";
+import { api } from "../../../utils/constant";
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import styles for confirm box
 
 const AskDoubt = () => {
   const data = useSelector((store) => store?.user);
   const dispatch = useDispatch();
-  const doubtsdata = useSelector((store) => store.studentconnect.doubtsdata);
-  const [newDoubt, setNewDoubt] = useState('');
-  const [doubts, setDoubts] = useState([]);
-  const currentUser = 'currentUserId'; // Replace with logic to get the current user's ID
+  const doubtsdata = useSelector((store) => store?.studentconnect?.doubtsdata);
+  const [newDoubt, setNewDoubt] = useState({ title: "", description: "" });
+  const [expandedDoubt, setExpandedDoubt] = useState(null);
+  const currentUser = data?.username;
 
-  useEffect(() => {
-    if (!doubtsdata) {
-      fetchDoubts();
-    } else {
-      setDoubts(doubtsdata);
-    }
-  }, [doubtsdata]);
+  getDoubtsData();
 
-  const fetchDoubts = async () => {
-    try {
-      const response = await fetch("http://localhost:3000/studentconnect/getdoubt");
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.json();
-      if (data.length > 0) {
-        dispatch(addDoubt(data));
-        console.log('Fetched Doubts:', data);
-      }
-    } catch (error) {
-      console.error('Error fetching doubts:', error);
-    }
-  };
-
-  const addNewDoubt = () => {
-    if (newDoubt.trim()) {
-      const newDoubtObj = { 
-        doubt: newDoubt.trim(), 
-        answers: [], 
-        isExpanded: false, 
-        username: data?.username // Add the username or user ID here
-      };
-      const updatedDoubts = [...doubts, newDoubtObj];
-      dispatch(addDoubt(updatedDoubts));
-      setDoubts(updatedDoubts);
-      setNewDoubt('');
-    }
-  };
-
-  const handleKeyDownDoubt = (e) => {
-    if (e.key === 'Enter' && newDoubt.trim()) {
-      e.preventDefault();
-      addNewDoubt();
-    }
-  };
-
-  const addAnswerToDoubt = (index, answer) => {
-    if (answer.trim()) {
-      const updatedDoubts = doubts.map((doubt, i) => {
-        if (i === index) {
-          return { 
-            ...doubt, 
-            answers: [...doubt.answers, { text: answer.trim(), username: data?.username  }] 
-          };
+  const handleSubmitDoubt = async (e) => {
+    e.preventDefault();
+    if (data?.role === "demo") return;
+    const title = newDoubt.title;
+    const description = newDoubt.description;
+    if (newDoubt.title && newDoubt.description) {
+      const data = await api.post(
+        "http://localhost:3000/studentconnect/postdoubt",
+        {
+          title,
+          description,
         }
-        return doubt;
-      });
-      dispatch(addDoubt(updatedDoubts));
-      setDoubts(updatedDoubts);
+      );
+      dispatch(addDoubt(data?.data));
     }
   };
 
-  const toggleAnswers = (index) => {
-    const updatedDoubts = doubts.map((doubt, i) =>
-      i === index ? { ...doubt, isExpanded: !doubt.isExpanded } : doubt
-    );
-    setDoubts(updatedDoubts);
+  const toggleAnswers = (doubtIndex) => {
+    setExpandedDoubt(expandedDoubt === doubtIndex ? null : doubtIndex);
   };
 
-  const deleteDoubt = (index) => {
-    const updatedDoubts = doubts.filter((_, i) => i !== index);
-    dispatch(addDoubt(updatedDoubts)); // Assuming `addDoubt` updates the store with new list
-    setDoubts(updatedDoubts);
+  const handleDeleteDoubt = async (doubtid) => {
+    const data = await api.delete(
+      "http://localhost:3000/studentconnect/deletedoubt/" + doubtid
+    );
+    console.log(data);
+    const updatedData = doubtsdata.filter((doubt) => {
+      return doubt._id.toString() !== doubtid;
+    });
+    dispatch(addDoubt(updatedData));
+  };
+
+  // Confirm delete
+  const confirmDelete = (doubtIndex) => {
+    console.log(doubtIndex);
+    confirmAlert({
+      title: "Confirm to delete",
+      message: "Are you sure you want to delete this doubt?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => handleDeleteDoubt(doubtIndex),
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
   };
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
+      {/* Banner Section */}
+      <div className="bg-indigo-600 text-white py-6 px-4 rounded-lg shadow-md mb-8">
+        <h1 className="text-4xl font-bold text-center">Ask Your Doubt</h1>
+        <p className="text-center text-lg mt-2">
+          Post your doubts and get them answered by the community!
+        </p>
+      </div>
+
+      {/* Form Section */}
       <div className="mb-6">
-        <h2 className="text-3xl font-extrabold text-gray-800 mb-4">Ask Your Doubt</h2>
-        <div className="flex space-x-4">
-          <textarea
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-md"
-            placeholder="Type your doubt..."
-            value={newDoubt}
-            onChange={(e) => setNewDoubt(e.target.value)}
-            onKeyDown={handleKeyDownDoubt}
-          />
-          <button
-            className="bg-indigo-500 text-white px-6 py-3 rounded-lg hover:bg-indigo-600 shadow-lg transition duration-300"
-            onClick={addNewDoubt}
-            disabled={!newDoubt.trim()}
-          >
-            Submit Doubt
-          </button>
+        <div className="bg-gray-50 p-6 rounded-lg shadow-lg border border-gray-200">
+          <form onSubmit={handleSubmitDoubt}>
+            <input
+              type="text"
+              className="w-full mb-3 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-md"
+              placeholder="Doubt Title"
+              value={newDoubt.title}
+              onChange={(e) =>
+                setNewDoubt({ ...newDoubt, title: e.target.value })
+              }
+            />
+            <textarea
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-md"
+              placeholder="Describe your doubt..."
+              value={newDoubt.description}
+              onChange={(e) =>
+                setNewDoubt({ ...newDoubt, description: e.target.value })
+              }
+            />
+            <button
+              type="submit"
+              className={`bg-indigo-500 text-white ${
+                data?.role === "demo" && "cursor-not-allowed"
+              } px-6 py-3 rounded-lg hover:bg-indigo-600 shadow-lg transition duration-300 mt-3`}
+              disabled={!newDoubt.title.trim() || !newDoubt.description.trim()}
+            >
+              Submit Doubt
+            </button>
+          </form>
         </div>
       </div>
 
-      <div>
-        {doubts.map((doubt, index) => (
-          <DoubtCard
-            key={index}
-            doubt={doubt}
-            doubtIndex={index}
-            currentUser={currentUser}
-            onAnswer={addAnswerToDoubt}
-            toggleAnswers={toggleAnswers}
-            onDelete={deleteDoubt}
-          />
-        ))}
-      </div>
+      {/* Doubt Cards Section */}
+      {doubtsdata && (
+        <div>
+          {doubtsdata.map((doubt, index) => (
+            <DoubtCard
+              doubtdata={doubtsdata}
+              key={index}
+              doubt={doubt}
+              doubtIndex={index}
+              currentUser={currentUser}
+              toggleAnswers={toggleAnswers}
+              isExpanded={expandedDoubt === doubt._id}
+              confirmDelete={confirmDelete}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-const DoubtCard = ({ doubt, doubtIndex, onAnswer, toggleAnswers, onDelete, currentUser }) => {
-  const [newAnswer, setNewAnswer] = useState('');
+const DoubtCard = ({
+  doubtdata,
+  doubt,
+  doubtIndex,
+  onAnswer,
+  toggleAnswers,
+  currentUser,
+  isExpanded,
+  confirmDelete,
+}) => {
+  const data = useSelector((store) => store?.user);
+  const [newAnswer, setNewAnswer] = useState("");
+  const [openedDoubt, setOpenedDoubt] = useState(doubt);
 
-  const handleKeyDownAnswer = (e) => {
-    if (e.key === 'Enter' && newAnswer.trim()) {
-      e.preventDefault();
-      onAnswer(doubtIndex, newAnswer);
-      setNewAnswer('');
+  const handleAnswerSubmit = async (e) => {
+    e.preventDefault();
+    if (data?.role === "demo") return;
+    if (newAnswer.trim()) {
+      try {
+        const response = await api.post(
+          `http://localhost:3000/studentconnect/postcomment/${openedDoubt._id}`,
+          {
+            description: newAnswer,
+          }
+        );
+        setOpenedDoubt(response?.data);
+        setNewAnswer(""); // Clear the textarea after submitting
+      } catch (error) {
+        console.error("Error submitting answer:", error);
+      }
     }
   };
 
   return (
-    <div className="mb-6 p-6 border border-gray-300 rounded-lg bg-white shadow-lg transition duration-300">
+    <div className="mb-6 p-6 border border-gray-200 rounded-lg bg-white shadow-lg transition duration-300">
       <div className="flex items-center justify-between mb-4">
-        <p className="text-xl font-semibold text-gray-700">{doubt.doubt}</p>
-        {doubt.username === currentUser && (
+        <div className="flex flex-col text-xl font-semibold text-indigo-800">
+          <h1>{doubt.title}</h1>
+          <p className="text-sm text-gray-700">{doubt.description}</p>
+        </div>
+
+        {(doubt.postername === currentUser ||
+          data?.role === "admin" ||
+          data?.role === "modhead") && (
           <button
             className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-300"
-            onClick={() => onDelete(doubtIndex)}
+            onClick={() => confirmDelete(doubt._id)}
           >
             Delete
           </button>
         )}
       </div>
-      <p className="text-sm text-gray-500 mb-4">Asked by: {doubt.username}</p>
+      <p className="text-sm text-gray-500 mb-4">Asked by: {doubt.postername}</p>
 
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition duration-300"
-        onClick={() => toggleAnswers(doubtIndex)}
+        onClick={() => toggleAnswers(doubt._id)}
       >
-        {doubt.isExpanded ? 'Hide Answers' : 'Show Answers'}
+        {isExpanded ? "Hide Answers" : "Show Answers"}
       </button>
 
-      {doubt.isExpanded && (
-        <div className="mt-4 bg-gray-50 p-4 rounded-lg">
-          <textarea
-            className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
-            placeholder="Type your answer..."
-            value={newAnswer}
-            onChange={(e) => setNewAnswer(e.target.value)}
-            onKeyDown={handleKeyDownAnswer}
-          />
-          <button
-            className="mt-3 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 shadow-lg transition duration-300"
-            onClick={() => {
-              onAnswer(doubtIndex, newAnswer);
-              setNewAnswer('');
-            }}
-            disabled={!newAnswer.trim()}
-          >
-            Submit Answer
-          </button>
+      {isExpanded && (
+        <>
+          <div className="mt-4 bg-gray-50 p-4 rounded-lg">
+            <form onSubmit={handleAnswerSubmit}>
+              <textarea
+                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                placeholder="Type your answer..."
+                value={newAnswer}
+                onChange={(e) => setNewAnswer(e.target.value)}
+              />
+              <button
+                type="submit"
+                className={`mt-3 bg-green-500 text-white px-4 py-2 ${
+                  data?.role === "demo" && "cursor-not-allowed"
+                } rounded-md hover:bg-green-600 shadow-lg transition duration-300`}
+                disabled={!newAnswer.trim()}
+              >
+                Submit Answer
+              </button>
+            </form>
 
-          <AnswerThread doubt={doubt} />
-        </div>
+            <AnswerThread doubt={openedDoubt} />
+          </div>
+        </>
       )}
     </div>
   );
@@ -187,13 +224,15 @@ const DoubtCard = ({ doubt, doubtIndex, onAnswer, toggleAnswers, onDelete, curre
 const AnswerThread = ({ doubt }) => {
   return (
     <div className="mt-4">
-      {doubt.answers.length > 0 ? (
-        doubt.answers.map((answer, answerIndex) => (
+      {doubt.comments.length > 0 ? (
+        doubt.comments.map((comment, commentIndex) => (
           <div
-            key={answerIndex}
+            key={commentIndex}
             className="mb-2 p-4 border border-green-200 rounded-lg bg-green-50 shadow-sm"
           >
-            <p className="text-gray-800"><strong>{answer.username}:</strong> {answer.text}</p>
+            <p className="text-gray-800">
+              <strong>{comment.postername}:</strong> {comment.description}
+            </p>
           </div>
         ))
       ) : (

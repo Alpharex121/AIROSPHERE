@@ -70,7 +70,9 @@ router.delete("/:clubname", auth, async (req, res) => {
 //club notification
 router.get("/notification/:clubname", auth, async (req, res) => {
   try {
-    const club = await addClub.findOne({ name: req.params.clubname });
+    const club = await addClub
+      .findOne({ name: req.params.clubname })
+      .sort({ $natural: -1 });
     const currclub = await club.notification;
     res.status(200).send({ club: club, clubnoti: currclub });
   } catch (error) {

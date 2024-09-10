@@ -13,6 +13,13 @@ const ClubDetailPage = () => {
   const Navigate = useNavigate();
   const data = useSelector((store) => store?.user);
   if (!data) Navigate("/");
+  const [allowed, setAllowed] = useState(false);
+  useEffect(() => {
+    const allowedRoles = ["admin", "clubhead"];
+    if (allowedRoles.includes(data?.role)) {
+      setAllowed(true);
+    }
+  });
 
   getClubDetails({ clubname });
   const currclubDetail = useSelector((store) => store?.club?.clubdetail);
@@ -43,7 +50,9 @@ const ClubDetailPage = () => {
       <div>
         {/* Add Member Button Aligned */}
         <div className="flex  justify-end items-center pt-2 w-2/3 mx-auto">
-          {userdata?.role === "admin" && (
+          {(data?.role === "admin" ||
+            (data?.role === "clubhead" &&
+              currclubDetail?.head === data?.username)) && (
             <Link to={"/addmember/" + currclubDetail?.name}>
               <button className="bg-indigo-500 text-white py-2 px-6 rounded-full transition-transform hover:scale-105 hover:bg-indigo-600 shadow-lg">
                 Add Member
@@ -58,7 +67,9 @@ const ClubDetailPage = () => {
     currMenu = (
       <div>
         <div className="flex  justify-end items-center pt-2 w-2/3 mx-auto">
-          {userdata?.role === "admin" && (
+          {(data?.role === "admin" ||
+            (data?.role === "clubhead" &&
+              currclubDetail?.head === data?.username)) && (
             <Link to={"/addnotification/" + currclubDetail?.name}>
               <button className="bg-green-500 text-white py-2 px-6 rounded-full transition-transform hover:scale-105 hover:bg-green-600 shadow-lg">
                 Add Notification
@@ -75,7 +86,9 @@ const ClubDetailPage = () => {
     currMenu = (
       <div>
         <div className="flex  justify-end items-center pt-2 w-2/3 mx-auto">
-          {userdata?.role === "admin" && (
+          {(data?.role === "admin" ||
+            (data?.role === "clubhead" &&
+              currclubDetail?.head === data?.username)) && (
             <Link to={"/addevent/" + currclubDetail?.name}>
               <button className="bg-purple-500 text-white py-2 px-6 rounded-full transition-transform hover:scale-105 hover:bg-purple-600 shadow-lg">
                 Add Event
@@ -117,16 +130,21 @@ const ClubDetailPage = () => {
                     </span>
                   </p>
                   <p>
-                    Number of Members: <span className="font-medium">10</span>
+                    Number of Members:{" "}
+                    <span className="font-medium">
+                      {currclubDetail.members.length}
+                    </span>
                   </p>
                   {/* Apply Button */}
                 </div>
-                <a
-                  href="#apply"
-                  className="bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-700 hover:to-teal-600 text-white font-bold py-2 w-[11vw] px-8 mt-4 rounded-full transition-transform hover:scale-105 shadow-lg"
+                <button
+                  to={data?.role !== "demo" ? "#apply" : null}
+                  className={`bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-700 hover:to-teal-600 text-white font-bold ${
+                    data?.role === "demo" && "cursor-not-allowed"
+                  }  py-2 w-[11vw] px-8 mt-4 rounded-full transition-transform hover:scale-105 shadow-lg`}
                 >
                   Apply to Join
-                </a>
+                </button>
               </div>
             </div>
           </div>

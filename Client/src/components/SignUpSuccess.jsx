@@ -9,7 +9,7 @@ const SignUpSuccess = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center pt-[20vh] pb-[22vh] bg-gray-100">
       <div className="bg-white rounded-lg shadow-lg p-6 max-w-md">
         <h1 className="text-2xl font-bold text-center text-green-600">
           Sign Up Request Submitted!

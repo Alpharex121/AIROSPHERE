@@ -1,14 +1,18 @@
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../utils/constant";
+import { addStudentData } from "../../../store/studentDataSlice";
 
 const AddStudent = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
-  if (data?.role !== "admin") {
-    Navigate("/");
+  const dispatch = useDispatch();
+  const allowedRoles = ["admin", "professor", "studentmanagemod", "modhead"];
+  if (!allowedRoles.includes(data?.role)) {
+    Navigate("/"); // Navigate if the user is not authorized
   }
+
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -38,16 +42,20 @@ const AddStudent = () => {
       value: "academicmod",
     },
     {
-      role: "Branch Mod",
-      value: "branchmod",
+      role: "Update Mod",
+      value: "updatemod",
     },
     {
       role: "Resource Mod",
       value: "resourcemod",
     },
     {
-      role: "Miscellaneous mod",
-      value: "miscellaneousmod",
+      role: "Professor",
+      value: "professor",
+    },
+    {
+      role: "Demo",
+      value: "demo",
     },
   ];
 
@@ -62,32 +70,39 @@ const AddStudent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.confirmpassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-    // Handle form submission logic (e.g., sending data to the server)
-    const username = formData.username;
-    const name = formData.name;
-    const enrollmentno = formData.enrollmentno;
-    const semester = formData.semester;
-    const mail = formData.mail;
-    const role = formData.role;
-    const password = formData.password;
-    const confirmpassword = formData.confirmpassword;
+    try {
+      if (formData.password !== formData.confirmpassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+      // Handle form submission logic (e.g., sending data to the server)
+      const username = formData.username;
+      const name = formData.name;
+      const enrollmentno = formData.enrollmentno;
+      const semester = formData.semester;
+      const mail = formData.mail;
+      const role = formData.role;
+      const password = formData.password;
+      const confirmpassword = formData.confirmpassword;
 
-    // const username = formData.username,
-    const posted = await api.post("http://localhost:3000/user/adduser", {
-      username,
-      name,
-      enrollmentno,
-      semester,
-      mail,
-      role,
-      password,
-      confirmpassword,
-    });
-    console.log(posted);
+      // const username = formData.username,
+      const posted = await api.post("http://localhost:3000/user/adduser", {
+        username,
+        name,
+        enrollmentno,
+        semester,
+        mail,
+        role,
+        password,
+        confirmpassword,
+      });
+      console.log(posted);
+      dispatch(addStudentData(posted?.data));
+      Navigate("/manage/students");
+      console.log(posted);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

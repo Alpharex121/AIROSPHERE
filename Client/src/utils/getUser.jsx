@@ -9,7 +9,7 @@ const getUser = async () => {
   const dispath = useDispatch();
   const Navigate = useNavigate();
   useEffect(() => {
-    !data && getUserData();
+    getUserData();
   }, []);
 
   const getUserData = async () => {

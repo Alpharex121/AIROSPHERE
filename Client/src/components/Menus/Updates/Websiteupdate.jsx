@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa"; // Importing calendar icon
 import { useDispatch, useSelector } from "react-redux";
 import getWebsiteUpdates from "../../../utils/getWebsiteUpdate";
@@ -6,9 +6,15 @@ import { api } from "../../../utils/constant";
 
 const WebsiteUpdate = () => {
   const user = useSelector((store) => store?.user);
-  const isAdmin = user?.role === "admin"; // Check if user is an admin
   const websiteUpdates = useSelector((store) => store?.updates?.websiteData);
   console.log(websiteUpdates);
+  const [allowed, setAllowed] = useState(false);
+  useEffect(() => {
+    const allowedRoles = ["admin", "professor", "updatemod", "modhead"];
+    if (allowedRoles.includes(user?.role)) {
+      setAllowed(true);
+    }
+  });
   getWebsiteUpdates();
 
   const handleDelete = async (updateId) => {
@@ -65,7 +71,7 @@ const WebsiteUpdate = () => {
                     <span>{update.uploaddate}</span>
                   </div>
                   {/* Display delete button if user is an admin */}
-                  {isAdmin && (
+                  {allowed && (
                     <button
                       onClick={() => handleDelete(update._id)}
                       className="mt-4 inline-block bg-red-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-700 transition-all duration-300"

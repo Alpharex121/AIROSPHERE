@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaCalendarAlt } from "react-icons/fa"; // Importing calendar icon
 import getBranchUpdates from "../../../utils/getBranchUpdates";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,8 +6,15 @@ import { api } from "../../../utils/constant";
 
 const BranchUpdate = () => {
   const user = useSelector((store) => store?.user);
-  const isAdmin = user?.role === "admin"; // Check if user is an adminW
   const branchUpdates = useSelector((store) => store?.updates?.branchData);
+
+  const [allowed, setAllowed] = useState(false);
+  useEffect(() => {
+    const allowedRoles = ["admin", "professor", "updatemod", "modhead"];
+    if (allowedRoles.includes(user?.role)) {
+      setAllowed(true);
+    }
+  });
 
   getBranchUpdates();
 
@@ -68,7 +75,7 @@ const BranchUpdate = () => {
                   </div>
 
                   {/* Display delete button if user is an admin */}
-                  {isAdmin && (
+                  {allowed && (
                     <button
                       onClick={() => handleDelete(update._id)}
                       className="mt-4 inline-block bg-red-600 text-white px-4 py-2 rounded-full shadow-md hover:bg-red-700 transition-all duration-300"

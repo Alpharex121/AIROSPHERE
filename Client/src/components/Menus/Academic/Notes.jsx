@@ -7,10 +7,8 @@ import {
   FaLaptopCode,
   FaFlask,
   FaCalculator,
-  FaClipboardList,
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
 
 const NotesComponent = () => {
   const [selectedSemester, setSelectedSemester] = useState("Semester 1");
@@ -36,15 +34,15 @@ const NotesComponent = () => {
     <div className="mt-10 mx-auto px-4 sm:px-6 lg:px-8">
       {/* Semester Selector */}
       <div className="relative">
-        <div className="flex justify-center rounded-lg p-4 shadow-lg bg-indigo-600">
-          <div className="relative flex">
+        <div className="flex justify-center rounded-lg p-4 shadow-lg bg-indigo-600 overflow-x-auto scrollbar-hide">
+          <div className="relative flex space-x-4">
             {Object.keys(semestersData).map((semester, index) => (
               <div
                 key={semester}
                 ref={(el) => (semesterRefs.current[index] = el)}
-                className={`text-lg font-semibold cursor-pointer px-4 py-2 transition-colors duration-300 rounded-lg mx-3 ${
+                className={`text-lg font-semibold cursor-pointer px-4 py-2 transition-colors duration-300 rounded-lg ${
                   selectedSemester === semester
-                    ? "text-white bg-indigo-800 "
+                    ? "text-white bg-indigo-800"
                     : "text-gray-200 hover:text-white hover:bg-indigo-700"
                 }`}
                 onClick={() => setSelectedSemester(semester)}
@@ -65,7 +63,7 @@ const NotesComponent = () => {
 
       {/* Notes Section */}
       <div className="mt-8 p-6 bg-indigo-100 rounded-lg shadow-xl backdrop-blur-md">
-        <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 text-center mb-6">
           Notes for {selectedSemester}
         </h2>
         {parseInt(selectedSemester[9]) < 6 && (
@@ -73,7 +71,7 @@ const NotesComponent = () => {
             {semestersData[selectedSemester].map((subject, idx) => (
               <div
                 key={idx}
-                className="p-4 bg-white shadow-md rounded-lg transition transform  hover:shadow-xl flex justify-between items-center"
+                className="p-4 bg-white shadow-md rounded-lg transition transform hover:shadow-xl flex justify-between items-center"
               >
                 {/* Icon based on subject index */}
                 <div className="flex items-center space-x-4">
@@ -97,7 +95,7 @@ const NotesComponent = () => {
                     subjectCode[selectedSemester][idx]
                   }
                 >
-                  <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition">
+                  <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition w-full sm:w-auto">
                     View
                   </button>
                 </Link>

@@ -16,7 +16,10 @@ const handleDeleteUser = async (studentid) => {
 const ManageStudents = () => {
   const Navigate = useNavigate();
   const data = useSelector((store) => store?.user);
-  if (!data || data?.role !== "admin") Navigate("/");
+  const allowedRoles = ["admin", "studentmanagemod", "modhead", "professor"];
+  if (!allowedRoles.includes(data?.role)) {
+    Navigate("/"); // Navigate if the user is not authorized
+  }
   const studentData = useSelector((store) => store?.student?.studentData);
   console.log(studentData);
   getStudents();
@@ -63,51 +66,55 @@ const ManageStudents = () => {
                   {student.mail}
                 </p>
               </div>
-              <div className="flex justify-around mt-4 space-x-2">
-                <Link
-                  to={
-                    student.role !== "admin"
-                      ? "/edituser/" + student.username + "/" + student._id
-                      : null
-                  }
-                >
-                  <button
-                    className={`bg-blue-500 hover:bg-blue-600 text-white font-semibold ${
-                      student.role === "admin" ? "cursor-not-allowed" : null
-                    } py-2 px-4 rounded-lg flex items-center justify-center w-full`}
+              {(data?.role === "admin" ||
+                data?.role === "modhead" ||
+                data?.role === "studentmanagemod") && (
+                <div className="flex justify-around mt-4 space-x-2">
+                  <Link
+                    to={
+                      student.role !== "admin"
+                        ? "/edituser/" + student.username + "/" + student._id
+                        : null
+                    }
                   >
-                    <FaEdit className="mr-2" /> Edit
-                  </button>
-                </Link>
-                <Link
-                  to={
-                    student.role !== "admin"
-                      ? "/updatepassword/" + student.username
-                      : null
-                  }
-                >
-                  <button
-                    className={`bg-green-500 hover:bg-green-600 text-white font-semibold ${
-                      student.role === "admin" ? "cursor-not-allowed " : null
-                    } py-2 px-4 rounded-lg flex items-center justify-center w-full`}
+                    <button
+                      className={`bg-blue-500 hover:bg-blue-600 text-white font-semibold ${
+                        student.role === "admin" ? "cursor-not-allowed" : null
+                      } py-2 px-4 rounded-lg flex items-center justify-center w-full`}
+                    >
+                      <FaEdit className="mr-2" /> Edit
+                    </button>
+                  </Link>
+                  <Link
+                    to={
+                      student.role !== "admin"
+                        ? "/updatepassword/" + student.username
+                        : null
+                    }
                   >
-                    <FaKey className="mr-2" /> Change
-                  </button>
-                </Link>
+                    <button
+                      className={`bg-green-500 hover:bg-green-600 text-white font-semibold ${
+                        student.role === "admin" ? "cursor-not-allowed " : null
+                      } py-2 px-4 rounded-lg flex items-center justify-center w-full`}
+                    >
+                      <FaKey className="mr-2" /> Change
+                    </button>
+                  </Link>
 
-                <button
-                  className={`bg-red-500 hover:bg-red-600 text-white font-semibold ${
-                    student.role === "admin"
-                      ? "cursor-not-allowed disabled:"
-                      : null
-                  } py-2 px-4 rounded-lg flex items-center justify-center w-full`}
-                  onClick={() => {
-                    handleDeleteUser(student._id);
-                  }}
-                >
-                  <FaTrash className="mr-2" /> Delete
-                </button>
-              </div>
+                  <button
+                    className={`bg-red-500 hover:bg-red-600 text-white font-semibold ${
+                      student.role === "admin"
+                        ? "cursor-not-allowed disabled:"
+                        : null
+                    } py-2 px-4 rounded-lg flex items-center justify-center w-full`}
+                    onClick={() => {
+                      handleDeleteUser(student._id);
+                    }}
+                  >
+                    <FaTrash className="mr-2" /> Delete
+                  </button>
+                </div>
+              )}
             </motion.div>
           ))}
         </div>

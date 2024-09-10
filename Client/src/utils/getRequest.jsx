@@ -16,7 +16,7 @@ const getRequests = async () => {
   const getRequestsData = async () => {
     try {
       const data = await api.get("http://localhost:3000/requests");
-      if (data.status === 200 && data?.data[0]?.username) {
+      if (data.status === 200) {
         const currRequest = data.data;
         dispath(addRequestData(currRequest));
 

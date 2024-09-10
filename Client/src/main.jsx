@@ -46,6 +46,8 @@ import AddEventForm from "./components/Forms/ClubAddEventForm.jsx";
 import AddClubForm from "./components/Forms/AddClubForm.jsx";
 import AddUpdatesForm from "./components/Forms/AddUpdatesForm.jsx";
 import AddAcademicForm from "./components/Forms/AddAcademicForm.jsx";
+import AddPeerRequestForm from "./components/Forms/AddPeerRequestForm.jsx";
+import FindTeamForm from "./components/Forms/FindTeamForm.jsx";
 
 const appRouter = createBrowserRouter([
   {
@@ -184,6 +186,14 @@ const appRouter = createBrowserRouter([
       {
         path: "/addacademic",
         element: <AddAcademicForm />,
+      },
+      {
+        path: "/studentconnect/postpeerrequest",
+        element: <AddPeerRequestForm />,
+      },
+      {
+        path: "/studentconnect/newfindteamrequest",
+        element: <FindTeamForm />,
       },
     ],
   },

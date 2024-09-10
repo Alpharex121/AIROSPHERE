@@ -12,6 +12,11 @@ const EditUserForm = () => {
   if (username === "Alpha" || username === "Zoro") {
     return <Navigate to="/" />;
   }
+  const data = useSelector((store) => store?.user);
+  const allowedRoles = ["admin", "modhead", "studentmanagemod"];
+  if (!allowedRoles.includes(data?.role)) {
+    Navigate("/"); // Navigate if the user is not authorized
+  }
 
   const [currStudent, setCurrStudent] = useState(null);
   const [formData, setFormData] = useState({
@@ -28,7 +33,9 @@ const EditUserForm = () => {
   // useEffect to set the current student data
   useEffect(() => {
     if (studentData) {
-      const student = studentData.find((student) => student.username === username);
+      const student = studentData.find(
+        (student) => student.username === username
+      );
 
       if (student) {
         setCurrStudent(student);
@@ -61,22 +68,23 @@ const EditUserForm = () => {
     { role: "Clubhead", value: "clubhead" },
     { role: "Student Manage Mod", value: "studentmanagemod" },
     { role: "Academic Mod", value: "academicmod" },
-    { role: "Branch Mod", value: "branchmod" },
+    { role: "Update Mod", value: "updatemod" },
     { role: "Resource Mod", value: "resourcemod" },
     { role: "Miscellaneous mod", value: "miscellaneousmod" },
+    { role: "Demo", value: "demo" },
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { username, name, enrollmentno, semester, mail, role } = formData;
-
     try {
-      const response = await api.put(
+      const { username, name, enrollmentno, semester, mail, role } = formData;
+
+      const editReponse = await api.put(
         `http://localhost:3000/user/update/${username}/${userid}`,
         { username, name, enrollmentno, semester, mail, role }
       );
 
-      if (response.status === 200) {
+      if (editReponse.status === 200) {
         showToast("success", "User details updated successfully!");
       } else {
         showToast("error", "Failed to update user details. Please try again.");

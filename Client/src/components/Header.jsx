@@ -16,6 +16,23 @@ const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [closeTimeout, setCloseTimeout] = useState(null);
+  const [allowed, setAllowed] = useState(false);
+
+  // State variables for toggling submenus in mobile
+  const [mobileDropdowns, setMobileDropdowns] = useState({
+    academic: false,
+    studentConnect: false,
+    resources: false,
+    updates: false,
+    manage: false,
+  });
+
+  useEffect(() => {
+    const allowedRoles = ["admin", "professor", "studentmanagemod", "modhead"];
+    if (allowedRoles.includes(data?.role)) {
+      setAllowed(true);
+    }
+  }, [data]);
 
   const handleMouseEnter = (section) => {
     if (closeTimeout) {
@@ -49,6 +66,13 @@ const Header = () => {
     setProfileDropdown(!profileDropdown);
   };
 
+  const toggleMobileDropdown = (section) => {
+    setMobileDropdowns((prevState) => ({
+      ...prevState,
+      [section]: !prevState[section],
+    }));
+  };
+
   useEffect(() => {
     if (data && data.username) {
       setIsLoggedIn(true);
@@ -67,43 +91,30 @@ const Header = () => {
           </Link>
         </div>
 
+        {/* Desktop Menu */}
         {!isLoggedIn ? null : (
           <>
-            {/* Desktop Menu */}
             <ul className="hidden lg:flex space-x-6">
               {renderNavItems(
                 handleMouseEnter,
                 handleMouseLeave,
                 dropdownOpen,
                 false,
-                data
+                data,
+                allowed
               )}
             </ul>
 
-            {/* Hamburger Menu Icon */}
+            {/* Hamburger Menu Icon for mobile */}
             <div className="lg:hidden">
-              <button onClick={toggleMenu}>
+              <button onClick={toggleMenu} className="text-gray-800">
                 {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
               </button>
             </div>
-
-            {/* Mobile Menu */}
-            {isMenuOpen && (
-              <ul className="lg:hidden space-y-4 mt-4">
-                {renderNavItems(
-                  handleMouseEnter,
-                  handleMouseLeave,
-                  dropdownOpen,
-                  true,
-                  data
-                )}
-              </ul>
-            )}
           </>
         )}
 
         {!isLoggedIn ? (
-          // If not logged in, show Login button
           <div>
             <button
               onClick={handleLogin}
@@ -113,7 +124,6 @@ const Header = () => {
             </button>
           </div>
         ) : (
-          // If logged in, show profile button with dropdown
           <div className="relative">
             <button
               onClick={toggleProfileDropdown}
@@ -158,6 +168,24 @@ const Header = () => {
             )}
           </div>
         )}
+
+        {/* Mobile Menu */}
+        {isMenuOpen && isLoggedIn && (
+          <div className="absolute top-16 left-0 w-full bg-white shadow-md lg:hidden z-50">
+            <ul className="space-y-4 py-4 px-6">
+              {renderNavItems(
+                handleMouseEnter,
+                handleMouseLeave,
+                dropdownOpen,
+                true, // Now handling mobile version
+                data,
+                allowed,
+                toggleMobileDropdown, // Pass the toggle function for mobile submenus
+                mobileDropdowns // Pass the mobile dropdown state
+              )}
+            </ul>
+          </div>
+        )}
       </nav>
     </header>
   );
@@ -169,20 +197,23 @@ const renderNavItems = (
   handleMouseLeave,
   dropdownOpen,
   isMobile = false,
-  data
+  data,
+  allowed,
+  toggleMobileDropdown = () => {}, // New prop for toggling mobile submenus
+  mobileDropdowns = {} // New prop for mobile dropdown state
 ) => {
   return (
     <>
       {/* Academic */}
       <li
         className="relative z-50"
-        onMouseEnter={() => handleMouseEnter("academic")}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={!isMobile ? () => handleMouseEnter("academic") : null}
+        onMouseLeave={!isMobile ? handleMouseLeave : null}
+        onClick={isMobile ? () => toggleMobileDropdown("academic") : null}
       >
-        <h1 href="#" className="hover:text-indigo-500 transition">
-          Academic
-        </h1>
-        {dropdownOpen === "academic" && !isMobile && (
+        <h1 className="hover:text-indigo-500 transition">Academic</h1>
+        {(dropdownOpen === "academic" ||
+          (isMobile && mobileDropdowns.academic)) && (
           <Dropdown
             items={["Notes", "PYQ", "Important Questions", "Add Academic"]}
             url={[
@@ -191,6 +222,7 @@ const renderNavItems = (
               "/academic/important",
               "/addacademic",
             ]}
+            isMobile={isMobile}
           />
         )}
       </li>
@@ -198,13 +230,15 @@ const renderNavItems = (
       {/* Student Connect */}
       <li
         className="relative z-50"
-        onMouseEnter={() => handleMouseEnter("studentConnect")}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={
+          !isMobile ? () => handleMouseEnter("studentConnect") : null
+        }
+        onMouseLeave={!isMobile ? handleMouseLeave : null}
+        onClick={isMobile ? () => toggleMobileDropdown("studentConnect") : null}
       >
-        <h1 href="#" className="hover:text-indigo-500 transition">
-          Student Connect
-        </h1>
-        {dropdownOpen === "studentConnect" && !isMobile && (
+        <h1 className="hover:text-indigo-500 transition">Student Connect</h1>
+        {(dropdownOpen === "studentConnect" ||
+          (isMobile && mobileDropdowns.studentConnect)) && (
           <Dropdown
             items={["Find Teammates", "Ask Doubts", "Peer Programming"]}
             url={[
@@ -212,6 +246,7 @@ const renderNavItems = (
               "/studentconnect/askdoubt",
               "/studentconnect/findpeer",
             ]}
+            isMobile={isMobile}
           />
         )}
       </li>
@@ -219,22 +254,20 @@ const renderNavItems = (
       {/* Clubs */}
       <Link to="/club">
         <li>
-          <h1 href="#" className="hover:text-indigo-500 transition">
-            Clubs
-          </h1>
+          <h1 className="hover:text-indigo-500 transition">Clubs</h1>
         </li>
       </Link>
 
       {/* Resources */}
       <li
         className="relative z-50"
-        onMouseEnter={() => handleMouseEnter("resources")}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={!isMobile ? () => handleMouseEnter("resources") : null}
+        onMouseLeave={!isMobile ? handleMouseLeave : null}
+        onClick={isMobile ? () => toggleMobileDropdown("resources") : null}
       >
-        <h1 href="#" className="hover:text-indigo-500 transition">
-          Resources
-        </h1>
-        {dropdownOpen === "resources" && !isMobile && (
+        <h1 className="hover:text-indigo-500 transition">Resources</h1>
+        {(dropdownOpen === "resources" ||
+          (isMobile && mobileDropdowns.resources)) && (
           <Dropdown
             items={["Web Development", "App Development", "AI", "DSA"]}
             url={[
@@ -243,24 +276,25 @@ const renderNavItems = (
               "/resources/ai",
               "/resources/dsa",
             ]}
+            isMobile={isMobile}
           />
-          
         )}
       </li>
 
       {/* Updates */}
       <li
         className="relative z-50"
-        onMouseEnter={() => handleMouseEnter("updates")}
-        onMouseLeave={handleMouseLeave}
+        onMouseEnter={!isMobile ? () => handleMouseEnter("updates") : null}
+        onMouseLeave={!isMobile ? handleMouseLeave : null}
+        onClick={isMobile ? () => toggleMobileDropdown("updates") : null}
       >
-        <h1 href="#" className="hover:text-indigo-500 transition">
-          Updates
-        </h1>
-        {dropdownOpen === "updates" && !isMobile && (
+        <h1 className="hover:text-indigo-500 transition">Updates</h1>
+        {(dropdownOpen === "updates" ||
+          (isMobile && mobileDropdowns.updates)) && (
           <Dropdown
             items={["Branch Updates", "Website Updates", "Add Updates"]}
             url={["/updates/branch", "/updates/website", "/addupdates"]}
+            isMobile={isMobile}
           />
         )}
       </li>
@@ -268,24 +302,21 @@ const renderNavItems = (
       <Link to="https://discord.gg/hrDdYVcyb4" target="_blank">
         {/* Mentor Connect */}
         <li>
-          <h1 href="#" className="hover:text-blue-500 transition">
-            Mentor Connect
-          </h1>
+          <h1 className="hover:text-blue-500 transition">Mentor Connect</h1>
         </li>
       </Link>
 
-      {/* Manage sudent section */}
-
-      {data?.role === "admin" && (
+      {/* Manage student section */}
+      {allowed && (
         <li
           className="relative z-50"
-          onMouseEnter={() => handleMouseEnter("manage")}
-          onMouseLeave={handleMouseLeave}
+          onMouseEnter={!isMobile ? () => handleMouseEnter("manage") : null}
+          onMouseLeave={!isMobile ? handleMouseLeave : null}
+          onClick={isMobile ? () => toggleMobileDropdown("manage") : null}
         >
-          <h1 href="#" className="hover:text-blue-500 transition">
-            Manage
-          </h1>
-          {dropdownOpen === "manage" && !isMobile && (
+          <h1 className="hover:text-blue-500 transition">Manage</h1>
+          {(dropdownOpen === "manage" ||
+            (isMobile && mobileDropdowns.manage)) && (
             <Dropdown
               items={["Manage Student", "Add Student", "Request"]}
               url={[
@@ -293,6 +324,7 @@ const renderNavItems = (
                 "/manage/addstudent",
                 "/manage/viewrequest",
               ]}
+              isMobile={isMobile}
             />
           )}
         </li>
@@ -302,22 +334,47 @@ const renderNavItems = (
 };
 
 // Dropdown Component
-const Dropdown = ({ items, url }) => {
+const Dropdown = ({ items, url, isMobile }) => {
   const data = useSelector((store) => store?.user);
+  const [academicAllowed, setAcademicAllowed] = useState(false);
+  const [updateAllowed, setUpdateAllowed] = useState(false);
+
+  useEffect(() => {
+    const academicAlloweds = ["admin", "professor", "academicmod"];
+    const updateAlloweds = ["admin", "professor", "updatemod"];
+    if (academicAlloweds.includes(data?.role)) {
+      setAcademicAllowed(true);
+    }
+    if (updateAlloweds.includes(data?.role)) {
+      setUpdateAllowed(true);
+    }
+  }, [data?.role]);
+
   return (
-    <ul className="absolute left-0 mt-2 w-48 bg-white shadow-lg rounded-md transition">
+    <ul
+      className={`${
+        isMobile ? "py-2" : "absolute left-0 mt-2"
+      } w-48 bg-white shadow-lg rounded-md transition`}
+    >
       {items.map((item, index) => (
         <Link to={url[index]} key={index}>
           {item === "Add Updates" || item === "Add Academic" ? (
-            data?.role === "admin" ? (
-              <li>
+            (item === "Add Updates" && updateAllowed && (
+              <li key={index}>
                 <p className="block px-4 py-2 hover:bg-blue-100 transition">
                   {item}
                 </p>
               </li>
-            ) : null
+            )) ||
+            (item === "Add Academic" && academicAllowed && (
+              <li key={index}>
+                <p className="block px-4 py-2 hover:bg-blue-100 transition">
+                  {item}
+                </p>
+              </li>
+            ))
           ) : (
-            <li>
+            <li key={index}>
               <p className="block px-4 py-2 hover:bg-blue-100 transition">
                 {item}
               </p>

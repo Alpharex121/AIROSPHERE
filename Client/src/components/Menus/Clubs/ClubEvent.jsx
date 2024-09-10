@@ -7,7 +7,10 @@ import { api } from "../../../utils/constant";
 const Shimmer = () => (
   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
     {[...Array(3)].map((_, i) => (
-      <div key={i} className="bg-white rounded-lg shadow-lg overflow-hidden animate-pulse">
+      <div
+        key={i}
+        className="bg-white rounded-lg shadow-lg overflow-hidden animate-pulse"
+      >
         <div className="w-full h-48 bg-gray-200 border-b-2 border-black p-3"></div>
         <div className="p-6 space-y-4">
           <div className="h-6 bg-gray-300 rounded"></div>
@@ -23,9 +26,10 @@ const Shimmer = () => (
 
 const EventList = ({ clubEvent }) => {
   const { clubname } = useParams();
-  const currentUser = useSelector((store) => store?.user);
-  const [loading, setLoading] = useState(true); // Loading state
-  const isAdmin = currentUser?.role === "admin"; // Assuming there's a role field to identify admin
+  const [allowed, setAllowed] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const data = useSelector((store) => store?.user);
+  const currclubDetail = useSelector((store) => store?.club?.clubdetail);
 
   const handleOnDelete = async (eventid) => {
     const data = await api.delete(
@@ -38,7 +42,7 @@ const EventList = ({ clubEvent }) => {
     // Simulate a data fetch
     const fetchData = async () => {
       setLoading(true);
-      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate a 2-second delay
+      await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate a 2-second delay
       setLoading(false);
     };
 
@@ -89,7 +93,9 @@ const EventList = ({ clubEvent }) => {
                   </div>
 
                   {/* Delete Button - Only visible if user is an admin */}
-                  {isAdmin && (
+                  {(data?.role === "admin" ||
+                    (data?.role === "clubhead" &&
+                      currclubDetail?.head === data?.username)) && (
                     <div className="mt-6 text-right">
                       <button
                         onClick={() => handleOnDelete(event._id)}

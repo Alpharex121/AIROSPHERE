@@ -7,10 +7,10 @@ import { useToast } from "../ToastContext";
 const AddEventForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
-  const showToast = useToast();
-
-  if (!data || data?.role !== "admin") Navigate("/");
-
+  const allowedRoles = ["admin", "clubhead"];
+  if (!allowedRoles.includes(data?.role)) {
+    Navigate("/"); // Navigate if the user is not authorized
+  }
   const { clubname } = useParams();
   const [formData, setFormData] = useState({
     title: "",
@@ -26,19 +26,21 @@ const AddEventForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    const { title, description, startfrom, eventincharge, venue } = formData;
-
     try {
-      const response = await api.post(
-        `http://localhost:3000/club/addevents/${clubname}`,
+      console.log(formData);
+      const title = formData.title;
+      const description = formData.description;
+      const startfrom = formData.startfrom;
+      const eventincharge = formData.eventincharge;
+      const venue = formData.venue;
+      const data = await api.post(
+        "http://localhost:3000/club/addevents/" + clubname,
         { title, description, startfrom, eventincharge, venue }
       );
-
-      if (response.status === 200) {
+      if (data.status === 200) {
         showToast("success", "Event added successfully!");
         // Optionally, reset form or navigate to another page
-        Navigate("/events");
+        Navigate("/club/" + clubname);
       } else {
         showToast("error", "Failed to add event. Please try again.");
       }

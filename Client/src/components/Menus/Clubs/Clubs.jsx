@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import getClubData from "../../../utils/getClub";
@@ -13,7 +13,13 @@ const ClubPage = () => {
   if (!data) Navigate("/");
 
   const currclub = useSelector((store) => store?.club?.clubdata);
-  const isAdmin = data?.role === "admin"; // Assuming role field indicates if the user is admin
+  const [allowed, setAllowed] = useState(false);
+  useEffect(() => {
+    const allowedRoles = ["admin"];
+    if (allowedRoles.includes(data?.role)) {
+      setAllowed(true);
+    }
+  });
 
   // Fetch club data
   getClubData();
@@ -40,7 +46,7 @@ const ClubPage = () => {
             </h1>
 
             {/* Add Club Button - Only visible to admins */}
-            {isAdmin && (
+            {allowed && (
               <div className="flex justify-end ">
                 <button
                   onClick={handleAddClub}
@@ -77,7 +83,7 @@ const ClubPage = () => {
                     </Link>
 
                     {/* Delete Club Button - Only visible to admins */}
-                    {isAdmin && (
+                    {allowed && (
                       <button
                         onClick={() => handleDeleteClub(club.name)}
                         className="mt-4 ml-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all"

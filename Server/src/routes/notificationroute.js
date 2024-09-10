@@ -16,7 +16,7 @@ router.post("/", auth, async (req, res) => {
       req.user.role === "admin" ||
       req.user.role === "headmod" ||
       req.user.role === "professor" ||
-      req.user.role === "professormod"
+      req.user.role === "updatemod"
     ) {
       const date = new Date();
 
@@ -51,7 +51,7 @@ router.delete("/:notificationid", auth, async (req, res) => {
     req.user.role === "admin" ||
     req.user.role === "headmod" ||
     req.user.role === "professor" ||
-    req.user.role === "professormod"
+    req.user.role === "updatemod"
   ) {
     try {
       const notificationid = req.params.notificationid;
