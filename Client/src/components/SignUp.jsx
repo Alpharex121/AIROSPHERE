@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../utils/constant";
-import { addUser } from "../store/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { addRequestData } from "../store/studentDataSlice";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { storage } from "../firebase";
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
   const data = useSelector((store) => store?.user);
-  const [file, setFile] = useState(null); // To handle ID card upload
+  const [file, setFile] = useState(null); // For ID card upload
+  const [uploadProgress, setUploadProgress] = useState(0); // To handle ID card upload
+  const [isSubmitting, setIsSubmitting] = useState(false); // To prevent multiple submissions
 
   useEffect(() => {
     if (data && data?.username) {
@@ -18,53 +20,59 @@ const SignUp = () => {
   }, [data, Navigate]);
 
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (
-      selectedFile &&
-      (selectedFile.type === "image/png" || selectedFile.type === "image/jpeg")
-    ) {
-      setFile(selectedFile);
-    } else {
-      alert("Please upload a PNG or JPG image.");
-    }
+    setFile(e.target.files[0]);
   };
 
-  const formData = new FormData();
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const username = e.target.username.value;
-      const name = e.target.name.value;
-      const semester = e.target.semester.value;
-      const enrollmentno = e.target.enrollmentno.value;
-      const mail = e.target.mail.value;
+    if (!file) return alert("Please upload an ID card");
 
-      formData.append("username", username);
-      formData.append("name", name);
-      formData.append("semester", semester);
-      formData.append("enrollmentno", enrollmentno);
-      formData.append("mail", mail);
-      if (file) {
-        formData.append("id_card", file); // Add ID card image to form data
-      }
+    setIsSubmitting(true); // Disable button while submitting
 
-      const data = await api.post(
-        "https://airosphere-ggits.vercel.app/requests",
-        {
-          username,
-          name,
-          mail,
-          enrollmentno,
-          semester,
+    // Firebase file upload
+    const fileRef = ref(storage, `idCards/${file.name}`);
+    const uploadTask = uploadBytesResumable(fileRef, file);
+
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Track upload progress
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.error("Upload failed", error);
+        setIsSubmitting(false); // Re-enable button on error
+      },
+      async () => {
+        // Get download URL after upload completes
+        const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+
+        // Prepare the user data including the download URL of the ID card
+        const userData = {
+          username: e.target.username.value,
+          name: e.target.name.value,
+          semester: e.target.semester.value,
+          enrollmentno: e.target.enrollmentno.value,
+          mail: e.target.mail.value,
+          idCardUrl: downloadURL, // Save the download URL from Firebase
+        };
+
+        try {
+          // Save the user data to your backend (e.g., a database)
+          const response = await api.post("https://airosphere-ggits.vercel.app/requests", userData);
+          console.log("User data saved successfully:", response.data);
+
+          // Navigate to success page after form submission
+          Navigate("/authenticate/signupsuccess");
+        } catch (error) {
+          console.error("Error saving user data:", error.message);
+        } finally {
+          setIsSubmitting(false); // Re-enable button after submit
         }
-      );
-      console.log(data);
-      Navigate("/authenticate/signupsuccess");
-    } catch (error) {
-      console.log(error.message);
-      Navigate("/");
-    }
+      }
+    );
   };
 
   return (
@@ -193,11 +201,22 @@ const SignUp = () => {
                   required
                 />
               </div>
+
+              {/* Display upload progress */}
+              {uploadProgress > 0 && (
+                <div className="text-sm font-medium text-gray-700">
+                  Upload Progress: {Math.round(uploadProgress)}%
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                disabled={isSubmitting}
+                className={`w-full text-white ${
+                  isSubmitting ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
+                } focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center`}
               >
-                Sign Up
+                {isSubmitting ? "Signing Up..." : "Sign Up"}
               </button>
               <p className="text-sm font-light text-gray-500">
                 Already have an account?{" "}

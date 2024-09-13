@@ -257,6 +257,7 @@ const renderNavItems = (
           <h1 className="hover:text-indigo-500 transition">Clubs</h1>
         </li>
       </Link>
+      
 
       {/* Resources */}
       <li
@@ -303,6 +304,13 @@ const renderNavItems = (
         {/* Mentor Connect */}
         <li>
           <h1 className="hover:text-blue-500 transition">Mentor Connect</h1>
+        </li>
+      </Link>
+
+        {/* Important Links */}
+      <Link to="/important links">
+        <li>
+          <h1 className="hover:text-indigo-500 transition">Quick Links</h1>
         </li>
       </Link>
 

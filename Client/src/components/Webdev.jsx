@@ -4,92 +4,93 @@ import { FaCheckCircle, FaRegCircle } from 'react-icons/fa'; // Icons for comple
 const learningPath = [
   {
     id: 1,
-    topic: 'HTML Basics',
+    topic: 'HTML',
     duration: '3 days',
     resource: {
       type: 'YouTube',
       title: 'HTML Full Course for Beginners | HTML Tutorial',
-      url: 'https://www.youtube.com/watch?v=pQN-pnXPaVg'
+      url: 'https://youtu.be/k7ELO356Npo?si=p_rq-2fxq0usc0Wp'
     },
     isCompleted: false
   },
   {
     id: 2,
     topic: 'CSS Fundamentals',
-    duration: '7 days',
+    duration: '6 days',
     resource: {
       type: 'YouTube',
       title: 'CSS Crash Course For Beginners',
-      url: 'https://www.youtube.com/watch?v=yfoY53QXEnI'
+      url: 'https://www.youtube.com/watch?v=ESnrn1kAD4E'
+    },
+    isCompleted: false
+  },
+  {
+    id: 2,
+    topic: 'Tailwind css',
+    duration: '3 days',
+    resource: {
+      type: 'YouTube',
+      title: 'Tailwind CSS Crash Course For Beginners',
+      url: 'https://youtu.be/6a8CNTk9yo4?si=c6g-MXxULD8fv99K'
     },
     isCompleted: false
   },
   {
     id: 3,
-    topic: 'JavaScript Basics',
-    duration: '10 days',
+    topic: 'JavaScript full Playlist',
+    duration: '30 days',
     resource: {
       type: 'YouTube',
-      title: 'JavaScript Tutorial for Beginners: Learn JavaScript in 1 Hour',
-      url: 'https://www.youtube.com/watch?v=W6NZfCO5SIk'
+      title: 'JavaScript full playlist Zero to hero',
+      url: 'https://youtube.com/playlist?list=PLu71SKxNbfoBuX3f4EOACle2y-tRC5Q37&si=amsUfBUS5gmqTCYI'
     },
     isCompleted: false
   },
   {
     id: 4,
     topic: 'Version Control with Git and GitHub',
-    duration: '5 days',
+    duration: '2 days',
     resource: {
       type: 'YouTube',
       title: 'Git & GitHub Crash Course For Beginners',
-      url: 'https://www.youtube.com/watch?v=SWYqp7iY_Tc'
+      url: 'https://youtu.be/q8EevlEpQ2A?si=GuoUtVE06DANXQdt'
     },
     isCompleted: false
   },
   {
     id: 5,
-    topic: 'Responsive Web Design',
-    duration: '7 days',
+    topic: 'Frontend Framework: React',
+    duration: '18 days',
     resource: {
-      type: 'FreeCodeCamp',
-      title: 'Responsive Web Design Certification (FreeCodeCamp)',
-      url: 'https://www.freecodecamp.org/learn/responsive-web-design/'
+      type: 'YouTube',
+      title: 'React JS full playlist',
+      url: 'https://youtube.com/playlist?list=PLu71SKxNbfoDqgPchmvIsL4hTnJIrtige&si=56euGstSNhznn11J'
     },
     isCompleted: false
   },
   {
     id: 6,
-    topic: 'JavaScript DOM Manipulation',
-    duration: '5 days',
+    topic: 'BackEnd',
+    duration: '30 days',
     resource: {
       type: 'YouTube',
-      title: 'JavaScript DOM Manipulation Crash Course',
-      url: 'https://www.youtube.com/watch?v=0ik6X4DJKCc'
+      title: 'Node js full playlist',
+      url: 'https://youtube.com/playlist?list=PLinedj3B30sDby4Al-i13hQJGQoRQDfPo&si=htQ8sSk_jyGMBHyF'
     },
     isCompleted: false
   },
   {
     id: 7,
-    topic: 'Frontend Framework: React Basics',
-    duration: '10 days',
+    topic: 'Next js : full stack framework',
+    duration: '20 days',
     resource: {
       type: 'YouTube',
-      title: 'React JS Crash Course',
-      url: 'https://www.youtube.com/watch?v=w7ejDZ8SWv8'
+      title: 'Node js full playlist',
+      url: 'https://youtube.com/playlist?list=PLinedj3B30sDP2CHN5P0lDD64yYZ0Nn4J&si=uo9CsprZ8TBK5Ufr'
     },
     isCompleted: false
   },
-  {
-    id: 8,
-    topic: 'Deployment and Hosting with Netlify',
-    duration: '2 days',
-    resource: {
-      type: 'YouTube',
-      title: 'How to Deploy Websites Using Netlify (Free and Easy)',
-      url: 'https://www.youtube.com/watch?v=sGBvZEOWm7s'
-    },
-    isCompleted: false
-  }
+  
 ];
 
 const Webdev = () => {

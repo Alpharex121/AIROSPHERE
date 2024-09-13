@@ -48,6 +48,7 @@ import AddUpdatesForm from "./components/Forms/AddUpdatesForm.jsx";
 import AddAcademicForm from "./components/Forms/AddAcademicForm.jsx";
 import AddPeerRequestForm from "./components/Forms/AddPeerRequestForm.jsx";
 import FindTeamForm from "./components/Forms/FindTeamForm.jsx";
+import ImportantLinks from "./components/ImportantLinks.jsx";
 
 const appRouter = createBrowserRouter([
   {
@@ -97,6 +98,10 @@ const appRouter = createBrowserRouter([
       {
         path: "/club",
         element: <Clubs />,
+      },
+      {
+        path: "/important links",
+        element: <ImportantLinks />,
       },
       {
         path: "/resources/webdev",

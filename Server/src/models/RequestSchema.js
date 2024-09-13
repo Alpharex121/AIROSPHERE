@@ -13,6 +13,10 @@ const requesSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  id_card: {
+    type: String,
+    required: true,
+  },
   semester: {
     type: String,
     required: true,

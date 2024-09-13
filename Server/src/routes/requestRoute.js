@@ -35,6 +35,7 @@ router.post("/", async (req, res) => {
       mail: req.body.mail,
       semester: req.body.semester,
       enrollmentno: req.body.enrollmentno,
+      id_card: req.body.idCardUrl,
       requeston: currentDate,
     });
 
