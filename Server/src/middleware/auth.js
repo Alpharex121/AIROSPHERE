@@ -15,10 +15,12 @@ const auth = async (req, res, next) => {
     } else {
       console.log("user not verified");
       res.status(401).send({ data: "user not verified" });
+      return;
     }
   } catch (error) {
     console.log(error);
     res.status(500).send("Error occured while authenticating user");
+    return;
   }
 };
 

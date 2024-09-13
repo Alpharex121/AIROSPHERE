@@ -22,19 +22,17 @@ const Authenticate = () => {
     try {
       const username = e.target.username.value;
       const password = e.target.password.value;
-      const response = await api.post(
-        "https://airosphere-ggits.vercel.app/authenticate",
-        {
-          username,
-          password,
-        }
-      );
+      const response = await api.post("http://localhost:3000/authenticate", {
+        username,
+        password,
+      });
 
       if (response.status === 200 && response.data.username) {
         const currUser = response.data;
         const userData = {
           username: currUser.username,
           enrollmentno: currUser.enrollmentno,
+          branch: currUser.branch,
           name: currUser.name,
           semester: currUser.semester,
           mail: currUser.mail,
@@ -49,7 +47,7 @@ const Authenticate = () => {
       }
     } catch (error) {
       console.log(error.message);
-      toast.error("An error occurred. Please try again.");
+      toast.error("Invalid credentials");
       Navigate("/");
     }
   };

@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { api } from "../../../utils/constant";
+import { toast } from "react-toastify";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css for confirm alert
+import "react-toastify/dist/ReactToastify.css"; // Import css for toastify
 
 // Shimmer Component for loading state
 const Shimmer = () => (
@@ -26,23 +30,61 @@ const Shimmer = () => (
 
 const EventList = ({ clubEvent }) => {
   const { clubname } = useParams();
-  const [allowed, setAllowed] = useState(false);
   const [loading, setLoading] = useState(true);
   const data = useSelector((store) => store?.user);
   const currclubDetail = useSelector((store) => store?.club?.clubdetail);
 
   const handleOnDelete = async (eventid) => {
-    const data = await api.delete(
-      "https://airosphere-ggits.vercel.app/club/eventdelete/" +
-        clubname +
-        "/" +
-        eventid
-    );
-    console.log(data);
+    try {
+      const response = await api.delete(
+        "http://localhost:3000/club/eventdelete/" + clubname + "/" + eventid
+      );
+      toast.success(
+        "Event deleted successfully! Please refresh to see changes."
+      );
+      console.log(response);
+    } catch (error) {
+      toast.error("Error occurred while deleting event.");
+      console.log(error);
+    }
+  };
+
+  const confirmDelete = (event) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className="bg-white rounded-lg p-8 shadow-lg w-80 mx-auto">
+            <h2 className="text-xl font-semibold mb-4 text-red-600 text-center">
+              Confirm Delete
+            </h2>
+            <p className="text-center mb-6 text-gray-700">
+              Are you sure you want to delete the event{" "}
+              <span className="font-bold">{event.title}</span>?
+            </p>
+            <div className="flex justify-center space-x-4">
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
+                onClick={() => {
+                  handleOnDelete(event._id);
+                  onClose();
+                }}
+              >
+                Yes, Delete
+              </button>
+              <button
+                className="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded-lg"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        );
+      },
+    });
   };
 
   useEffect(() => {
-    // Simulate a data fetch
     const fetchData = async () => {
       setLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 2000)); // Simulate a 2-second delay
@@ -98,10 +140,11 @@ const EventList = ({ clubEvent }) => {
                   {/* Delete Button - Only visible if user is an admin */}
                   {(data?.role === "admin" ||
                     (data?.role === "clubhead" &&
-                      currclubDetail?.head === data?.username)) && (
+                      currclubDetail?.head === data?.username) ||
+                    data?.role === "modhead") && (
                     <div className="mt-6 text-right">
                       <button
-                        onClick={() => handleOnDelete(event._id)}
+                        onClick={() => confirmDelete(event)}
                         className="bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-full transition-transform hover:scale-105 shadow-lg"
                       >
                         Delete Event

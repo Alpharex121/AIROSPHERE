@@ -32,12 +32,15 @@ router.post("/", auth, async (req, res) => {
       });
       const result = await newAcademic.save();
       res.status(200).send(result);
+      return;
     } catch (error) {
       console.log("Error while adding academic.");
       res.status(500).send(error.message);
+      return;
     }
   } else {
     res.status(401).send("Permission Denied");
+    return;
   }
 });
 
@@ -61,11 +64,14 @@ router.delete("/:academicid", auth, async (req, res) => {
       });
       console.log("Acedemic Delete successfully!");
       res.status(200).send(result);
+      return;
     } catch (error) {
       res.status(500).send("Error while deleting academic" + error.message);
+      return;
     }
   } else {
     res.status(401).send("Permission denied");
+    return;
   }
 });
 

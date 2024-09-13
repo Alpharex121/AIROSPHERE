@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import profileimage from "../assets/profile.png";
+import getUser from "../utils/getUser";
 
 const Profile = () => {
   const Navigate = useNavigate();
   const data = useSelector((store) => store?.user);
-  if (!data) Navigate("/profile");
+  getUser();
 
   return (
     <div className="flex flex-col items-center pt-10 h-[82vh] bg-gray-100">
@@ -36,7 +37,7 @@ const Profile = () => {
           </div>
           <div className="flex justify-between">
             <span className="font-medium text-gray-600">Branch:</span>
-            <span>AIR</span>
+            <span>{data?.branch}</span>
           </div>
           <div className="flex justify-between">
             <span className="font-medium text-gray-600">Enrollment No:</span>
@@ -49,14 +50,16 @@ const Profile = () => {
         </div>
 
         {/* Button */}
-        <div className="mt-6 text-center">
-          <button
-            onClick={() => Navigate("/updatepassword/" + data.username)}
-            className="px-5 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition duration-200"
-          >
-            Change Password
-          </button>
-        </div>
+        {data?.role !== "demo" && (
+          <div className="mt-6 text-center">
+            <button
+              onClick={() => Navigate("/updatepassword/" + data.username)}
+              className="px-5 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-800 transition duration-200"
+            >
+              Change Password
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

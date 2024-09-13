@@ -15,9 +15,7 @@ const getStudents = async () => {
 
   const getSudent = async () => {
     try {
-      const data = await api.get(
-        "https://airosphere-ggits.vercel.app/user/getallstudents"
-      );
+      const data = await api.get("http://localhost:3000/user/getallstudents");
       if (data.status === 200 && data.data[0].username) {
         const currUser = data.data;
         dispath(addStudentData(currUser));
@@ -27,7 +25,7 @@ const getStudents = async () => {
         Navigate("/");
       }
     } catch (error) {
-      console.log("User not authenticated" + error);
+      console.log(error);
       Navigate("/");
     }
   };

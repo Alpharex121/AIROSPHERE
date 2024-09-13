@@ -15,8 +15,9 @@ const getClubDetails = async ({ clubname }) => {
   const getClubDetail = async () => {
     try {
       let data = await api.get(
-        "https://airosphere-ggits.vercel.app/club/clubdetail/" + clubname
+        "http://localhost:3000/club/clubdetail/" + clubname
       );
+      console.log("here");
       if (data?.status === 200 && data?.data) {
         const clubDetails = data.data[0];
         console.log(clubDetails);
@@ -27,7 +28,7 @@ const getClubDetails = async ({ clubname }) => {
         return;
       }
     } catch (error) {
-      console.log("User not authenticated" + error);
+      console.log(error);
       Navigate("/");
     }
   };

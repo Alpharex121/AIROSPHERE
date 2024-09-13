@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { api } from "../../../utils/constant";
+import { confirmAlert } from "react-confirm-alert";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import css for toastify
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css for confirm alert
 
 // Shimmer Effect Styles using Tailwind CSS
 const shimmerStyles = `
@@ -18,16 +22,59 @@ const NotificationList = ({ currClubNotifications, onDeleteNotification }) => {
   const currclubDetail = useSelector((store) => store?.club?.clubdetail);
 
   const handleOnDelete = async (notiid) => {
-    const data = await api.delete(
-      "https://airosphere-ggits.vercel.app/club/notificationdelete/" +
-        clubname +
-        "/" +
-        notiid
-    );
-    console.log(data);
-    if (onDeleteNotification) {
-      onDeleteNotification(notiid); // Notify parent component if needed
+    try {
+      const response = await api.delete(
+        "http://localhost:3000/club/notificationdelete/" +
+          clubname +
+          "/" +
+          notiid
+      );
+      toast.success(
+        "Notification deleted successfully! Please refresh to see changes."
+      );
+      if (onDeleteNotification) {
+        onDeleteNotification(notiid); // Notify parent component if needed
+      }
+      console.log(response);
+    } catch (error) {
+      toast.error("Error occurred while deleting the notification.");
+      console.error(error);
     }
+  };
+
+  const confirmDelete = (notification) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <div className="bg-white rounded-lg p-8 shadow-lg w-80 mx-auto">
+            <h2 className="text-xl font-semibold mb-4 text-red-600 text-center">
+              Confirm Delete
+            </h2>
+            <p className="text-center mb-6 text-gray-700">
+              Are you sure you want to delete the notification{" "}
+              <span className="font-bold">{notification.title}</span>?
+            </p>
+            <div className="flex justify-center space-x-4">
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
+                onClick={() => {
+                  handleOnDelete(notification._id);
+                  onClose();
+                }}
+              >
+                Yes, Delete
+              </button>
+              <button
+                className="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded-lg"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        );
+      },
+    });
   };
 
   // Simulate data fetch
@@ -59,18 +106,6 @@ const NotificationList = ({ currClubNotifications, onDeleteNotification }) => {
                 <div className="h-4 bg-gray-300 rounded w-1/2"></div>
                 <div className="h-4 bg-gray-300 rounded w-2/3"></div>
               </div>
-
-              {/* Delete Button - Only visible if user is an admin */}
-              {(data?.role === "admin" ||
-                (data?.role === "clubhead" &&
-                  currclubDetail?.head === data?.username)) && (
-                <button
-                  onClick={() => handleOnDelete(notification._id)}
-                  className="ml-4 bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-full transition-transform hover:scale-105 shadow-lg"
-                >
-                  Delete
-                </button>
-              )}
             </div>
           ))}
         </div>
@@ -97,9 +132,10 @@ const NotificationList = ({ currClubNotifications, onDeleteNotification }) => {
                 {/* Delete Button - Only visible if user is an admin */}
                 {(data?.role === "admin" ||
                   (data?.role === "clubhead" &&
-                    currclubDetail?.head === data?.username)) && (
+                    currclubDetail?.head === data?.username) ||
+                  data?.role === "modhead") && (
                   <button
-                    onClick={() => handleOnDelete(notification._id)}
+                    onClick={() => confirmDelete(notification)}
                     className="ml-4 bg-red-500 hover:bg-red-600 text-white text-sm font-bold py-2 px-4 rounded-full transition-transform hover:scale-105 shadow-lg"
                   >
                     Delete

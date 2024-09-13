@@ -12,11 +12,11 @@ const UnitBoxList = () => {
   const dispatch = useDispatch();
   const [allowed, setAllowed] = useState(false);
   useEffect(() => {
-    const allowedRoles = ["admin", "professor", "academicmod"];
+    const allowedRoles = ["admin", "professor", "academicmod", "modhead"];
     if (allowedRoles.includes(data?.role)) {
       setAllowed(true);
     }
-  });
+  }, []);
 
   let units;
   if (type === "notes")
@@ -43,9 +43,7 @@ const UnitBoxList = () => {
 
   const handleDelete = async (unitId) => {
     // Dispatch an action to delete the unit
-    const data = await api.delete(
-      "https://airosphere-ggits.vercel.app/academic/" + unitId
-    );
+    const data = await api.delete("http://localhost:3000/academic/" + unitId);
     console.log(data);
   };
 
@@ -81,13 +79,24 @@ const UnitBoxList = () => {
                   <span className="font-semibold">Semester: </span>
                   {unit.semester}
                 </div>
-                <Link to={data?.role !== "demo" ? unit.link : null}>
+                <Link
+                  to={
+                    data?.role === "demo" ||
+                    (data?.role === "obfy" && unit.semester > 2)
+                      ? null
+                      : unit.link
+                  }
+                >
                   <button
                     className={`inline-block bg-indigo-900 text-white px-4 py-2 rounded-full shadow-md
                   hover:shadow-xl hover:from-gray-700 hover:to-gray-600
                   transition-all ${
                     data?.role === "demo" && "cursor-not-allowed"
-                  } duration-300 transform hover:scale-105`}
+                  } duration-300 transform hover:scale-105  ${
+                      data?.role === "obfy" &&
+                      Number(unit.semester) > 2 &&
+                      "cursor-not-allowed"
+                    }`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >

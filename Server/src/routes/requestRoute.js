@@ -14,8 +14,10 @@ router.get("/", auth, async (req, res) => {
   ) {
     const result = await addRequest.find();
     res.status(200).send(result);
+    return;
   } else {
     res.status(401).send("Permission Denied");
+    return;
   }
 });
 
@@ -51,9 +53,11 @@ router.post("/", async (req, res) => {
 
     console.log("request added successful" + request);
     res.status(200).send("request created successfully" + request);
+    return;
   } catch (error) {
     console.log(error);
     res.status(500).send("Error occured while adding request " + error);
+    return;
   }
 });
 
@@ -77,11 +81,14 @@ router.delete("/:requestid", auth, async (req, res) => {
       });
       console.log("request Delete successfully!");
       res.status(200).send(result);
+      return;
     } else {
       res.status(401).send("Permission denied.");
+      return;
     }
   } catch (error) {
     res.status(500).send("Error while deleting request" + error.message);
+    return;
   }
 });
 

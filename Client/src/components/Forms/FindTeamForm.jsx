@@ -10,6 +10,7 @@ import { api } from "../../utils/constant";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addTeam } from "../../store/studentConnectSlice";
+import { toast } from "react-toastify";
 
 const FindTeamForm = () => {
   const dispatch = useDispatch();
@@ -41,7 +42,7 @@ const FindTeamForm = () => {
       const skills = formData.skills;
       const link = formData.link;
       const data = await api.post(
-        "https://airosphere-ggits.vercel.app/studentconnect/postteam",
+        "http://localhost:3000/studentconnect/postteam",
         {
           title,
           description,
@@ -52,8 +53,12 @@ const FindTeamForm = () => {
       );
       console.log(data);
       dispatch(addTeam(data?.data));
+      toast.success("Find team request added successfully!");
       Navigate("/studentconnect/findteammates");
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+      toast.error("Erro occured while adding find team request");
+    }
 
     // Add form submission logic here (API call)
   };

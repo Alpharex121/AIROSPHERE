@@ -28,11 +28,14 @@ router.post("/", async (req, res) => {
         sameSite: "none",
       });
       res.status(200).send(userCred);
+      return;
     } else {
       res.status(401).send("password not matched");
+      return;
     }
   } catch (error) {
     res.status(401).send("Invalid cred");
+    return;
   }
 });
 
@@ -50,10 +53,12 @@ router.post("/logout", auth, async (req, res) => {
       });
       await req.user.save();
       res.status(200).send("logout successfull");
+      return;
     }
   } catch (error) {
     // console.log("user not logged in");
     res.status(401).send("User not logged in.");
+    return;
   }
 });
 

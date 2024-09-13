@@ -9,12 +9,14 @@ const adddoubt = require("../models/doubt");
 router.get("/getteams", auth, async (req, res) => {
   const result = await addTeam.find().sort({ $natural: -1 });
   res.status(200).send(result);
+  return;
 });
 
 //GET ALL YOUR CURRENT TEAM
 router.get("/getteamreq/:username", auth, async (req, res) => {
   const result = await addTeam.find({ username: req.user.username });
   res.status(200).send(result);
+  return;
 });
 
 //NEW TEAM REQUEST
@@ -34,9 +36,11 @@ router.post("/postteam", auth, async (req, res) => {
 
     console.log("team request uploaded successfully");
     res.status(200).send(result);
+    return;
   } catch (error) {
     res.status(500).send("Error while uploading find team request");
     console.log(error);
+    return;
   }
 });
 
@@ -63,12 +67,15 @@ router.put("/updateteampost/:postername/:postid", auth, async (req, res) => {
       );
       console.log("update successful");
       res.status(200).send(result);
+      return;
     } catch (error) {
       res.status(500).send("error while updating the data" + error.message);
+      return;
     }
   } else {
     console.log("Access denied");
     res.status(401).send("Access Denied");
+    return;
   }
 });
 
@@ -91,12 +98,14 @@ router.delete("/deleteteampost/:postid", auth, async (req, res) => {
         const result = await addTeam.findOneAndDelete({ _id: postid });
         console.log("User Delete successfully!");
         res.status(200).send(result);
+        return;
       } else {
         res.status(401).send({ data: "permission denied" });
       }
     } catch (error) {
       res.status(500).send("Error occured while deleting find team post");
       console.log(error);
+      return;
     }
   }
 });
@@ -106,12 +115,14 @@ router.delete("/deleteteampost/:postid", auth, async (req, res) => {
 router.get("/getpeer", auth, async (req, res) => {
   const result = await addPeer.find().sort({ $natural: -1 });
   res.status(200).send(result);
+  return;
 });
 
 //GET ALL YOUR CURRENT PEER Request
 router.get("/getpeerreq/:username", auth, async (req, res) => {
   const result = await addPeer.find({ postername: req.user.username });
   res.status(200).send(result);
+  return;
 });
 
 //NEW Peer REQUEST
@@ -129,9 +140,11 @@ router.post("/postpeer", auth, async (req, res) => {
     const result = await addPeer.find().sort({ $natural: -1 });
     console.log("peer request uploaded successfully");
     res.status(200).send(result);
+    return;
   } catch (error) {
     console.log("Error while uploading peer request" + error);
     res.status(500).send("Error while uploading peer request");
+    return;
   }
 });
 
@@ -158,12 +171,15 @@ router.put("/updatepeerreq/:postername/:postid", auth, async (req, res) => {
       );
       console.log("update successful");
       res.status(200).send(result);
+      return;
     } catch (error) {
       res.status(500).send("error while updating the data" + error.message);
+      return;
     }
   } else {
     console.log("Access denied");
     res.status(401).send("Access Denied");
+    return;
   }
 });
 
@@ -187,12 +203,14 @@ router.delete("/deletepeerpost/:postid", auth, async (req, res) => {
         const updated = await addPeer.find().sort({ $natural: -1 });
         console.log("User Delete successfully!" + result);
         res.status(200).send(updated);
+        return;
       } else {
         res.status(401).send({ data: "permission denied" });
       }
     } catch (error) {
       console.log(error);
       res.status(500).send("Error occured while deleting find peer request");
+      return;
     }
   }
 });
@@ -202,11 +220,13 @@ router.delete("/deletepeerpost/:postid", auth, async (req, res) => {
 router.get("/getdoubt", auth, async (req, res) => {
   const result = await adddoubt.find().sort({ $natural: -1 });
   res.status(200).send(result);
+  return;
 });
 //GET ALL YOUR CURRENT dobut Request
 router.get("/getdobut/:username", auth, async (req, res) => {
   const result = await adddoubt.find({ postername: req.user.username });
   res.status(200).send(result);
+  return;
 });
 
 //Post doubt
@@ -230,9 +250,11 @@ router.post("/postdoubt", auth, async (req, res) => {
 
     res.status(200).send(result);
     console.log("doubt uploaded successfully");
+    return;
   } catch (error) {
     res.status(500).send("Error while uploading doubt");
     console.log(error);
+    return;
   }
 });
 
@@ -240,6 +262,7 @@ router.post("/postdoubt", auth, async (req, res) => {
 router.get("/getcomment/:doubtid", auth, async (req, res) => {
   const result = await adddoubt.find({ _id: req.params.doubtid });
   res.status(200).send(result);
+  return;
 });
 
 // Post comments
@@ -251,11 +274,12 @@ router.post("/postcomment/:doubtid", auth, async (req, res) => {
     const newcomment = doubt.addComment(postername, description);
     const commented = await doubt.save();
     res.status(200).send(commented);
-
     console.log("comment uploaded successfully");
+    return;
   } catch (error) {
     res.status(500).send("Error while uploading comment");
     console.log(error);
+    return;
   }
 });
 
@@ -303,12 +327,15 @@ router.delete("/deletedoubt/:postid", auth, async (req, res) => {
         const result = await adddoubt.findOneAndDelete({ _id: postid });
         console.log("Doubt Delete successfully!");
         res.status(200).send(result);
+        return;
       } else {
         res.status(401).send({ data: "permission denied" });
+        return;
       }
     } catch (error) {
       res.sendStatus(500).send("Error deleting doubt" + error);
       console.log(error);
+      return;
     }
   }
 });

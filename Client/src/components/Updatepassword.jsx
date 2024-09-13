@@ -2,41 +2,49 @@ import React, { useEffect, useState } from "react";
 import { api } from "../utils/constant";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const UpdatePassword = () => {
   const Navigate = useNavigate();
   const { username } = useParams();
-  if (username === "Alpha" || username === "Zoro") Navigate("/");
   const data = useSelector((store) => store.user);
+  if (username === "Alpha" || username === "Zoro" || data?.role === "demo")
+    Navigate("/");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const username = data.username;
-    const password = e.target.password.value;
-    const confirmpassword = e.target.confirmpassword.value;
+    try {
+      e.preventDefault();
+      const password = e.target.password.value;
+      const confirmpassword = e.target.confirmpassword.value;
 
-    if (newPassword !== confirmPassword) {
-      setError("Passwords do not match!");
-      setSuccess("");
-    } else {
-      const res = await api.put(
-        "https://airosphere-ggits.vercel.app/user/updatepassword/" + username,
-        {
-          password,
-          confirmpassword,
-        }
-      );
-      if (res.status === 200 && res.data) {
-        console.log("password updated successfully.");
-        Navigate("/dashboard");
+      if (newPassword !== confirmPassword) {
+        setError("Passwords do not match!");
+        setSuccess("");
       } else {
-        console.log("Error occured while updating password");
-        Navigate("/");
+        const res = await api.put(
+          "http://localhost:3000/user/updatepassword/" + username,
+          {
+            password,
+            confirmpassword,
+          }
+        );
+        if (res.status === 200 && res.data) {
+          console.log("password updated successfully.");
+          toast.success("Password edited sucessfully");
+          Navigate("/dashboard");
+        } else {
+          toast.error("Error occured while updating password");
+          console.log("Error occured while updating password");
+          Navigate("/");
+        }
       }
+    } catch (error) {
+      console.log(error);
+      toast.error("Error occured while updating password");
     }
   };
 
@@ -44,7 +52,7 @@ const UpdatePassword = () => {
     if (!data) {
       Navigate("/");
     }
-  });
+  }, []);
 
   return (
     <div className="flex flex-col items-center pt-[15vh] h-[82vh] bg-gray-100 p-6">

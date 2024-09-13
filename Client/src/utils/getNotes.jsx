@@ -15,7 +15,7 @@ const getNotesData = async ({ subcode, type }) => {
   const getNotesDatas = async () => {
     try {
       let data = await api.get(
-        "https://airosphere-ggits.vercel.app/academic/" + type + "/" + subcode
+        "http://localhost:3000/academic/" + type + "/" + subcode
       );
 
       if (data?.status === 200 && data?.data) {

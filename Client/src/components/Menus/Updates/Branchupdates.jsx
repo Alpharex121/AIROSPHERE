@@ -14,14 +14,14 @@ const BranchUpdate = () => {
     if (allowedRoles.includes(user?.role)) {
       setAllowed(true);
     }
-  });
+  }, []);
 
   getBranchUpdates();
 
   const handleDelete = async (updateId) => {
     // Dispatch an action to delete the branch update
     const data = await api.delete(
-      "https://airosphere-ggits.vercel.app/notification/" + updateId
+      "http://localhost:3000/notification/" + updateId
     );
     console.log(data);
   };

@@ -17,6 +17,8 @@ const Header = () => {
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [closeTimeout, setCloseTimeout] = useState(null);
   const [allowed, setAllowed] = useState(false);
+  const [visitCount, setVisitCount] = useState(0); // Visit count state
+  const [displayCount, setDisplayCount] = useState(0); // Animated counter display
 
   // State variables for toggling submenus in mobile
   const [mobileDropdowns, setMobileDropdowns] = useState({
@@ -26,6 +28,33 @@ const Header = () => {
     updates: false,
     manage: false,
   });
+  // Counter animation effect
+  useEffect(() => {
+    const targetVisitCount = 1234; // Replace with your actual visit count from the server
+    let start = 0;
+    const increment = Math.ceil(targetVisitCount / 100); // Adjust speed of animation
+
+    const counterInterval = setInterval(() => {
+      start += increment;
+      if (start >= targetVisitCount) {
+        start = targetVisitCount;
+        clearInterval(counterInterval);
+      }
+      setDisplayCount(start);
+    }, 50);
+
+    setVisitCount(targetVisitCount); // Set the actual visit count
+
+    return () => clearInterval(counterInterval);
+  }, []);
+
+  // Format count with k+ if greater than 1000
+  const formatCount = (count) => {
+    if (count >= 1000) {
+      return `${(count / 1000).toFixed(1)}k+`;
+    }
+    return count;
+  };
 
   useEffect(() => {
     const allowedRoles = ["admin", "professor", "studentmanagemod", "modhead"];
@@ -46,7 +75,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    await api.post("https://airosphere-ggits.vercel.app/authenticate/logout");
+    await api.post("http://localhost:3000/authenticate/logout");
     dispatch(removeUser());
     Navigate("/");
   };
@@ -84,11 +113,16 @@ const Header = () => {
   return (
     <header className="bg-white shadow-md z-50">
       <nav className="container mx-auto flex items-center justify-between py-4 px-6">
-        {/* Logo */}
-        <div className="text-2xl font-bold text-gray-800">
-          <Link to="/">
-            <h6>AIROSPHERE</h6>
-          </Link>
+        <div className="flex items-center space-x-4">
+          <div className="text-2xl font-bold text-gray-800">
+            <Link to="/">
+              <h6>AIROSPHERE</h6>
+            </Link>
+          </div>
+          {/* Visit Counter */}
+          <div className="text-sm font-semibold text-green-500 animate-bounce">
+            {formatCount(displayCount)} visits
+          </div>
         </div>
 
         {/* Desktop Menu */}
@@ -348,8 +382,8 @@ const Dropdown = ({ items, url, isMobile }) => {
   const [updateAllowed, setUpdateAllowed] = useState(false);
 
   useEffect(() => {
-    const academicAlloweds = ["admin", "professor", "academicmod"];
-    const updateAlloweds = ["admin", "professor", "updatemod"];
+    const academicAlloweds = ["admin", "professor", "academicmod", "modhead"];
+    const updateAlloweds = ["admin", "professor", "updatemod", "modhead"];
     if (academicAlloweds.includes(data?.role)) {
       setAcademicAllowed(true);
     }

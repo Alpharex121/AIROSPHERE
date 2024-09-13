@@ -14,7 +14,7 @@ const getClubData = async () => {
 
   const getClubData = async () => {
     try {
-      let data = await api.get("https://airosphere-ggits.vercel.app/club");
+      let data = await api.get("http://localhost:3000/club");
       if (data?.status === 200 && data?.data[0]?.name) {
         const clubs = data.data;
         dispath(addClub(clubs));

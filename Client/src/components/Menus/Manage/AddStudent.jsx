@@ -3,12 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../../utils/constant";
 import { addStudentData } from "../../../store/studentDataSlice";
+import emailjs from "@emailjs/browser";
+import { toast } from "react-toastify";
 
 const AddStudent = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  const allowedRoles = ["admin", "professor", "studentmanagemod", "modhead"];
+  const allowedRoles = ["admin", "studentmanagemod", "modhead", "professor"];
   if (!allowedRoles.includes(data?.role)) {
     Navigate("/"); // Navigate if the user is not authorized
   }
@@ -16,6 +18,7 @@ const AddStudent = () => {
   const [formData, setFormData] = useState({
     name: "",
     username: "",
+    branch: "",
     semester: "",
     mail: "",
     role: "",
@@ -25,6 +28,10 @@ const AddStudent = () => {
   });
 
   const roles = [
+    {
+      role: "First Year",
+      value: "obfy",
+    },
     {
       role: "User",
       value: "user",
@@ -79,6 +86,7 @@ const AddStudent = () => {
       const username = formData.username;
       const name = formData.name;
       const enrollmentno = formData.enrollmentno;
+      const branch = formData.branch;
       const semester = formData.semester;
       const mail = formData.mail;
       const role = formData.role;
@@ -86,25 +94,53 @@ const AddStudent = () => {
       const confirmpassword = formData.confirmpassword;
 
       // const username = formData.username,
-      const posted = await api.post(
-        "https://airosphere-ggits.vercel.app/user/adduser",
-        {
-          username,
-          name,
-          enrollmentno,
-          semester,
-          mail,
-          role,
-          password,
-          confirmpassword,
-        }
-      );
+      const posted = await api.post("http://localhost:3000/user/adduser", {
+        username,
+        name,
+        enrollmentno,
+        branch,
+        semester,
+        mail,
+        role,
+        password,
+        confirmpassword,
+      });
       console.log(posted);
       dispatch(addStudentData(posted?.data));
+      toast.success("Member added successully");
+      var signupdata = {
+        username: e.target.username.value,
+        name: e.target.name.value,
+        mail: e.target.mail.value,
+        receiver: e.target.mail.value,
+        password: e.target.password.value,
+      };
+      emailjs
+        .send(
+          import.meta.env.VITE_SERVICE_ID,
+          import.meta.env.VITE_REGISTER_TEMPLATE_ID,
+          signupdata,
+          import.meta.env.VITE_PUBLIC_KEY
+        )
+        .then(
+          (result) => {
+            if (result.status === 200) {
+              handleCloseModal();
+              toast.success("Email sent successfully!", {
+                theme: "colored",
+              });
+            }
+          },
+          (error) => {
+            console.log(error);
+            console.log(error.text);
+          }
+        );
       Navigate("/manage/students");
       console.log(posted);
     } catch (error) {
       console.log(error);
+      toast.success("Error occured while adding member");
     }
   };
 
@@ -138,6 +174,20 @@ const AddStudent = () => {
               type="text"
               name="username"
               value={formData.username}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          {/* branch */}
+          <div>
+            <label className="block text-left font-semibold text-gray-700">
+              Branch:
+            </label>
+            <input
+              type="text"
+              name="branch"
+              value={formData.branch}
               onChange={handleChange}
               className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
@@ -198,6 +248,9 @@ const AddStudent = () => {
                   {role.role}
                 </option>
               ))}
+              {data?.role === "admin" && (
+                <option value="modhead">Modhead</option>
+              )}
             </select>
           </div>
 

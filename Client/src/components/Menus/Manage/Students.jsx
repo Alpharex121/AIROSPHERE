@@ -1,19 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaEdit, FaKey, FaTrash } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import getStudents from "../../../utils/getStudents";
 import { api } from "../../../utils/constant";
+import { toast } from "react-toastify";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css"; // Import css for the alert
 
 const handleDeleteUser = async (studentid) => {
-  const deleteResult = await api.delete(
-    "https://airosphere-ggits.vercel.app/user/" + studentid
-  );
-  console.log("User deleted successfully");
+  try {
+    const deleteResult = await api.delete(
+      "http://localhost:3000/user/" + studentid
+    );
+    toast.success("User deleted successfully! Please refresh to see changes.");
+    console.log("User deleted successfully");
+  } catch (error) {
+    console.log(error);
+    toast.error("Error occurred while deleting member.");
+  }
 };
 
 const ManageStudents = () => {
+  const [deleting, setDeleting] = useState(false);
   const Navigate = useNavigate();
   const data = useSelector((store) => store?.user);
   const allowedRoles = ["admin", "studentmanagemod", "modhead", "professor"];
@@ -23,6 +33,48 @@ const ManageStudents = () => {
   const studentData = useSelector((store) => store?.student?.studentData);
   console.log(studentData);
   getStudents();
+
+  const confirmDelete = (student) => {
+    confirmAlert({
+      customUI: ({ onClose }) => {
+        return (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="bg-white rounded-lg p-8 shadow-lg w-80 mx-auto"
+          >
+            <h2 className="text-xl font-semibold mb-4 text-red-600 text-center">
+              Confirm Delete
+            </h2>
+            <p className="text-center mb-6 text-gray-700">
+              Are you sure you want to delete{" "}
+              <span className="font-bold">{student.name}</span>?
+            </p>
+            <div className="flex justify-center space-x-4">
+              <button
+                className="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg"
+                onClick={() => {
+                  setDeleting(true);
+                  handleDeleteUser(student._id);
+                  setDeleting(false);
+                  onClose();
+                }}
+              >
+                {deleting ? "Deleting..." : "Yes, Delete"}
+              </button>
+              <button
+                className="bg-gray-300 hover:bg-gray-400 py-2 px-4 rounded-lg"
+                onClick={onClose}
+              >
+                Cancel
+              </button>
+            </div>
+          </motion.div>
+        );
+      },
+    });
+  };
 
   return (
     studentData && (
@@ -108,7 +160,7 @@ const ManageStudents = () => {
                         : null
                     } py-2 px-4 rounded-lg flex items-center justify-center w-full`}
                     onClick={() => {
-                      handleDeleteUser(student._id);
+                      confirmDelete(student);
                     }}
                   >
                     <FaTrash className="mr-2" /> Delete

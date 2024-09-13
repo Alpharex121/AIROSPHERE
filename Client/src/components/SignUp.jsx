@@ -4,6 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase";
+import emailjs from "@emailjs/browser";
+import { addRequestData } from "../store/studentDataSlice";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -38,7 +41,8 @@ const SignUp = () => {
       "state_changed",
       (snapshot) => {
         // Track upload progress
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setUploadProgress(progress);
       },
       (error) => {
@@ -61,10 +65,42 @@ const SignUp = () => {
 
         try {
           // Save the user data to your backend (e.g., a database)
-          const response = await api.post("https://airosphere-ggits.vercel.app/requests", userData);
+          const response = await api.post(
+            "http://localhost:3000/requests",
+            userData
+          );
           console.log("User data saved successfully:", response.data);
 
-          // Navigate to success page after form submission
+          toast.success("Sign up request sent successfully!");
+          var signupdata = {
+            username: e.target.username.value,
+            name: e.target.name.value,
+            semester: e.target.semester.value,
+            enrollmentno: e.target.enrollmentno.value,
+            mail: e.target.mail.value,
+            receiver: "airosphere01@gmail.com",
+          };
+          emailjs
+            .send(
+              import.meta.env.VITE_SERVICE_ID,
+              import.meta.env.VITE_TEMPLATE_ID,
+              signupdata,
+              import.meta.env.VITE_PUBLIC_KEY
+            )
+            .then(
+              (result) => {
+                if (result.status === 200) {
+                  handleCloseModal();
+                  toast.success("Email sent successfully!", {
+                    theme: "colored",
+                  });
+                }
+              },
+              (error) => {
+                console.log(error);
+                console.log(error.text);
+              }
+            );
           Navigate("/authenticate/signupsuccess");
         } catch (error) {
           console.error("Error saving user data:", error.message);

@@ -7,7 +7,7 @@ import { useToast } from "../ToastContext";
 const AddEventForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
-  const allowedRoles = ["admin", "clubhead"];
+  const allowedRoles = ["admin", "clubhead", "modhead"];
   if (!allowedRoles.includes(data?.role)) {
     Navigate("/"); // Navigate if the user is not authorized
   }
@@ -34,7 +34,7 @@ const AddEventForm = () => {
       const eventincharge = formData.eventincharge;
       const venue = formData.venue;
       const data = await api.post(
-        "https://airosphere-ggits.vercel.app/club/addevents/" + clubname,
+        "http://localhost:3000/club/addevents/" + clubname,
         { title, description, startfrom, eventincharge, venue }
       );
       if (data.status === 200) {

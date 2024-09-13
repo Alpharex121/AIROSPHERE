@@ -14,14 +14,13 @@ const getUser = async () => {
 
   const getUserData = async () => {
     try {
-      const data = await api.get(
-        "https://airosphere-ggits.vercel.app/user/getcurruser"
-      );
+      const data = await api.get("http://localhost:3000/user/getcurruser");
       if (data.status === 200 && data.data.username) {
         const currUser = data.data;
         const userData = {
           username: currUser.username,
           enrollmentno: currUser.enrollmentno,
+          branch: currUser.branch,
           name: currUser.name,
           semester: currUser.semester,
           mail: currUser.mail,
@@ -34,8 +33,9 @@ const getUser = async () => {
         Navigate("/");
       }
     } catch (error) {
-      console.log("User not authenticated");
       Navigate("/");
+      console.log("User not authenticated");
+      console.log(error);
     }
   };
 };

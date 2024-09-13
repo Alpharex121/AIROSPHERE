@@ -16,9 +16,7 @@ const getTeamData = async () => {
 
   const getTeamRequest = async () => {
     try {
-      let data = await api.get(
-        "https://airosphere-ggits.vercel.app/studentconnect/getteams"
-      );
+      let data = await api.get("http://localhost:3000/studentconnect/getteams");
       console.log(data);
 
       if (data?.status === 200) {

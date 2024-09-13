@@ -49,8 +49,7 @@ const FindPeer = () => {
   const handleDelete = async (postid) => {
     try {
       const data = await api.delete(
-        "https://airosphere-ggits.vercel.app/studentconnect/deletepeerpost/" +
-          postid
+        "http://localhost:3000/studentconnect/deletepeerpost/" + postid
       );
       console.log(data);
       dispatch(addPeer(data?.data));

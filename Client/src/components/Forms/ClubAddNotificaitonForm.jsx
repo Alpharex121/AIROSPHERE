@@ -9,7 +9,7 @@ const ClubAddNotificationForm = () => {
   const Navigate = useNavigate();
   const showToast = useToast();
 
-  const allowedRoles = ["admin", "clubhead"];
+  const allowedRoles = ["admin", "clubhead", "modhead"];
   if (!allowedRoles.includes(data?.role)) {
     Navigate("/"); // Navigate if the user is not authorized
   }
@@ -29,7 +29,7 @@ const ClubAddNotificationForm = () => {
       const title = formData.title;
       const description = formData.description;
       const data = await api.post(
-        "https://airosphere-ggits.vercel.app/club/addnotification/" + clubname,
+        "http://localhost:3000/club/addnotification/" + clubname,
         {
           title,
           description,

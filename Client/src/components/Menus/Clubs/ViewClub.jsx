@@ -19,7 +19,7 @@ const ClubDetailPage = () => {
     if (allowedRoles.includes(data?.role)) {
       setAllowed(true);
     }
-  });
+  }, []);
 
   getClubDetails({ clubname });
   const currclubDetail = useSelector((store) => store?.club?.clubdetail);
@@ -52,7 +52,8 @@ const ClubDetailPage = () => {
         <div className="flex  justify-end items-center pt-2 w-2/3 mx-auto">
           {(data?.role === "admin" ||
             (data?.role === "clubhead" &&
-              currclubDetail?.head === data?.username)) && (
+              currclubDetail?.head === data?.username) ||
+            data?.role === "modhead") && (
             <Link to={"/addmember/" + currclubDetail?.name}>
               <button className="bg-indigo-500 text-white py-2 px-6 rounded-full transition-transform hover:scale-105 hover:bg-indigo-600 shadow-lg">
                 Add Member
@@ -69,7 +70,8 @@ const ClubDetailPage = () => {
         <div className="flex  justify-end items-center pt-2 w-2/3 mx-auto">
           {(data?.role === "admin" ||
             (data?.role === "clubhead" &&
-              currclubDetail?.head === data?.username)) && (
+              currclubDetail?.head === data?.username) ||
+            data?.role === "modhead") && (
             <Link to={"/addnotification/" + currclubDetail?.name}>
               <button className="bg-green-500 text-white py-2 px-6 rounded-full transition-transform hover:scale-105 hover:bg-green-600 shadow-lg">
                 Add Notification
@@ -88,7 +90,8 @@ const ClubDetailPage = () => {
         <div className="flex  justify-end items-center pt-2 w-2/3 mx-auto">
           {(data?.role === "admin" ||
             (data?.role === "clubhead" &&
-              currclubDetail?.head === data?.username)) && (
+              currclubDetail?.head === data?.username) ||
+            data?.role === "modhead") && (
             <Link to={"/addevent/" + currclubDetail?.name}>
               <button className="bg-purple-500 text-white py-2 px-6 rounded-full transition-transform hover:scale-105 hover:bg-purple-600 shadow-lg">
                 Add Event

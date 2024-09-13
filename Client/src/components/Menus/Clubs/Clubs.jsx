@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import getClubData from "../../../utils/getClub";
 import { api } from "../../../utils/constant";
 import clubimage from "../../../assets/club.png";
+import { toast } from "react-toastify";
 
 const ClubPage = () => {
   const Navigate = useNavigate();
@@ -15,11 +16,11 @@ const ClubPage = () => {
   const currclub = useSelector((store) => store?.club?.clubdata);
   const [allowed, setAllowed] = useState(false);
   useEffect(() => {
-    const allowedRoles = ["admin"];
+    const allowedRoles = ["admin", "modhead"];
     if (allowedRoles.includes(data?.role)) {
       setAllowed(true);
     }
-  });
+  }, []);
 
   // Fetch club data
   getClubData();
@@ -31,10 +32,13 @@ const ClubPage = () => {
 
   // Function to handle club deletion
   const handleDeleteClub = async (clubname) => {
-    const data = await api.delete(
-      "https://airosphere-ggits.vercel.app/club/" + clubname
-    );
-    console.log(data);
+    try {
+      const data = await api.delete("http://localhost:3000/club/" + clubname);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+      toast.error("Error occured while deleting club");
+    }
   };
   // Perform API call here to delete club
 

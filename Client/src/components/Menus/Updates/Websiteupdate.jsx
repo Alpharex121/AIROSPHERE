@@ -14,12 +14,12 @@ const WebsiteUpdate = () => {
     if (allowedRoles.includes(user?.role)) {
       setAllowed(true);
     }
-  });
+  }, []);
   getWebsiteUpdates();
 
   const handleDelete = async (updateId) => {
     const data = await api.delete(
-      "https://airosphere-ggits.vercel.app/notification/" + updateId
+      "http://localhost:3000/notification/" + updateId
     );
     console.log(data);
   };

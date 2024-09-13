@@ -23,7 +23,7 @@ const AskDoubt = () => {
     const description = newDoubt.description;
     if (newDoubt.title && newDoubt.description) {
       const data = await api.post(
-        "https://airosphere-ggits.vercel.app/studentconnect/postdoubt",
+        "http://localhost:3000/studentconnect/postdoubt",
         {
           title,
           description,
@@ -39,8 +39,7 @@ const AskDoubt = () => {
 
   const handleDeleteDoubt = async (doubtid) => {
     const data = await api.delete(
-      "https://airosphere-ggits.vercel.app/studentconnect/deletedoubt/" +
-        doubtid
+      "http://localhost:3000/studentconnect/deletedoubt/" + doubtid
     );
     console.log(data);
     const updatedData = doubtsdata.filter((doubt) => {
@@ -152,7 +151,7 @@ const DoubtCard = ({
     if (newAnswer.trim()) {
       try {
         const response = await api.post(
-          `https://airosphere-ggits.vercel.app/studentconnect/postcomment/${openedDoubt._id}`,
+          `http://localhost:3000/studentconnect/postcomment/${openedDoubt._id}`,
           {
             description: newAnswer,
           }

@@ -15,7 +15,7 @@ const RequestPage = () => {
   const dispatch = useDispatch();
   const data = useSelector((store) => store?.user);
   const initialRequests = useSelector((store) => store?.student?.requestData);
-  const requests = useSelector((state) => state.student.requestData); 
+  const requests = useSelector((state) => state.student.requestData);
 
   const allowedRoles = ["admin", "professor", "studentmanagemod", "modhead"];
   if (!allowedRoles.includes(data?.role)) {
@@ -27,7 +27,7 @@ const RequestPage = () => {
   const handleDelete = async (id, idCardUrl) => {
     try {
       // Delete the request from your database
-      const response = await api.delete("https://airosphere-ggits.vercel.app/requests/" + id);
+      const response = await api.delete("http://localhost:3000/requests/" + id);
       console.log("Request deleted successfully from the database");
 
       // Now delete the image from Firebase Storage
@@ -67,7 +67,9 @@ const RequestPage = () => {
       overlayClassName: "custom-confirm-overlay",
       customUI: ({ onClose }) => (
         <div className="bg-white p-8 rounded-xl shadow-2xl text-center max-w-md mx-auto">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">Confirm Deletion</h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            Confirm Deletion
+          </h1>
           <p className="text-gray-600 mb-6">
             Are you sure you want to delete this request?
           </p>

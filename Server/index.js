@@ -9,7 +9,10 @@ const port = process.env.PORT || 3000;
 const auth = require("./src/middleware/auth.js");
 require("./src/db/connections.js");
 
-const allowedOrigins = ["https://airosphere.vercel.app"];
+const allowedOrigins = [
+  "https://airosphere.vercel.app",
+  "http://localhost:5173",
+];
 
 const corsOptionss = {
   origin: function (origin, callback) {
@@ -46,6 +49,7 @@ const clubroute = require("./src/routes/clubroute.js");
 const authenticateroute = require("./src/routes/authenticateroute.js");
 const academicroute = require("./src/routes/academicroute.js");
 const requestRoute = require("./src/routes/requestRoute.js");
+const counterRouter = require("./src/routes/counter.js");
 
 // Configuring routes
 app.use("/user", userRouter);
@@ -56,6 +60,7 @@ app.use("/club", clubroute);
 app.use("/authenticate", authenticateroute);
 app.use("/academic", academicroute);
 app.use("/requests", requestRoute);
+app.use("/counter", counterRouter);
 
 app.get("/", (req, res) => {
   res.send("server is liveeee");

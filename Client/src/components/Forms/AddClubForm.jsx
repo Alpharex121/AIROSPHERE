@@ -8,9 +8,10 @@ const AddClubForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
   const showToast = useToast();
-
-  if (!data || data?.role !== "admin") Navigate("/");
-
+  const allowedRoles = ["admin", "modhead"];
+  if (!allowedRoles.includes(data?.role)) {
+    Navigate("/"); // Navigate if the user is not authorized
+  }
   const [clubData, setClubData] = useState({
     name: "",
     description: "",
@@ -33,7 +34,7 @@ const AddClubForm = () => {
       const description = clubData.description;
       const head = clubData.head;
       const headname = clubData.headname;
-      const data = await api.post("https://airosphere-ggits.vercel.app/club", {
+      const data = await api.post("http://localhost:3000/club", {
         name,
         description,
         head,

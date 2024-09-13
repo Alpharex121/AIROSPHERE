@@ -4,6 +4,7 @@ import { api } from "../../utils/constant";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { addPeer } from "../../store/studentConnectSlice";
+import { toast } from "react-toastify";
 
 const FindPeerForm = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ const FindPeerForm = () => {
       const link = formData.link;
 
       const response = await api.post(
-        "https://airosphere-ggits.vercel.app/studentconnect/postpeer",
+        "http://localhost:3000/studentconnect/postpeer",
         {
           title,
           description,
@@ -47,6 +48,7 @@ const FindPeerForm = () => {
       );
       if (response.status === 200) {
         setMessage("Peer request added successfully!");
+        toast.success("Peer request added successsfully!");
         dispatch(addPeer(response?.data));
         Navigate("/studentconnect/findpeer");
         setFormData({

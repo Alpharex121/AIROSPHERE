@@ -35,12 +35,12 @@ const NotesComponent = () => {
       {/* Semester Selector */}
       <div className="relative">
         <div className="flex justify-center rounded-lg p-4 shadow-lg bg-indigo-600 overflow-x-auto scrollbar-hide">
-          <div className="relative flex space-x-4">
+          <div className="relative flex ">
             {Object.keys(semestersData).map((semester, index) => (
               <div
                 key={semester}
                 ref={(el) => (semesterRefs.current[index] = el)}
-                className={`text-lg font-semibold cursor-pointer px-4 py-2 transition-colors duration-300 rounded-lg ${
+                className={`text-lg font-semibold cursor-pointer px-4 py-2 transition-colors mx-3 duration-300 rounded-lg ${
                   selectedSemester === semester
                     ? "text-white bg-indigo-800"
                     : "text-gray-200 hover:text-white hover:bg-indigo-700"

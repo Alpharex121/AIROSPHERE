@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../utils/constant";
 import { useSelector } from "react-redux";
 import { useToast } from "../ToastContext"; // Adjust the path as needed
+import { toast } from "react-toastify";
 
 const EditUserForm = () => {
   const { username, userid } = useParams();
   const showToast = useToast();
+  const Navigate = useNavigate();
 
   // Redirect if username is "Alpha" or "Zoro"
   if (username === "Alpha" || username === "Zoro") {
     return <Navigate to="/" />;
   }
   const data = useSelector((store) => store?.user);
-  const allowedRoles = ["admin", "modhead", "studentmanagemod"];
+  const allowedRoles = ["admin", "modhead", "studentmanagemod", "professor"];
   if (!allowedRoles.includes(data?.role)) {
     Navigate("/"); // Navigate if the user is not authorized
   }
@@ -63,29 +65,21 @@ const EditUserForm = () => {
     (index + 1).toString()
   );
 
-  const roles = [
-    { role: "User", value: "user" },
-    { role: "Clubhead", value: "clubhead" },
-    { role: "Student Manage Mod", value: "studentmanagemod" },
-    { role: "Academic Mod", value: "academicmod" },
-    { role: "Update Mod", value: "updatemod" },
-    { role: "Resource Mod", value: "resourcemod" },
-    { role: "Miscellaneous mod", value: "miscellaneousmod" },
-    { role: "Demo", value: "demo" },
-  ];
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { username, name, enrollmentno, semester, mail, role } = formData;
 
       const editReponse = await api.put(
-        `https://airosphere-ggits.vercel.app/user/update/${username}/${userid}`,
+        `http://localhost:3000/user/update/${username}/${userid}`,
         { username, name, enrollmentno, semester, mail, role }
       );
 
       if (editReponse.status === 200) {
-        showToast("success", "User details updated successfully!");
+        toast.success(
+          "User detail updated successfully! Please refresh to see changes."
+        );
+        Navigate("/manage/students");
       } else {
         showToast("error", "Failed to update user details. Please try again.");
       }
@@ -176,29 +170,6 @@ const EditUserForm = () => {
               placeholder="Enter enrollment number"
               required
             />
-          </div>
-
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 font-medium mb-2"
-              htmlFor="role"
-            >
-              Role
-            </label>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="">Select Role</option>
-              {roles.map((role, index) => (
-                <option key={index} value={role.value}>
-                  {role.role}
-                </option>
-              ))}
-            </select>
           </div>
 
           <div className="mb-4">

@@ -3,11 +3,12 @@ import { api } from "../../utils/constant";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useToast } from "../ToastContext";
+import { toast } from "react-toastify";
 
 const AddAcademicForm = () => {
   const data = useSelector((store) => store?.user);
   const Navigate = useNavigate();
-  const allowedRoles = ["admin", "academicmod", "professor"];
+  const allowedRoles = ["admin", "academicmod", "professor", "modhead"];
   if (!allowedRoles.includes(data?.role)) {
     Navigate("/"); // Navigate if the user is not authorized
   }
@@ -41,22 +42,28 @@ const AddAcademicForm = () => {
       const type = academicData.type; // Notes, PYQ, or Important Question
       const link = academicData.link;
 
-      const data = await api.post(
-        "https://airosphere-ggits.vercel.app/academic",
-        {
-          title,
-          description,
-          subject,
-          semester,
-          subcode,
-          type,
-          link,
-        }
+      const data = await api.post("http://localhost:3000/academic", {
+        title,
+        description,
+        subject,
+        semester,
+        subcode,
+        type,
+        link,
+      });
+      toast(
+        "New " +
+          type +
+          "  added successfully! for " +
+          subject +
+          " semester " +
+          semester
       );
       Navigate("/academic/" + type);
       console.log(data);
     } catch (error) {
       console.log(error);
+      toast.error("Error occured while adding toast");
     }
   };
 

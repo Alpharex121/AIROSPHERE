@@ -7,6 +7,7 @@ const auth = require("../middleware/auth");
 router.get("/", auth, async (req, res) => {
   const result = await addResource.find();
   res.status(200).send(result);
+  return;
 });
 
 //ADD Resource
@@ -25,11 +26,14 @@ router.post("/", auth, async (req, res) => {
       });
       await newResource.save();
       res.status(200).send(newResource);
+      return;
     } else {
       res.status(401).send("Permission Denied");
+      return;
     }
   } catch (error) {
     res.status(500).send(error.message);
+    return;
   }
 });
 
@@ -52,11 +56,14 @@ router.delete("/:resourceid", auth, async (req, res) => {
       });
       console.log("Resource Delete successfully!");
       res.status(200).send(result);
+      return;
     } else {
       res.status(401).send("Permission Denied");
+      return;
     }
   } catch (error) {
     res.status(500).send("Error while deleting resourse" + error.message);
+    return;
   }
 });
 
