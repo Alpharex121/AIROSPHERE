@@ -75,7 +75,7 @@ const Header = () => {
   };
 
   const handleLogout = async () => {
-    await api.post("http://localhost:3000/authenticate/logout");
+    await api.post("https://airosphere-ggits.vercel.app/authenticate/logout");
     dispatch(removeUser());
     Navigate("/");
   };
@@ -291,7 +291,6 @@ const renderNavItems = (
           <h1 className="hover:text-indigo-500 transition">Clubs</h1>
         </li>
       </Link>
-      
 
       {/* Resources */}
       <li
@@ -341,7 +340,7 @@ const renderNavItems = (
         </li>
       </Link>
 
-        {/* Important Links */}
+      {/* Important Links */}
       <Link to="/important links">
         <li>
           <h1 className="hover:text-indigo-500 transition">Quick Links</h1>

@@ -16,7 +16,9 @@ const getdoubtData = async () => {
 
   const getDoubt = async () => {
     try {
-      let data = await api.get("http://localhost:3000/studentconnect/getdoubt");
+      let data = await api.get(
+        "https://airosphere-ggits.vercel.app/studentconnect/getdoubt"
+      );
 
       if (data?.status === 200 && data?.data[0]?.title) {
         const currData = data?.data;

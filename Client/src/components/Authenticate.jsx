@@ -22,10 +22,13 @@ const Authenticate = () => {
     try {
       const username = e.target.username.value;
       const password = e.target.password.value;
-      const response = await api.post("http://localhost:3000/authenticate", {
-        username,
-        password,
-      });
+      const response = await api.post(
+        "https://airosphere-ggits.vercel.app/authenticate",
+        {
+          username,
+          password,
+        }
+      );
 
       if (response.status === 200 && response.data.username) {
         const currUser = response.data;

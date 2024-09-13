@@ -96,7 +96,7 @@ const FindTeammate = () => {
     try {
       // Use selectedRequestId to delete the request
       const data = await api.delete(
-        "http://localhost:3000/studentconnect/deleteteampost/" +
+        "https://airosphere-ggits.vercel.app/studentconnect/deleteteampost/" +
           selectedRequestId
       );
       console.log(data);

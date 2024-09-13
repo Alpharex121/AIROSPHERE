@@ -25,7 +25,7 @@ const ClubMemberList = ({ currClubMember }) => {
   const handleOnDelete = async (username) => {
     try {
       const response = await api.delete(
-        `http://localhost:3000/club/deletemember/${clubname}/${username}`
+        `https://airosphere-ggits.vercel.app/club/deletemember/${clubname}/${username}`
       );
       toast.success(
         "Member deleted successfully! Please refresh to see changes."

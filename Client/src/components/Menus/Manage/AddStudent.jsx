@@ -94,17 +94,20 @@ const AddStudent = () => {
       const confirmpassword = formData.confirmpassword;
 
       // const username = formData.username,
-      const posted = await api.post("http://localhost:3000/user/adduser", {
-        username,
-        name,
-        enrollmentno,
-        branch,
-        semester,
-        mail,
-        role,
-        password,
-        confirmpassword,
-      });
+      const posted = await api.post(
+        "https://airosphere-ggits.vercel.app/user/adduser",
+        {
+          username,
+          name,
+          enrollmentno,
+          branch,
+          semester,
+          mail,
+          role,
+          password,
+          confirmpassword,
+        }
+      );
       console.log(posted);
       dispatch(addStudentData(posted?.data));
       toast.success("Member added successully");

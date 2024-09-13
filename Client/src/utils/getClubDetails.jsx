@@ -15,7 +15,7 @@ const getClubDetails = async ({ clubname }) => {
   const getClubDetail = async () => {
     try {
       let data = await api.get(
-        "http://localhost:3000/club/clubdetail/" + clubname
+        "https://airosphere-ggits.vercel.app/club/clubdetail/" + clubname
       );
       console.log("here");
       if (data?.status === 200 && data?.data) {

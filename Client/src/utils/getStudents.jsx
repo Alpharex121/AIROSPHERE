@@ -15,7 +15,9 @@ const getStudents = async () => {
 
   const getSudent = async () => {
     try {
-      const data = await api.get("http://localhost:3000/user/getallstudents");
+      const data = await api.get(
+        "https://airosphere-ggits.vercel.app/user/getallstudents"
+      );
       if (data.status === 200 && data.data[0].username) {
         const currUser = data.data;
         dispath(addStudentData(currUser));

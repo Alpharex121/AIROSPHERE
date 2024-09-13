@@ -27,7 +27,9 @@ const RequestPage = () => {
   const handleDelete = async (id, idCardUrl) => {
     try {
       // Delete the request from your database
-      const response = await api.delete("http://localhost:3000/requests/" + id);
+      const response = await api.delete(
+        "https://airosphere-ggits.vercel.app/requests/" + id
+      );
       console.log("Request deleted successfully from the database");
 
       // Now delete the image from Firebase Storage

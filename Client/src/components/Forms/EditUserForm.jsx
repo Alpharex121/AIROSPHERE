@@ -71,7 +71,7 @@ const EditUserForm = () => {
       const { username, name, enrollmentno, semester, mail, role } = formData;
 
       const editReponse = await api.put(
-        `http://localhost:3000/user/update/${username}/${userid}`,
+        `https://airosphere-ggits.vercel.app/user/update/${username}/${userid}`,
         { username, name, enrollmentno, semester, mail, role }
       );
 

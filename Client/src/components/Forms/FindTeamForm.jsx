@@ -42,7 +42,7 @@ const FindTeamForm = () => {
       const skills = formData.skills;
       const link = formData.link;
       const data = await api.post(
-        "http://localhost:3000/studentconnect/postteam",
+        "https://airosphere-ggits.vercel.app/studentconnect/postteam",
         {
           title,
           description,

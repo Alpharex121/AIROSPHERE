@@ -33,7 +33,9 @@ const ClubPage = () => {
   // Function to handle club deletion
   const handleDeleteClub = async (clubname) => {
     try {
-      const data = await api.delete("http://localhost:3000/club/" + clubname);
+      const data = await api.delete(
+        "https://airosphere-ggits.vercel.app/club/" + clubname
+      );
       console.log(data);
     } catch (error) {
       console.log(error);

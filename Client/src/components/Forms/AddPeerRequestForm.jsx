@@ -38,7 +38,7 @@ const FindPeerForm = () => {
       const link = formData.link;
 
       const response = await api.post(
-        "http://localhost:3000/studentconnect/postpeer",
+        "https://airosphere-ggits.vercel.app/studentconnect/postpeer",
         {
           title,
           description,

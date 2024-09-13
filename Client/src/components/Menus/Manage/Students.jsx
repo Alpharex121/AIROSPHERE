@@ -12,7 +12,7 @@ import "react-confirm-alert/src/react-confirm-alert.css"; // Import css for the 
 const handleDeleteUser = async (studentid) => {
   try {
     const deleteResult = await api.delete(
-      "http://localhost:3000/user/" + studentid
+      "https://airosphere-ggits.vercel.app/user/" + studentid
     );
     toast.success("User deleted successfully! Please refresh to see changes.");
     console.log("User deleted successfully");

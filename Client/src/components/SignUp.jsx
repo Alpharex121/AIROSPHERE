@@ -66,7 +66,7 @@ const SignUp = () => {
         try {
           // Save the user data to your backend (e.g., a database)
           const response = await api.post(
-            "http://localhost:3000/requests",
+            "https://airosphere-ggits.vercel.app/requests",
             userData
           );
           console.log("User data saved successfully:", response.data);

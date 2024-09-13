@@ -34,7 +34,7 @@ const ClubAddMemberForm = () => {
       const clubrole = formData.clubrole;
       console.log(formData);
       const data = await api.post(
-        "http://localhost:3000/club/addmember/" + clubname,
+        "https://airosphere-ggits.vercel.app/club/addmember/" + clubname,
         {
           username,
           name,

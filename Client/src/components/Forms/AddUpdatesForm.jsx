@@ -32,11 +32,14 @@ const AddUpdatesForm = () => {
       const title = updateData.title;
       const description = updateData.description;
       const type = updateData.type;
-      const data = await api.post("http://localhost:3000/notification", {
-        title,
-        description,
-        type,
-      });
+      const data = await api.post(
+        "https://airosphere-ggits.vercel.app/notification",
+        {
+          title,
+          description,
+          type,
+        }
+      );
 
       if (data.status === 200) {
         showToast(
