@@ -6,7 +6,7 @@ import AboutUs from "./AboutusHome";
 import Deck from "./Deck";
 import { Team } from "./Team";
 import { api } from "../utils/constant";
-import airospherelogo from "../assets/airosphere_transparent_cropped.png";
+import airospherelogo from "../assets/Airosphere_transparent_cropped.png";
 // import incrementCounter from "../utils/incrementCounter";
 // import Stickypage from "./Stickypage";
 
