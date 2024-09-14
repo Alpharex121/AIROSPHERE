@@ -37,9 +37,8 @@ const Header = () => {
         const response = await api.get(
           "https://airosphere-ggits.vercel.app/counter"
         );
-        console.log(response);
 
-        let targetVisitCount = Number(response);
+        let targetVisitCount = Number(response?.data);
         let start = 0;
         const increment = Math.ceil(targetVisitCount / 100); // Adjust speed of animation
 
