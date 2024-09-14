@@ -30,7 +30,7 @@ const Homepage = () => {
   useEffect(() => {
     const fetchCounter = async () => {
       try {
-        const response = await api.post(
+        const response = await api.put(
           "https://airosphere-ggits.vercel.app/counter/increment"
         );
         // console.log(response);

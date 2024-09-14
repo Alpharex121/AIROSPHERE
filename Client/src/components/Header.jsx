@@ -37,6 +37,7 @@ const Header = () => {
         const response = await api.get(
           "https://airosphere-ggits.vercel.app/counter"
         );
+        console.log(response);
 
         let targetVisitCount = Number(response);
         let start = 0;
