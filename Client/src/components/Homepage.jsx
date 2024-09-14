@@ -33,6 +33,7 @@ const Homepage = () => {
         const response = await api.post(
           "https://airosphere-ggits.vercel.app/counter/increment"
         );
+        // console.log(response);
       } catch (error) {
         console.error("Error incresing counter:", error);
       }

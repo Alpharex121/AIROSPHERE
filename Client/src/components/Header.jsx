@@ -38,7 +38,7 @@ const Header = () => {
           "https://airosphere-ggits.vercel.app/counter"
         );
 
-        let targetVisitCount = response?.data?.count;
+        let targetVisitCount = Number(response);
         let start = 0;
         const increment = Math.ceil(targetVisitCount / 100); // Adjust speed of animation
 

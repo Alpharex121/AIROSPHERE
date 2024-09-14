@@ -47,7 +47,7 @@ const ClubPage = () => {
   return (
     currclub && (
       <>
-        <div className="bg-gray-100 h-[82vh] py-10">
+        <div className="bg-gray-100 sm:h-[82vh] py-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">
               Our Clubs
@@ -65,11 +65,11 @@ const ClubPage = () => {
               </div>
             )}
 
-            <div className="flex justify-center gap-10">
+            <div className="sm:flex w- flex-col sm:flex-row sm:justify-center sm:gap-10 ">
               {currclub.map((club, index) => (
                 <div
                   key={index}
-                  className="bg-white shadow-lg w-[30%] rounded-lg overflow-hidden hover:scale-105 transform transition-transform duration-300"
+                  className="bg-white shadow-lg w-[100%] mt-2 sm:w-[30%] rounded-lg overflow-hidden hover:scale-105 transform transition-transform duration-300"
                 >
                   <img
                     src={clubimage}

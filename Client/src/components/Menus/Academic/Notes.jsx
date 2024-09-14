@@ -33,8 +33,8 @@ const NotesComponent = () => {
   return (
     <div className="mt-10 mx-auto px-4 sm:px-6 lg:px-8">
       {/* Semester Selector */}
-      <div className="relative">
-        <div className="flex justify-center rounded-lg p-4 shadow-lg bg-indigo-600 overflow-x-auto scrollbar-hide">
+      <div className="relative ">
+        <div className="flex sm:justify-center rounded-lg sm:p-4 shadow-lg bg-indigo-600 overflow-x-auto scrollbar-hide no-scrollbar">
           <div className="relative flex ">
             {Object.keys(semestersData).map((semester, index) => (
               <div
@@ -44,7 +44,7 @@ const NotesComponent = () => {
                   selectedSemester === semester
                     ? "text-white bg-indigo-800"
                     : "text-gray-200 hover:text-white hover:bg-indigo-700"
-                }`}
+                } `}
                 onClick={() => setSelectedSemester(semester)}
               >
                 {semester}

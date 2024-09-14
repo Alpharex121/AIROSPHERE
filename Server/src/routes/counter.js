@@ -2,44 +2,36 @@ require("dotenv").config();
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const addCounter = require("../models/counterSchema");
 const router = express.Router();
-const vercelEdge = require("@vercel/edge-config");
-const edgeConfig = vercelEdge.createClient(process.env.ANOTHER_EDGE_CONFIG);
 
 router.get("/", async (req, res) => {
-  const count = await edgeConfig.get("airosphereCounter");
-  console.log(count);
-  res.json({ count });
+  try {
+    const id = "66e5a2a9975780a89a7f42bc";
+    const counter = await addCounter.findOne({ _id: id });
+
+    res.status(200).send(counter?.counter);
+  } catch (error) {
+    console.log("Error fetching counter " + error);
+  }
 });
 
-router.post("/increment", async (req, res) => {
+router.put("/increment", async (req, res) => {
   try {
-    let count = await edgeConfig.get("airosphereCounter");
-    console.log(process.env.API_KEY_TOKEN + " " + process.env.CLIENT_ID);
-    let newCount = count + 1;
-    const updateEdgeConfig = await fetch(
-      `https://api.vercel.com/v1/edge-config/${process.env.CLIENT_ID}/items`,
+    const id = "66e5a2a9975780a89a7f42bc";
+    const count = await addCounter.findOne({ _id: id });
+    const currCounter = Number(count.counter);
+
+    const result = await addCounter.findOneAndUpdate(
+      { _id: id },
       {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${process.env.API_KEY_TOKEN}`,
-          "Content-Type": "application/json",
+        $set: {
+          counter: currCounter + 1,
         },
-        body: JSON.stringify({
-          items: [
-            {
-              operation: "update",
-              key: "airosphereCounter",
-              value: newCount,
-            },
-          ],
-        }),
       }
     );
-    const result = await updateEdgeConfig.json();
-    console.log(result);
-    count++;
-    res.json({ count });
+
+    res.status(200).send("counter updated successfully!");
   } catch (error) {
     console.log(error);
   }
