@@ -187,17 +187,15 @@ const Dashboard = () => {
             <motion.div
               key={index}
               className="bg-white shadow-md rounded-lg p-6 w-64"
-              initial={{ opacity: 0, y: 50 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               whileHover={{
-                scale: 1.05,
-                boxShadow:
-                  "0px 10px 20px rgba(0, 191, 255, 0.5), 0px 10px 40px rgba(0, 255, 255, 0.4), 0px 10px 60px rgba(0, 206, 209, 0.3)",
+                scale: 1.03,
+                boxShadow: "0px 10px 20px rgba(150, 150, 150, 0.5)", // Stronger shadow with more opacity
               }}
               transition={{
-                duration: 0.6, // Duration of the hover effect
-                ease: "easeInOut",
-                delay: 0.2 * index, // Staggered delay for each card
+                duration: 0.3,
+                delay: 0.1 * index, // Less delay for quicker feel
               }}
             >
               <div className="text-4xl mb-4">{offer.icon}</div>

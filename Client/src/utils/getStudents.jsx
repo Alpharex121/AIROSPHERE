@@ -27,7 +27,7 @@ const getStudents = async () => {
         Navigate("/");
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       Navigate("/");
     }
   };

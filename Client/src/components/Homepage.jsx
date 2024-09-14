@@ -5,6 +5,8 @@ import Robot from "./3drobot";
 import AboutUs from "./AboutusHome";
 import Deck from "./Deck";
 import { Team } from "./Team";
+import { api } from "../utils/constant";
+import airospherelogo from "../assets/airosphere_transparent_cropped.png";
 // import incrementCounter from "../utils/incrementCounter";
 // import Stickypage from "./Stickypage";
 
@@ -24,6 +26,20 @@ const Homepage = () => {
 
     // incrementCounter();
   }, [controls, inView]);
+
+  useEffect(() => {
+    const fetchCounter = async () => {
+      try {
+        const response = await api.post(
+          "https://airosphere-ggits.vercel.app/counter/increment"
+        );
+      } catch (error) {
+        console.error("Error incresing counter:", error);
+      }
+    };
+
+    fetchCounter();
+  }, []);
   return (
     <div className="h-full">
       <Robot />
@@ -31,7 +47,7 @@ const Homepage = () => {
         <div className="main bg-black min-h-screen">
           <div
             ref={ref}
-            className="page1 min-h-screen w-full relative pt-[12vw] flex flex-col justify-center items-center text-center"
+            className="page1 min-h-screen w-full relative pt-[6vw] flex flex-col justify-center items-center text-center"
           >
             <motion.h1
               className="text-5xl font-bold text-white"
@@ -48,8 +64,9 @@ const Homepage = () => {
             >
               Empowering Tomorrow with AI and Robotics
             </motion.h1>
+
             <motion.h2
-              className="text-4xl font-semibold text-white mt-2"
+              className="text-4xl font-semibold text-white mt-2 mb-6"
               initial="hidden"
               animate={controls}
               variants={{
@@ -63,12 +80,29 @@ const Homepage = () => {
             >
               Where Innovation Meets Reality.
             </motion.h2>
+
+            {/* Logo Section */}
+            <motion.img
+              src={airospherelogo} // Update the path to your logo image
+              alt="Airosphere Logo "
+              className="w-[23%] " // Adjust the width and margin as needed
+              initial="hidden"
+              animate={controls}
+              variants={{
+                visible: {
+                  opacity: 1,
+                  scale: 1,
+                  transition: { duration: 1.5, ease: "easeInOut", delay: 0.5 },
+                },
+                hidden: { opacity: 0, scale: 0.8 },
+              }}
+            />
+
             <motion.video
               className="w-full mt-4"
               autoPlay
               muted
               loop
-              src="https://duo-studio.co/assets/home/Duo%20Reel--Desktop-reduced.mp4"
               initial="hidden"
               animate={controls}
               variants={{
@@ -82,6 +116,7 @@ const Homepage = () => {
           </div>
         </div>
       </div>
+
       <AboutUs />
       <div className="bg-black  flex flex-col md:flex-row w-full">
         <div className="flex flex-col md:flex-row justify-center items-center py-12 bg-gradient-to-r  from-gray-900 via-[#1d2247]  to-gray-800 shadow-lg overflow-hidden">

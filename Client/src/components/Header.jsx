@@ -5,6 +5,7 @@ import getUser from "../utils/getUser";
 import { useDispatch, useSelector } from "react-redux";
 import { api } from "../utils/constant";
 import { removeUser } from "../store/userSlice";
+import airospherelogo from "../assets/airosphere_transparent.png";
 
 const Header = () => {
   const Navigate = useNavigate();
@@ -19,6 +20,7 @@ const Header = () => {
   const [allowed, setAllowed] = useState(false);
   const [visitCount, setVisitCount] = useState(0); // Visit count state
   const [displayCount, setDisplayCount] = useState(0); // Animated counter display
+  const [targetVisitCount, setTragetVisitCount] = useState(""); // Animated counter display
 
   // State variables for toggling submenus in mobile
   const [mobileDropdowns, setMobileDropdowns] = useState({
@@ -30,22 +32,31 @@ const Header = () => {
   });
   // Counter animation effect
   useEffect(() => {
-    const targetVisitCount = 1234; // Replace with your actual visit count from the server
-    let start = 0;
-    const increment = Math.ceil(targetVisitCount / 100); // Adjust speed of animation
+    const fetchCounter = async () => {
+      try {
+        const response = await api.get(
+          "https://airosphere-ggits.vercel.app/counter"
+        );
 
-    const counterInterval = setInterval(() => {
-      start += increment;
-      if (start >= targetVisitCount) {
-        start = targetVisitCount;
-        clearInterval(counterInterval);
+        let targetVisitCount = response?.data?.count;
+        let start = 0;
+        const increment = Math.ceil(targetVisitCount / 100); // Adjust speed of animation
+
+        const counterInterval = setInterval(() => {
+          start += increment;
+          if (start >= targetVisitCount) {
+            start = targetVisitCount;
+            clearInterval(counterInterval);
+          }
+          setDisplayCount(start);
+        }, 50);
+        setVisitCount(targetVisitCount); // Set the actual visit count
+      } catch (error) {
+        console.error("Error fetching download counter:", error);
       }
-      setDisplayCount(start);
-    }, 50);
+    };
 
-    setVisitCount(targetVisitCount); // Set the actual visit count
-
-    return () => clearInterval(counterInterval);
+    fetchCounter();
   }, []);
 
   // Format count with k+ if greater than 1000
@@ -114,11 +125,14 @@ const Header = () => {
     <header className="bg-white shadow-md z-50">
       <nav className="container mx-auto flex items-center justify-between py-4 px-6">
         <div className="flex items-center space-x-4">
-          <div className="text-2xl font-bold text-gray-800">
-            <Link to="/">
-              <h6>AIROSPHERE</h6>
-            </Link>
-          </div>
+          <Link to="/">
+            <div className="flex items-center space-x-2  ">
+              {/* Airosphere Logo */}
+
+              {/* Airosphere Name */}
+              <h6 className="text-2xl font-bold text-gray-800">AIROSPHERE</h6>
+            </div>
+          </Link>
           {/* Visit Counter */}
           <div className="text-sm font-semibold text-green-500 animate-bounce">
             {formatCount(displayCount)} visits
@@ -240,7 +254,7 @@ const renderNavItems = (
     <>
       {/* Academic */}
       <li
-        className="relative z-50"
+        className="relative z-50 "
         onMouseEnter={!isMobile ? () => handleMouseEnter("academic") : null}
         onMouseLeave={!isMobile ? handleMouseLeave : null}
         onClick={isMobile ? () => toggleMobileDropdown("academic") : null}

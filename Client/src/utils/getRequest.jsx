@@ -27,7 +27,7 @@ const getRequests = async () => {
         Navigate("/");
       }
     } catch (error) {
-      console.log("User not authenticated" + error);
+      // console.log("User not authenticated" + error);
       Navigate("/");
     }
   };

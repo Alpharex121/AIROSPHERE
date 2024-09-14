@@ -36,8 +36,8 @@ const getUser = async () => {
       }
     } catch (error) {
       Navigate("/");
-      console.log("User not authenticated");
-      console.log(error);
+      // console.log("User not authenticated");
+      // console.log(error);
     }
   };
 };

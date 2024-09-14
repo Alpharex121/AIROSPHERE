@@ -30,7 +30,7 @@ const getWebsiteUpdates = async () => {
         return;
       }
     } catch (error) {
-      console.log("User not authenticated" + error);
+      // console.log("User not authenticated" + error);
       Navigate("/");
     }
   };

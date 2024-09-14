@@ -23,7 +23,6 @@ const BranchUpdate = () => {
     const data = await api.delete(
       "https://airosphere-ggits.vercel.app/notification/" + updateId
     );
-    console.log(data);
   };
 
   return (

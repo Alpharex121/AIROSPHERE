@@ -43,7 +43,7 @@ const FindPeer = () => {
   const dispatch = useDispatch();
   const data = useSelector((store) => store?.user);
   const peerRequests = useSelector((store) => store?.studentconnect?.peersdata);
-  console.log(peerRequests);
+  // console.log(peerRequests);
   getPeerData();
 
   const handleDelete = async (postid) => {

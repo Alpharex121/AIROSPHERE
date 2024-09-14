@@ -7,7 +7,6 @@ import { api } from "../../../utils/constant";
 const WebsiteUpdate = () => {
   const user = useSelector((store) => store?.user);
   const websiteUpdates = useSelector((store) => store?.updates?.websiteData);
-  console.log(websiteUpdates);
   const [allowed, setAllowed] = useState(false);
   useEffect(() => {
     const allowedRoles = ["admin", "professor", "updatemod", "modhead"];
@@ -21,7 +20,6 @@ const WebsiteUpdate = () => {
     const data = await api.delete(
       "https://airosphere-ggits.vercel.app/notification/" + updateId
     );
-    console.log(data);
   };
   return (
     websiteUpdates && (

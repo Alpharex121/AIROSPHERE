@@ -19,18 +19,18 @@ const getTeamData = async () => {
       let data = await api.get(
         "https://airosphere-ggits.vercel.app/studentconnect/getteams"
       );
-      console.log(data);
+      // console.log(data);
 
       if (data?.status === 200) {
         const currData = data?.data;
         dispath(addTeam(currData));
-        console.log(currData);
+        // console.log(currData);
       } else {
         Navigate("/");
         return;
       }
     } catch (error) {
-      console.log("User not authenticated" + error);
+      // console.log("User not authenticated" + error);
       Navigate("/");
     }
   };

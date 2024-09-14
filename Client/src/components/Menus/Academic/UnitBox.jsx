@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import getNotesData from "../../../utils/getNotes";
 import { api } from "../../../utils/constant";
+import { toast } from "react-toastify";
 
 const UnitBoxList = () => {
   const { subcode, type } = useParams();
@@ -25,7 +26,7 @@ const UnitBoxList = () => {
   if (type === "important")
     units = useSelector((store) => store?.academic?.importantquesdata);
 
-  console.log(units);
+  // console.log(units);
   getNotesData({ subcode, type });
 
   let currtype;
@@ -43,10 +44,18 @@ const UnitBoxList = () => {
 
   const handleDelete = async (unitId) => {
     // Dispatch an action to delete the unit
-    const data = await api.delete(
-      "https://airosphere-ggits.vercel.app/academic/" + unitId
-    );
-    console.log(data);
+    try {
+      const data = await api.delete(
+        "https://airosphere-ggits.vercel.app/academic/" + unitId
+      );
+      toast.success(
+        "Data deleted successfully! Please refresh to see changes."
+      );
+    } catch (error) {
+      console.log(error);
+    }
+
+    // console.log(data);
   };
 
   return (

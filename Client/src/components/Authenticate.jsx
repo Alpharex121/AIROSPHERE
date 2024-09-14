@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import getUser from "../utils/getUser";
 import { toast } from "react-toastify";
+import airospherelogo from "../assets/airosphere_transparent.png";
 
 const Authenticate = () => {
   const dispatch = useDispatch();
@@ -57,14 +58,14 @@ const Authenticate = () => {
 
   return (
     <section>
-      <div className="flex flex-col items-center justify-center px-6 py-12 mx-auto ">
+      <div className="flex flex-col items-center justify-center px-6 py-3 mb-10 mx-auto ">
         <a
           href="#"
-          className="flex items-center mb-6 text-2xl font-semibold text-gray-900 "
+          className="flex items-center mb-3 text-2xl font-semibold text-gray-900 "
         >
           <img
-            className="w-8 h-8 mr-2 "
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+            className="w-16  h-full mr-2 mt-2 "
+            src={airospherelogo}
             alt="logo"
           />
           AIROSPHERE

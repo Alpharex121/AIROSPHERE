@@ -7,6 +7,7 @@ import { storage } from "../firebase";
 import emailjs from "@emailjs/browser";
 import { addRequestData } from "../store/studentDataSlice";
 import { toast } from "react-toastify";
+import airospherelogo from "../assets/airosphere_transparent.png";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -119,8 +120,8 @@ const SignUp = () => {
           className="flex items-center mb-6 text-3xl font-semibold text-gray-900"
         >
           <img
-            className="w-8 h-8 mr-2"
-            src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
+            className="w-24 h-24 mr-2 mt-2"
+            src={airospherelogo}
             alt="logo"
           />
           AIROSPHERE

@@ -17,10 +17,8 @@ const getClubDetails = async ({ clubname }) => {
       let data = await api.get(
         "https://airosphere-ggits.vercel.app/club/clubdetail/" + clubname
       );
-      console.log("here");
       if (data?.status === 200 && data?.data) {
         const clubDetails = data.data[0];
-        console.log(clubDetails);
         dispath(addClubDetail(clubDetails));
         return clubDetails;
       } else {
@@ -28,7 +26,7 @@ const getClubDetails = async ({ clubname }) => {
         return;
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       Navigate("/");
     }
   };

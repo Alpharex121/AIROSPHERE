@@ -31,7 +31,7 @@ const ManageStudents = () => {
     Navigate("/"); // Navigate if the user is not authorized
   }
   const studentData = useSelector((store) => store?.student?.studentData);
-  console.log(studentData);
+  // console.log(studentData);
   getStudents();
 
   const confirmDelete = (student) => {

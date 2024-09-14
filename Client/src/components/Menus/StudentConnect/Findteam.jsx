@@ -99,7 +99,7 @@ const FindTeammate = () => {
         "https://airosphere-ggits.vercel.app/studentconnect/deleteteampost/" +
           selectedRequestId
       );
-      console.log(data);
+      // console.log(data);
       const updated = getTeams.filter((team) => {
         return team?._id.toString() !== data.data?._id;
       });

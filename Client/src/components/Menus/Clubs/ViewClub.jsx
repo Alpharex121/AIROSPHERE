@@ -24,8 +24,7 @@ const ClubDetailPage = () => {
   getClubDetails({ clubname });
   const currclubDetail = useSelector((store) => store?.club?.clubdetail);
   const userdata = useSelector((store) => store?.user);
-  console.log(userdata);
-  console.log(currclubDetail);
+
   const [selectedMenu, setSelectedMenu] = useState("Members");
   const [underlineStyle, setUnderlineStyle] = useState({});
   const menuRefs = useRef([]);
