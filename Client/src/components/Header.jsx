@@ -123,8 +123,8 @@ const Header = () => {
 
   return (
     <header className="bg-white shadow-md z-50">
-      <nav className="container mx-auto flex items-center justify-between py-4 px-6">
-        <div className="flex items-center space-x-4">
+      <nav className="container mx-auto flex items-center justify-between py-4 px-6 z-50">
+        <div className="flex items-center space-x-4 z-50">
           <Link to="/">
             <div className="flex items-center space-x-2  ">
               {/* Airosphere Logo */}
@@ -408,7 +408,7 @@ const Dropdown = ({ items, url, isMobile }) => {
   return (
     <ul
       className={`${
-        isMobile ? "py-2" : "absolute left-0 mt-2"
+        isMobile ? "py-2 z-50" : "absolute left-0 mt-2 z-50"
       } w-48 bg-white shadow-lg rounded-md transition`}
     >
       {items.map((item, index) => (

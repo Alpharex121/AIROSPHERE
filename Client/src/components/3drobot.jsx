@@ -12,7 +12,7 @@ const Robot = () => {
   return (
     <div className="h-[90vh] w-full relative">
       {isLoading && (
-        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-50">
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 z-40">
           <motion.div
             className="loader border-t-4 border-b-4 border-black rounded-full w-16 h-16"
             animate={{ rotate: 360 }}

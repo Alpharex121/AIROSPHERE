@@ -21,23 +21,32 @@ const trans = (r, s) =>
     r / 10
   }deg) rotateZ(${r}deg) scale(${s})`;
 
-function Deck() {
+function Deck({ setActiveCard }) {
   const [gone] = useState(() => new Set());
   const [props, api] = useSprings(cards.length, (i) => ({
     ...to(i),
     from: from(i),
   }));
+
+  // useDrag will track the dragging behavior
   const bind = useDrag(
     ({ args: [index], down, movement: [mx], direction: [xDir], velocity }) => {
       const trigger = velocity > 0.2;
-      const dir = xDir < 0 ? -1 : 1;
-      if (!down && trigger) gone.add(index);
+      const dir = xDir < 0 ? -1 : 1; // Direction of drag, left or right
+      if (!down && trigger) gone.add(index); // Mark card as gone if velocity is greater than threshold
+
       api.start((i) => {
-        if (index !== i) return;
+        if (index !== i) return; // Don't change other cards
         const isGone = gone.has(index);
-        const x = isGone ? (200 + window.innerWidth) * dir : down ? mx : 0;
-        const rot = mx / 100 + (isGone ? dir * 10 * velocity : 0);
-        const scale = down ? 1.1 : 1;
+        const x = isGone ? (200 + window.innerWidth) * dir : down ? mx : 0; // Move card out of screen if gone
+        const rot = mx / 100 + (isGone ? dir * 10 * velocity : 0); // Rotation based on movement
+        const scale = down ? 1.1 : 1; // Scale up while dragging
+
+        // Update the active card index dynamically as soon as dragging starts
+        if (down) {
+          setActiveCard(index);
+        }
+
         return {
           x,
           rot,
@@ -46,13 +55,17 @@ function Deck() {
           config: { friction: 50, tension: down ? 800 : isGone ? 200 : 500 },
         };
       });
-      if (!down && gone.size === cards.length)
+
+      if (!down && gone.size === cards.length) {
+        // Reset cards after all are swiped away
         setTimeout(() => {
           gone.clear();
           api.start((i) => to(i));
         }, 600);
+      }
     }
   );
+
   return (
     <div className="relative w-full h-full flex items-center justify-center bg-lightblue cursor-custom">
       {props.map(({ x, y, rot, scale }, i) => (
