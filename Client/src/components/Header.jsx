@@ -5,7 +5,7 @@ import getUser from "../utils/getUser";
 import { useDispatch, useSelector } from "react-redux";
 import { api } from "../utils/constant";
 import { removeUser } from "../store/userSlice";
-import airospherelogo from "../assets/airosphere_transparent.png";
+import airospherelogo from "../assets/Airosphere_transparent.png";
 
 const Header = () => {
   const Navigate = useNavigate();
