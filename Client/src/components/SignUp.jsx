@@ -7,7 +7,7 @@ import { storage } from "../firebase";
 import emailjs from "@emailjs/browser";
 import { addRequestData } from "../store/studentDataSlice";
 import { toast } from "react-toastify";
-import airospherelogo from "../assets/airosphere_transparent.png";
+import airospherelogo from "../assets/Airosphere_transparent.png";
 
 const SignUp = () => {
   const dispatch = useDispatch();

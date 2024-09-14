@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import getUser from "../utils/getUser";
 import { toast } from "react-toastify";
-import airospherelogo from "../assets/airosphere_transparent.png";
+import airospherelogo from "../assets/Airosphere_transparent.png";
 
 const Authenticate = () => {
   const dispatch = useDispatch();
