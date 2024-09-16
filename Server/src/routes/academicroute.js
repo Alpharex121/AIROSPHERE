@@ -29,6 +29,7 @@ router.post("/", auth, async (req, res) => {
         subcode: req.body.subcode,
         link: req.body.link,
         type: req.body.type,
+        postername: req.user.username,
       });
       const result = await newAcademic.save();
       res.status(200).send(result);
