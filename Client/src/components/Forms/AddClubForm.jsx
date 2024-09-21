@@ -127,7 +127,7 @@ const AddClubForm = () => {
           </label>
           <input
             type="text"
-            name="bannerlink"
+            name="bannerLink"
             value={clubData.bannerLink}
             onChange={handleChange}
             required
