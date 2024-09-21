@@ -113,7 +113,7 @@ const ManageStudents = () => {
                 </p>
                 <p className="mb-2">
                   <span className="font-semibold">Branch: </span>
-                  AIR
+                  {student.branch}
                 </p>
                 <p className="mb-2">
                   <span className="font-semibold">Semester: </span>
