@@ -16,6 +16,7 @@ const clubSchema = new mongoose.Schema({
   },
 
   description: {
+    required: true,
     type: String,
   },
   bannerLink: {

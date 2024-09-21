@@ -17,9 +17,9 @@ const AddClubForm = () => {
     description: "",
     head: "",
     headname: "",
-    logolink: "",
-    formlink: "",
-    bannerlink: "",
+    logoLink: "",
+    formLink: "",
+    bannerLink: "",
   });
 
   const handleChange = (e) => {
@@ -37,17 +37,17 @@ const AddClubForm = () => {
       const description = clubData.description;
       const head = clubData.head;
       const headname = clubData.headname;
-      const logolink = clubData.logolink;
-      const formlink = clubData.formlink;
-      const bannerlink = clubData.bannerlink;
+      const logoLink = clubData.logoLink;
+      const formLink = clubData.formLink;
+      const bannerLink = clubData.bannerLink;
       const data = await api.post("https://airosphere-ggits.vercel.app/club", {
         name,
         description,
         head,
         headname,
-        logolink,
-        formlink,
-        bannerlink,
+        logoLink,
+        formLink,
+        bannerLink,
       });
 
       if (data.status === 200) {
@@ -128,7 +128,7 @@ const AddClubForm = () => {
           <input
             type="text"
             name="bannerlink"
-            value={clubData.bannerlink}
+            value={clubData.bannerLink}
             onChange={handleChange}
             required
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -141,8 +141,8 @@ const AddClubForm = () => {
           </label>
           <input
             type="text"
-            name="logolink"
-            value={clubData.logolink}
+            name="logoLink"
+            value={clubData.logoLink}
             onChange={handleChange}
             required
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -155,8 +155,8 @@ const AddClubForm = () => {
           </label>
           <input
             type="text"
-            name="formlink"
-            value={clubData.formlink}
+            name="formLink"
+            value={clubData.formLink}
             onChange={handleChange}
             required
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
