@@ -51,7 +51,10 @@ const AddClubForm = () => {
       });
 
       if (data.status === 200) {
-        showToast("success", "Club added successfully!");
+        showToast(
+          "success",
+          "Club added successfully! Please refresh to see Changes"
+        );
         Navigate("/club");
       } else {
         showToast("error", "Failed to add club. Please try again.");
