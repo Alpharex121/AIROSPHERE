@@ -18,6 +18,17 @@ const clubSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  bannerLink: {
+    type: String,
+  },
+  logoLink: {
+    required: true,
+    type: String,
+  },
+  formLink: {
+    required: true,
+    type: String,
+  },
   members: [
     {
       name: {

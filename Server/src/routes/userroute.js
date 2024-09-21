@@ -106,8 +106,14 @@ router.put("/update/:username/:id", auth, async (req, res) => {
         res.status(409).send("user not found for updation.");
         return;
       }
+
       console.log(isExist);
       if (isExist.role === "admin") {
+        res.status(401).send("Permission denied");
+        return;
+      }
+
+      if (isExist.role === "demo" && req.user.role !== "admin") {
         res.status(401).send("Permission denied");
         return;
       }
@@ -210,6 +216,10 @@ router.put("/updatepassword/:username", auth, async (req, res) => {
       }
 
       if (isExist.role === "admin" && req.user.username !== isExist.username) {
+        res.status(401).send("Permission denied");
+        return;
+      }
+      if (isExist.role === "demo" && req.user.role !== "admin") {
         res.status(401).send("Permission denied");
         return;
       }

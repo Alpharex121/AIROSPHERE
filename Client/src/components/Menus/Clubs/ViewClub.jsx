@@ -111,11 +111,12 @@ const ClubDetailPage = () => {
           <div className="bg-gradient-to-r from-gray-600 via-gray-700 to-gray-800 shadow-lg py-8 px-6">
             <div className="flex justify-center items-center max-w-6xl mx-auto">
               {/* Club Logo */}
+
               <div className="flex-shrink-0 mr-8 ">
                 <img
-                  src={roboclub}
+                  src={currclubDetail.logoLink}
                   alt="Club Logo"
-                  className="w-48 h-48 object-contain rounded-full border-4 border-white"
+                  className="w-48 h-48 object-fill  rounded-full border-4 border-white"
                 />
               </div>
               {/* Club Details */}
@@ -139,14 +140,13 @@ const ClubDetailPage = () => {
                   </p>
                   {/* Apply Button */}
                 </div>
-                <button
-                  to={data?.role !== "demo" ? "#apply" : null}
-                  className={`bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-700 hover:to-teal-600 text-white font-bold ${
-                    data?.role === "demo" && "cursor-not-allowed"
-                  }  py-2 w-[11vw] px-8 mt-4 rounded-full transition-transform hover:scale-105 shadow-lg`}
-                >
-                  Apply to Join
-                </button>
+                <Link to={currclubDetail.formLink} target="_blank">
+                  <button
+                    className={`bg-gradient-to-r from-indigo-500 to-indigo-600 hover:from-indigo-700 hover:to-teal-600 text-white font-bold py-2 w-[11vw] px-8 mt-4 rounded-full transition-transform hover:scale-105 shadow-lg`}
+                  >
+                    Apply to Join
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

@@ -14,13 +14,6 @@ const ClubPage = () => {
   if (!data) Navigate("/");
 
   const currclub = useSelector((store) => store?.club?.clubdata);
-  const [allowed, setAllowed] = useState(false);
-  useEffect(() => {
-    const allowedRoles = ["admin", "modhead"];
-    if (allowedRoles.includes(data?.role)) {
-      setAllowed(true);
-    }
-  }, []);
 
   // Fetch club data
   getClubData();
@@ -47,14 +40,14 @@ const ClubPage = () => {
   return (
     currclub && (
       <>
-        <div className="bg-gray-100 sm:h-[82vh] py-10">
+        <div className="bg-gray-100  py-10">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">
               Our Clubs
             </h1>
 
             {/* Add Club Button - Only visible to admins */}
-            {allowed && (
+            {(data?.role === "admin" || data?.role === "modhead") && (
               <div className="flex justify-end ">
                 <button
                   onClick={handleAddClub}
@@ -65,16 +58,16 @@ const ClubPage = () => {
               </div>
             )}
 
-            <div className="sm:flex w- flex-col sm:flex-row sm:justify-center sm:gap-10 ">
+            <div className="sm:flex  flex-col sm:flex-row sm:justify-center sm:gap-10 flex-wrap ">
               {currclub.map((club, index) => (
                 <div
                   key={index}
                   className="bg-white shadow-lg w-[100%] mt-2 sm:w-[30%] rounded-lg overflow-hidden hover:scale-105 transform transition-transform duration-300"
                 >
                   <img
-                    src={clubimage}
+                    src={club.bannerLink}
                     alt={club.name}
-                    className="w-full h-56 object-cover"
+                    className="w-full h-56 object-fill"
                   />
                   <div className="p-6">
                     <h2 className="text-2xl font-semibold text-gray-800 mb-2">
@@ -91,7 +84,7 @@ const ClubPage = () => {
                     </Link>
 
                     {/* Delete Club Button - Only visible to admins */}
-                    {allowed && (
+                    {(data?.role === "admin" || data?.role === "modhead") && (
                       <button
                         onClick={() => handleDeleteClub(club.name)}
                         className="mt-4 ml-2 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-300 transition-all"

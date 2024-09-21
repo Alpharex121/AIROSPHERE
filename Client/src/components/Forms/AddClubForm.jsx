@@ -17,6 +17,9 @@ const AddClubForm = () => {
     description: "",
     head: "",
     headname: "",
+    logolink: "",
+    formlink: "",
+    bannerlink: "",
   });
 
   const handleChange = (e) => {
@@ -34,16 +37,22 @@ const AddClubForm = () => {
       const description = clubData.description;
       const head = clubData.head;
       const headname = clubData.headname;
+      const logolink = clubData.logolink;
+      const formlink = clubData.formlink;
+      const bannerlink = clubData.bannerlink;
       const data = await api.post("https://airosphere-ggits.vercel.app/club", {
         name,
         description,
         head,
         headname,
+        logolink,
+        formlink,
+        bannerlink,
       });
 
-      if (response.status === 200) {
+      if (data.status === 200) {
         showToast("success", "Club added successfully!");
-        Navigate("/clubs");
+        Navigate("/club");
       } else {
         showToast("error", "Failed to add club. Please try again.");
       }
@@ -106,6 +115,48 @@ const AddClubForm = () => {
             type="text"
             name="headname"
             value={clubData.headname}
+            onChange={handleChange}
+            required
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">
+            Club Banner Link
+          </label>
+          <input
+            type="text"
+            name="bannerlink"
+            value={clubData.bannerlink}
+            onChange={handleChange}
+            required
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">
+            Logo Link
+          </label>
+          <input
+            type="text"
+            name="logolink"
+            value={clubData.logolink}
+            onChange={handleChange}
+            required
+            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">
+            Google Form Link
+          </label>
+          <input
+            type="text"
+            name="formlink"
+            value={clubData.formlink}
             onChange={handleChange}
             required
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"

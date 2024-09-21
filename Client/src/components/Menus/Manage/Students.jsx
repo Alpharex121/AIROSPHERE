@@ -31,7 +31,6 @@ const ManageStudents = () => {
     Navigate("/"); // Navigate if the user is not authorized
   }
   const studentData = useSelector((store) => store?.student?.studentData);
-  // console.log(studentData);
   getStudents();
 
   const confirmDelete = (student) => {
@@ -82,6 +81,13 @@ const ManageStudents = () => {
         <h2 className="text-4xl font-bold text-center mb-8 text-gray-800">
           Manage Students
         </h2>
+
+        {/* User Count Display */}
+        <div className="text-center mb-6 text-lg text-gray-700">
+          <span className="font-semibold">Total Students:</span>{" "}
+          {studentData.length}
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 px-4">
           {studentData.map((student, index) => (
             <motion.div

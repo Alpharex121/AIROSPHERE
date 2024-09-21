@@ -35,6 +35,9 @@ router.post("/", auth, async (req, res) => {
         description: req.body.description,
         head: req.body.head,
         headname: req.body.headname,
+        logoLink: req.body.logoLink,
+        formLink: req.body.formLink,
+        bannerLink: req.body.bannerLink,
       });
       const registered = await newClub.save();
       console.log("club Added successfully");
