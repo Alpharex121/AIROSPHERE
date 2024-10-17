@@ -58,6 +58,12 @@ const FindPeer = () => {
       console.log(error);
     }
   };
+  const handleLinkClick = (link) => {
+    console.log("here");
+    if (data?.role !== "demo")
+      window.open(link, "_blank", "noopener,noreferrer");
+    else return;
+  };
 
   const confirmDelete = (id) => {
     confirmAlert({
@@ -190,18 +196,14 @@ const FindPeer = () => {
 
                     {/* Contact Button */}
                     <div className="flex-shrink-0 cursor-pointer">
-                      <Link
-                        to={data?.role !== "demo" ? request.link : null}
-                        target={data?.role !== "demo" ? "_blank" : null}
+                      <button
+                        onClick={() => handleLinkClick(request.link)}
+                        className={`inline-block bg-purple-600 text-white py-2 px-6 rounded-full hover:bg-purple-700 transition duration-300 ${
+                          data.role === "demo" && "cursor-not-allowed"
+                        } `}
                       >
-                        <button
-                          className={`inline-block bg-purple-600 text-white py-2 px-6 rounded-full hover:bg-purple-700 transition duration-300 ${
-                            data.role === "demo" && "cursor-not-allowed"
-                          } `}
-                        >
-                          Contact Now
-                        </button>
-                      </Link>
+                        Contact Now
+                      </button>
                       {/* Delete Button */}
 
                       {(request.postername === data?.username ||

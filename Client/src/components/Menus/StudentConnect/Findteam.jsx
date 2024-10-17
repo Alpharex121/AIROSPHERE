@@ -110,6 +110,13 @@ const FindTeammate = () => {
     }
   };
 
+  const handleLinkClick = (link) => {
+    console.log("here");
+    if (data?.role !== "demo")
+      window.open(link, "_blank", "noopener,noreferrer");
+    else return;
+  };
+
   return (
     <div className="bg-gray-50">
       {/* Banner */}
@@ -186,18 +193,14 @@ const FindTeammate = () => {
                     </div>
 
                     {/* Apply Button */}
-                    <Link
-                      to={data?.role !== "demo" ? request.link : null}
-                      target={data?.role !== "demo" ? "_blank" : null}
+                    <button
+                      onClick={() => handleLinkClick(request.link)}
+                      className={`mt-6 inline-block w-full text-center bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 ${
+                        data?.role === "demo" && "cursor-not-allowed"
+                      }`}
                     >
-                      <button
-                        className={`mt-6 inline-block w-full text-center bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 ${
-                          data?.role === "demo" && "cursor-not-allowed"
-                        }`}
-                      >
-                        Apply Now
-                      </button>
-                    </Link>
+                      Apply Now
+                    </button>
 
                     {/* Delete Button for Poster */}
                     {(request.postername === currentUser ||
