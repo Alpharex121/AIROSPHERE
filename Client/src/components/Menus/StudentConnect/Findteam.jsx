@@ -186,14 +186,18 @@ const FindTeammate = () => {
                     </div>
 
                     {/* Apply Button */}
-                    <button
+                    <Link
                       to={data?.role !== "demo" ? request.link : null}
-                      className={`mt-6 inline-block w-full text-center bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 ${
-                        data?.role === "demo" && "cursor-not-allowed"
-                      }`}
+                      target={data?.role !== "demo" ? "_blank" : null}
                     >
-                      Apply Now
-                    </button>
+                      <button
+                        className={`mt-6 inline-block w-full text-center bg-indigo-600 text-white py-2 px-4 rounded-lg hover:bg-indigo-700 transition duration-300 ${
+                          data?.role === "demo" && "cursor-not-allowed"
+                        }`}
+                      >
+                        Apply Now
+                      </button>
+                    </Link>
 
                     {/* Delete Button for Poster */}
                     {(request.postername === currentUser ||

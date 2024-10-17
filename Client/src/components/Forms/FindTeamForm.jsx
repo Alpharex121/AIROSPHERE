@@ -44,14 +44,10 @@ const FindTeamForm = () => {
       const data = await api.post(
         "https://airosphere-ggits.vercel.app/studentconnect/postteam",
         {
-          title,
-          description,
-          opening,
-          skills,
-          link,
+          ...formData,
         }
       );
-      console.log(data);
+
       dispatch(addTeam(data?.data));
       toast.success("Find team request added successfully!");
       Navigate("/studentconnect/findteammates");
@@ -176,7 +172,7 @@ const FindTeamForm = () => {
                 value={formData.link}
                 onChange={handleChange}
                 className="appearance-none rounded-lg relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="Link to project or resources"
+                placeholder="Link to your contact information."
               />
             </div>
           </div>

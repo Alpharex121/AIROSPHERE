@@ -21,6 +21,10 @@ const findteamSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  link: {
+    type: String,
+    required: true,
+  },
 });
 
 const addTeam = new mongoose.model("findteam", findteamSchema);

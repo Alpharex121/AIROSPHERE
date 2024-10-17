@@ -96,7 +96,7 @@ router.delete("/deleteteampost/:postid", auth, async (req, res) => {
         req.user.username === isExist.postername
       ) {
         const result = await addTeam.findOneAndDelete({ _id: postid });
-        console.log("User Delete successfully!");
+        console.log("Find teammated request Delete successfully!");
         res.status(200).send(result);
         return;
       } else {

@@ -190,14 +190,18 @@ const FindPeer = () => {
 
                     {/* Contact Button */}
                     <div className="flex-shrink-0 cursor-pointer">
-                      <button
+                      <Link
                         to={data?.role !== "demo" ? request.link : null}
-                        className={`inline-block bg-purple-600 text-white py-2 px-6 rounded-full hover:bg-purple-700 transition duration-300 ${
-                          data.role === "demo" && "cursor-not-allowed"
-                        } `}
+                        target={data?.role !== "demo" ? "_blank" : null}
                       >
-                        Contact Now
-                      </button>
+                        <button
+                          className={`inline-block bg-purple-600 text-white py-2 px-6 rounded-full hover:bg-purple-700 transition duration-300 ${
+                            data.role === "demo" && "cursor-not-allowed"
+                          } `}
+                        >
+                          Contact Now
+                        </button>
+                      </Link>
                       {/* Delete Button */}
 
                       {(request.postername === data?.username ||
