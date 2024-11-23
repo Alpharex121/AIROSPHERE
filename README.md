@@ -59,25 +59,25 @@ Airosphere is a MERN stack-based community platform designed for students and fa
 
 5.  **Configure environment variables:**
 
-   ->Create a .env file in the backend folder with:
-   ```
-       URI=your-mongodb-connection-string
-       SECRET_KEY=your-secret-key-for-JWT
-   ```
+     ->Create a .env file in the backend folder with:
+       ```
+           URI=your-mongodb-connection-string
+           SECRET_KEY=your-secret-key-for-JWT
+       ```
    
-   ->Create a .env file in the frontend folder with:
-   ```
-      VITE_SERVICE_ID=your-emailjs-service-id
-      VITE_TEMPLATE_ID=your-emailjs-template-id
-      VITE_PUBLIC_KEY=your-emailjs-public-key
-      VITE_FIREBASE_API_KEY=your-firebase-api-key
-      VITE_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
-      VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
-      VITE_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
-      VITE_FIREBASE_MESSAGING_SENDER_ID=your-firebase-messaging-sender-id
-      VITE_FIREBASE_APP_ID=your-firebase-app-id
-      VITE_FIREBASE_MEASUREMENT_ID=your-firebase-measurement-id
-   ```
+     ->Create a .env file in the frontend folder with:
+       ```
+          VITE_SERVICE_ID=your-emailjs-service-id
+          VITE_TEMPLATE_ID=your-emailjs-template-id
+          VITE_PUBLIC_KEY=your-emailjs-public-key
+          VITE_FIREBASE_API_KEY=your-firebase-api-key
+          VITE_FIREBASE_AUTH_DOMAIN=your-firebase-auth-domain
+          VITE_FIREBASE_PROJECT_ID=your-firebase-project-id
+          VITE_FIREBASE_STORAGE_BUCKET=your-firebase-storage-bucket
+          VITE_FIREBASE_MESSAGING_SENDER_ID=your-firebase-messaging-sender-id
+          VITE_FIREBASE_APP_ID=your-firebase-app-id
+          VITE_FIREBASE_MEASUREMENT_ID=your-firebase-measurement-id
+       ```
    
 6. **Start the backend server:**
     ```
@@ -86,7 +86,7 @@ Airosphere is a MERN stack-based community platform designed for students and fa
     ```
 
 7. **Start the frontend development server:**
- ```
+    ```
     cd ../frontend
     npm start
     ```
