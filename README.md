@@ -37,24 +37,36 @@ Airosphere is a MERN stack-based community platform designed for students and fa
 ### **Steps to Run**
 
 1. **Clone the repository**:
+    ```
    git clone https://github.com/Alpharex121/AIROSPHERE.git
+    ```
 
 2. **Navigate to the repository**:
+   ```
    cd AIROSPHERE
+   ```
 3. **Install dependencies for the backend:**
+   ```
    cd backend
    npm install
+   ```
 
 4. **Install dependencies for the frontend:**
+    ```
    cd ../frontend
    npm install
+    ```
 
-5. **Configure environment variables:**
+5.  **Configure environment variables:**
+
    ->Create a .env file in the backend folder with:
+   ```
        URI=your-mongodb-connection-string
        SECRET_KEY=your-secret-key-for-JWT
+   ```
    
    ->Create a .env file in the frontend folder with:
+   ```
       VITE_SERVICE_ID=your-emailjs-service-id
       VITE_TEMPLATE_ID=your-emailjs-template-id
       VITE_PUBLIC_KEY=your-emailjs-public-key
@@ -65,14 +77,19 @@ Airosphere is a MERN stack-based community platform designed for students and fa
       VITE_FIREBASE_MESSAGING_SENDER_ID=your-firebase-messaging-sender-id
       VITE_FIREBASE_APP_ID=your-firebase-app-id
       VITE_FIREBASE_MEASUREMENT_ID=your-firebase-measurement-id
+   ```
    
-7. **Start the backend server:**
+6. **Start the backend server:**
+    ```
     cd ../backend
     npm run start
+    ```
 
-8. **Start the frontend development server:**
+7. **Start the frontend development server:**
+ ```
     cd ../frontend
     npm start
+    ```
 
 
 
