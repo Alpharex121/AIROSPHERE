@@ -1,6 +1,6 @@
 # **Airosphere – Branch Community Platform**
 
-Airosphere is a MERN stack-based community platform designed for students and faculty in the AI and Robotics domain. It features a robust **Role-Based Access Control (RBAC)** system, ensuring secure, role-specific access to different sections and functionalities.
+Airosphere is a MERN stack-based community platform designed for students and faculty. It features a robust **Role-Based Access Control (RBAC)** system, ensuring secure, role-specific access to different sections and functionalities.
 
 ---
 
